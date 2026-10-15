@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verificado com Sucesso - Seleção Simplificada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #005f73 0%, #0a776e 50%, #0a9396 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .bg-noise-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.2;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        .bg-gradient-radial {
+            background: radial-gradient(circle at 50% 0%, rgba(148, 210, 189, 0.15) 0%, transparent 50%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        .decoration-1 {
+            position: fixed;
+            top: 10%;
+            right: 10%;
+            width: 100px;
+            height: 100px;
+            background: rgba(233, 216, 166, 0.12);
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: 2;
+        }
+
+        .decoration-2 {
+            position: fixed;
+            bottom: 10%;
+            left: 5%;
+            width: 80px;
+            height: 80px;
+            background: rgba(148, 210, 189, 0.15);
+            border-radius: 50%;
+            filter: blur(32px);
+            z-index: 2;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow:
+                0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 520px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            position: relative;
+            z-index: 10;
+            margin: 20px 0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(0, 95, 115, 0.9) 0%, rgba(10, 147, 150, 0.9) 100%);
+            color: white;
+            padding: 32px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .content {
+            padding: 32px 24px;
+        }
+
+        .success-icon {
+            text-align: center;
+            margin-bottom: 32px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-15px) scale(1.05);
+            }
+        }
+
+        .success-icon svg {
+            width: 80px;
+            height: 80px;
+            color: #94d2bd;
+            filter: drop-shadow(0 10px 20px rgba(148, 210, 189, 0.3));
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border-left: 4px solid #94d2bd;
+            backdrop-filter: blur(10px);
+        }
+
+        .message-box h2 {
+            color: white;
+            margin-bottom: 16px;
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .message-box p {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .user-info {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #94d2bd;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 15px;
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #005f73 0%, #0a9396 100%);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow:
+                0 10px 30px -10px rgba(0, 95, 115, 0.4),
+                0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0a9396 0%, #005f73 100%);
+            transform: translateY(-2px);
+            box-shadow:
+                0 15px 30px -10px rgba(0, 95, 115, 0.5),
+                0 8px 12px -2px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .btn svg {
+            width: 20px;
+            height: 20px;
+            stroke-width: 2.5;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            width: 100px;
+            height: auto;
+            margin: 0 auto 12px;
+            opacity: 0.8;
+            display: block;
+        }
+
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Melhorias para telas muito pequenas */
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+
+            .container {
+                border-radius: 20px;
+                margin: 10px 0;
+            }
+
+            .header {
+                padding: 24px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .header p {
+                font-size: 15px;
+            }
+
+            .content {
+                padding: 24px 20px;
+            }
+
+            .success-icon svg {
+                width: 70px;
+                height: 70px;
+            }
+
+            .message-box {
+                padding: 20px;
+            }
+
+            .message-box h2 {
+                font-size: 20px;
+            }
+
+            .user-info {
+                padding: 16px;
+            }
+
+            .info-item {
+                flex-direction: column;
+            }
+
+            .btn {
+                padding: 14px 20px;
+                font-size: 15px;
+            }
+
+            .footer {
+                padding: 20px;
+                font-size: 12px;
+            }
+        }
+
+        /* Melhorias para telas médias e grandes */
+        @media (min-width: 481px) {
+            .info-item {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+
+            .info-label {
+                min-width: 120px;
+                margin-bottom: 0;
+                margin-right: 16px;
+            }
+
+            .info-value {
+                flex: 1;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 520px;
+            }
+
+            .header {
+                padding: 40px 32px;
+            }
+
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .content {
+                padding: 40px 32px;
+            }
+
+            .success-icon svg {
+                width: 100px;
+                height: 100px;
+            }
+
+            .message-box h2 {
+                font-size: 24px;
+            }
+
+            .btn {
+                padding: 18px 32px;
+            }
+
+            .info-label {
+                min-width: 140px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-noise-pattern"></div>
+    <div class="bg-gradient-radial"></div>
+    <div class="decoration-1"></div>
+    <div class="decoration-2"></div>
+
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>🎉 Email Verificado!</h1>
+                <p>Seu cadastro está completo e sua conta foi ativada</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="success-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                        clip-rule="evenodd" />
+                </svg>
+            </div>
+
+            <div class="message-box">
+                <h2>Parabéns, {{ candidate_name }}!</h2>
+                <p>Sua conta foi verificada com sucesso. Agora você tem acesso completo ao sistema de seleção do
+                    Seleção Simplificada.</p>
+                <p>Você pode fazer login utilizando o email e senha cadastrados para começar a explorar as oportunidades
+                    de estágio.</p>
+            </div>
+
+            <div class="user-info">
+                <div class="info-item">
+                    <div class="info-label">Nome:</div>
+                    <div class="info-value">{{ candidate_name }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Email:</div>
+                    <div class="info-value">{{ email }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Verificado em:</div>
+                    <div class="info-value">{{ verification_date }}</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="http://localhost:3000" class="btn btn-primary pulse">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                        <polyline points="10 17 15 12 10 7"></polyline>
+                        <line x1="15" y1="12" x2="3" y2="12"></line>
+                    </svg>
+                    Ir para o Sistema
+                </a>
+
+                <a href="http://localhost:3000/auth/login-candidato" class="btn btn-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1">
+                        </path>
+                    </svg>
+                    Fazer Login
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <svg class="logo" viewBox="0 0 200 50" fill="currentColor">
+                <text x="0" y="35" font-family="Arial, sans-serif" font-size="24" font-weight="bold">Seleção Simplificada</text>
+            </svg>
+            <p>© {% now "Y" %} Seleção Simplificada</p>
+            <p style="font-size: 12px; margin-top: 8px; opacity: 0.6;">Todos os direitos reservados</p>
+        </div>
+    </div>
+</body>
+
+</html>

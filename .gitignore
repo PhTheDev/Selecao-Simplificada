@@ -1,0 +1,89 @@
+# ====================
+# FRONTEND (Next.js / Node)
+# ====================
+
+front-end-selecao/node_modules
+front-end-selecao/.pnp
+front-end-selecao/.pnp.*
+front-end-selecao/.yarn/*
+!front-end-selecao/.yarn/patches
+!front-end-selecao/.yarn/plugins
+!front-end-selecao/.yarn/releases
+!front-end-selecao/.yarn/versions
+
+front-end-selecao/.next/
+front-end-selecao/out/
+front-end-selecao/build
+
+front-end-selecao/coverage
+front-end-selecao/.DS_Store
+front-end-selecao/*.pem
+
+front-end-selecao/npm-debug.log*
+front-end-selecao/yarn-debug.log*
+front-end-selecao/yarn-error.log*
+front-end-selecao/.pnpm-debug.log*
+
+front-end-selecao/.env
+front-end-selecao/.env.*
+!front-end-selecao/.env.exemple
+front-end-selecao/.vercel
+
+front-end-selecao/*.tsbuildinfo
+front-end-selecao/next-env.d.ts
+
+# ====================
+# BACKEND (Django / Python)
+# ====================
+
+# Ambientes virtuais em qualquer pasta do repositório (evita milhares de arquivos no commit)
+**/.venv/
+**/venv/
+**/.virtualenv/
+
+# Python cache / compilados
+back-end-selecao/*.py[cod]
+back-end-selecao/*$py.class
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments nomeados (legado / deploy local no backend)
+back-end-selecao/env/
+back-end-selecao/ENV/
+
+# Django stuff
+back-end-selecao/*.log
+back-end-selecao/db.sqlite3
+back-end-selecao/test_db.sqlite3
+back-end-selecao/media/
+back-end-selecao/static/
+
+# Testing
+back-end-selecao/.tox/
+back-end-selecao/.pytest_cache/
+back-end-selecao/coverage.xml
+back-end-selecao/htmlcov/
+
+# Mypy / Pyre
+back-end-selecao/.mypy_cache/
+back-end-selecao/.dmypy.json
+back-end-selecao/.pyre/
+
+# IDEs
+back-end-selecao/.vscode/
+back-end-selecao/.idea/
+
+# Env files
+back-end-selecao/.env
+!back-end-selecao/.env.exemple
+
+# Other
+back-end-selecao/*.pot
+back-end-selecao/*.mo
+back-end-selecao/staticfiles/
+
+# Coverage local
+.coverage
+**/.coverage
+

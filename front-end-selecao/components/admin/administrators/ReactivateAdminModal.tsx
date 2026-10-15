@@ -1,0 +1,80 @@
+// components/admin/administrators/ReactivateAdminModal.tsx
+import Modal from '@/components/ui/Modal';
+import { Alert } from '@/components/ui/Alert';
+import { CheckCircle, Loader2 } from 'lucide-react';
+import { Administrator } from '@/api/hooks/useAdministrators';
+
+interface ReactivateAdminModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    admin: Administrator | null;
+    error: string | null;
+    isReactivating: boolean;
+    onConfirm: () => void;
+}
+
+export function ReactivateAdminModal({
+    isOpen,
+    onClose,
+    admin,
+    error,
+    isReactivating,
+    onConfirm,
+}: ReactivateAdminModalProps) {
+    if (!admin) return null;
+
+    return (
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            title="Reativar Usuário"
+            subtitle="Tem certeza que deseja reativar este usuário?"
+            size="sm"
+            footer={
+                <>
+                    <button
+                        onClick={onClose}
+                        disabled={isReactivating}
+                        className="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        onClick={onConfirm}
+                        disabled={isReactivating}
+                        className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-medium rounded-xl hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {isReactivating ? (
+                            <>
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                Reativando...
+                            </>
+                        ) : (
+                            <>
+                                <CheckCircle className="w-4 h-4" />
+                                Reativar Usuário
+                            </>
+                        )}
+                    </button>
+                </>
+            }
+            backdropClass="bg-black/20 backdrop-blur-sm"
+        >
+            <div className="p-6">
+                <div className="text-center">
+                    <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                        <CheckCircle className="h-6 w-6 text-green-600" />
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                        Reativar {admin.full_name}
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                        O usuário será reativado e poderá acessar o sistema novamente.
+                    </p>
+                    {error && <Alert type="error" message={error} />}
+                </div>
+            </div>
+        </Modal>
+    );
+}
+
