@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erro na Verificação - Seleção Simplificada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #005f73 0%, #0a776e 50%, #0a9396 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .bg-noise-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.2;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        .bg-gradient-radial {
+            background: radial-gradient(circle at 50% 0%, rgba(148, 210, 189, 0.15) 0%, transparent 50%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        .decoration-1 {
+            position: fixed;
+            top: 10%;
+            right: 10%;
+            width: 100px;
+            height: 100px;
+            background: rgba(233, 216, 166, 0.12);
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: 2;
+        }
+
+        .decoration-2 {
+            position: fixed;
+            bottom: 10%;
+            left: 5%;
+            width: 80px;
+            height: 80px;
+            background: rgba(148, 210, 189, 0.15);
+            border-radius: 50%;
+            filter: blur(32px);
+            z-index: 2;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow:
+                0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 520px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            position: relative;
+            z-index: 10;
+            margin: 20px 0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.9) 0%, rgba(200, 35, 51, 0.9) 100%);
+            color: white;
+            padding: 32px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .content {
+            padding: 32px 24px;
+        }
+
+        .error-icon {
+            text-align: center;
+            margin-bottom: 32px;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            10%,
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: translateX(-5px);
+            }
+
+            20%,
+            40%,
+            60%,
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .error-icon svg {
+            width: 80px;
+            height: 80px;
+            color: #f8d7da;
+            filter: drop-shadow(0 10px 20px rgba(248, 215, 218, 0.3));
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border-left: 4px solid #f8d7da;
+            backdrop-filter: blur(10px);
+        }
+
+        .message-box h2 {
+            color: white;
+            margin-bottom: 16px;
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .message-box p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .solutions {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .solutions h3 {
+            color: white;
+            margin-bottom: 16px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .solution-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .solution-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .solution-icon {
+            color: #f8d7da;
+            margin-right: 12px;
+            flex-shrink: 0;
+            font-weight: 600;
+            font-size: 16px;
+            width: 24px;
+            height: 24px;
+            background: rgba(248, 215, 218, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .solution-text {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow:
+                0 10px 30px -10px rgba(220, 53, 69, 0.4),
+                0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #c82333 0%, #a71d2a 100%);
+            transform: translateY(-2px);
+            box-shadow:
+                0 15px 30px -10px rgba(220, 53, 69, 0.5),
+                0 8px 12px -2px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .btn svg {
+            width: 20px;
+            height: 20px;
+            stroke-width: 2.5;
+        }
+
+        .error-details {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+        }
+
+        .error-details summary {
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-details summary svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s;
+        }
+
+        .error-details[open] summary svg {
+            transform: rotate(180deg);
+        }
+
+        .error-details p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            width: 100px;
+            height: auto;
+            margin: 0 auto 12px;
+            opacity: 0.8;
+            display: block;
+        }
+
+        /* Melhorias para telas muito pequenas */
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+
+            .container {
+                border-radius: 20px;
+                margin: 10px 0;
+            }
+
+            .header {
+                padding: 24px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .header p {
+                font-size: 15px;
+            }
+
+            .content {
+                padding: 24px 20px;
+            }
+
+            .error-icon svg {
+                width: 70px;
+                height: 70px;
+            }
+
+            .message-box {
+                padding: 20px;
+            }
+
+            .message-box h2 {
+                font-size: 20px;
+            }
+
+            .solutions {
+                padding: 16px;
+            }
+
+            .btn {
+                padding: 14px 20px;
+                font-size: 15px;
+            }
+
+            .footer {
+                padding: 20px;
+                font-size: 12px;
+            }
+        }
+
+        /* Melhorias para telas grandes */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 520px;
+            }
+
+            .header {
+                padding: 40px 32px;
+            }
+
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .content {
+                padding: 40px 32px;
+            }
+
+            .error-icon svg {
+                width: 100px;
+                height: 100px;
+            }
+
+            .btn {
+                padding: 18px 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-noise-pattern"></div>
+    <div class="bg-gradient-radial"></div>
+    <div class="decoration-1"></div>
+    <div class="decoration-2"></div>
+
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>⚠️ Erro na Verificação</h1>
+                <p>Não foi possível verificar seu email</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="error-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
+                        clip-rule="evenodd" />
+                </svg>
+            </div>
+
+            <div class="message-box">
+                <h2>Ocorreu um problema</h2>
+                {% if error %}
+                <p>{{ error }}</p>
+                {% elif message %}
+                <p>{{ message }}</p>
+                {% else %}
+                <p>Não foi possível processar sua verificação de email.</p>
+                {% endif %}
+            </div>
+
+            <div class="solutions">
+                <h3>Possíveis soluções:</h3>
+
+                <div class="solution-item">
+                    <div class="solution-icon">1</div>
+                    <div class="solution-text">Verifique se o link está completo e não foi quebrado</div>
+                </div>
+
+                <div class="solution-item">
+                    <div class="solution-icon">2</div>
+                    <div class="solution-text">Tente solicitar um novo email de verificação</div>
+                </div>
+
+                <div class="solution-item">
+                    <div class="solution-icon">3</div>
+                    <div class="solution-text">Entre em contato com o suporte se o problema persistir</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="http://localhost:3000" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Página Inicial
+                </a>
+
+                <a href="mailto:contato@example.com" class="btn btn-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    Contatar Suporte
+                </a>
+            </div>
+
+            {% if expired %}
+            <div class="error-details">
+                <details>
+                    <summary>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                        Informações técnicas
+                    </summary>
+                    <p>Este token expirou. Tokens de verificação têm validade de 24 horas.</p>
+                    <p>Para reenviar um novo token, vá até a página de login e clique em "Reenviar email de
+                        verificação".</p>
+                </details>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="footer">
+            <svg class="logo" viewBox="0 0 200 50" fill="currentColor">
+                <text x="0" y="35" font-family="Arial, sans-serif" font-size="24" font-weight="bold">Seleção Simplificada</text>
+            </svg>
+            <p>© {% now "Y" %} Seleção Simplificada</p>
+            <p style="font-size: 12px; margin-top: 8px; opacity: 0.6;">Todos os direitos reservados</p>
+        </div>
+    </div>
+</body>
+
+</html>
