@@ -7,6 +7,7 @@ import sys
 from abc import ABC, abstractmethod
 
 from django.conf import settings
+from django.core.mail import send_mail
 
 from .isend import (
     PERMANENT_ISEND_CODES,
@@ -110,8 +111,35 @@ class ISendSmsGateway(SmsGateway):
         )
 
 
-def get_sms_gateway() -> SmsGateway:
+class EmailOtpGateway(SmsGateway):
+    """Entrega o código no e-mail do candidato (substitui o SMS sem provedor pago)."""
+
+    def __init__(self, email: str):
+        self._email = email
+
+    def send(self, phone: str, message: str) -> str | None:
+        try:
+            sent = send_mail(
+                "Selecao Simplificada: codigo de recuperacao de senha",
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [self._email],
+                fail_silently=False,
+            )
+        except Exception as exc:
+            raise ISendTransientError(f"Falha ao enviar e-mail: {exc}") from exc
+        if not sent:
+            raise ISendTransientError("E-mail não foi enviado.")
+        return "email"
+
+
+def get_sms_gateway(candidate=None) -> SmsGateway:
     provider = (getattr(settings, "SMS_PROVIDER", "console") or "console").strip().lower()
+
+    if provider == "email":
+        if candidate is None or not candidate.email:
+            raise ISendPermanentError("Candidato sem e-mail.", error_code="no_email")
+        return EmailOtpGateway(candidate.email)
 
     if provider == "isend":
         return ISendSmsGateway()

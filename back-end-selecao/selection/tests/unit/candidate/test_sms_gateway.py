@@ -11,7 +11,9 @@ from selection.candidate.isend import (
     ISendSendResult,
     ISendTransientError,
 )
-from selection.candidate.sms import ISendSmsGateway
+from django.core import mail
+
+from selection.candidate.sms import EmailOtpGateway, ISendSmsGateway, get_sms_gateway
 
 
 def test_gateway_invalid_phone_is_permanent():
@@ -64,3 +66,16 @@ def test_gateway_refreshes_token_on_code_1(mock_get_token):
     assert ctr == "CTR-NEW"
     mock_get_token.assert_called_once_with(force_refresh=True)
     assert service.send_sms.call_count == 2
+
+
+def test_email_gateway_sends_code_to_candidate_email(settings):
+    settings.EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+    settings.SMS_PROVIDER = "email"
+    candidate = MagicMock(email="ana@example.com")
+
+    gateway = get_sms_gateway(candidate)
+    assert isinstance(gateway, EmailOtpGateway)
+    gateway.send("62999998888", "seu codigo e 123456")
+
+    assert mail.outbox[0].to == ["ana@example.com"]
+    assert "123456" in mail.outbox[0].body

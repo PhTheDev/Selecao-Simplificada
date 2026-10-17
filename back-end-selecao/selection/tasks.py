@@ -241,7 +241,9 @@ def send_password_reset_sms(
     )
 
     try:
-        gateway = get_sms_gateway()
+        from selection.candidate.models import Candidate
+
+        gateway = get_sms_gateway(Candidate.objects.filter(pk=candidate_id).first())
         sms_ctr = gateway.send(phone, message)
         audit.status = SMSVerificationStatus.SENT
         audit.sms_ctr = sms_ctr or ""

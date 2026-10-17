@@ -42,7 +42,8 @@ Código `1` (token inválido): uma tentativa de `get_isend_token(force_refresh=T
 | `SMS_PROVIDER` | Comportamento |
 |----------------|---------------|
 | `console` | Dev: loga/simula envio |
-| `isend` | Produção: SOAP iSend (`ISEND_*`) |
+| `email` | Envia o mesmo código para o e-mail do candidato (sem custo, usa o SMTP do Django) |
+| `isend` | SMS via SOAP iSend (`ISEND_*`), requer conta ativa |
 
 OTP fica no **Redis** (hash); `SMSVerification` guarda auditoria (status, tentativas, `error_code`).
 

@@ -18,7 +18,7 @@ const SMS_COOLDOWN_SECONDS = 60
 const SMS_EXPIRY_SECONDS = 300
 const API_BASE = process.env.NEXT_PUBLIC_DJANGO_API_URL
 const SMS_REQUEST_SUCCESS_MESSAGE =
-  "Se este número estiver cadastrado, enviaremos um código por SMS."
+  "Se este número estiver cadastrado, enviaremos um código para o e-mail da conta."
 const SMS_COOLDOWN_MESSAGE =
   "Aguarde alguns segundos antes de solicitar um novo código."
 const SMS_EXPIRED_MESSAGE = "O código de validação expirou."
@@ -200,8 +200,8 @@ export default function RecoverPasswordPage() {
     method === "email"
       ? t("Informe seu e-mail e enviaremos um link para redefinição.")
       : smsStep === "phone"
-        ? t("Informe o telefone cadastrado e enviaremos um código por SMS.")
-        : t("Digite o código de 6 dígitos enviado por SMS.")
+        ? t("Informe o telefone cadastrado e enviaremos um código para o e-mail da conta.")
+        : t("Digite o código de 6 dígitos enviado ao seu e-mail.")
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
@@ -247,7 +247,7 @@ export default function RecoverPasswordPage() {
                 type="button"
                 role="tab"
                 aria-selected={method === "sms"}
-                aria-label={t("Recuperar por SMS")}
+                aria-label={t("Recuperar por código")}
                 tabIndex={0}
                 onClick={() => handleMethodChange("sms")}
                 className={cn(
@@ -262,7 +262,7 @@ export default function RecoverPasswordPage() {
                     transition={{ type: "spring", stiffness: 420, damping: 34 }}
                   />
                 )}
-                <span className="relative">{t("SMS")}</span>
+                <span className="relative">{t("Código")}</span>
               </button>
             </div>
 
@@ -316,7 +316,7 @@ export default function RecoverPasswordPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  aria-label={t("Enviar código de recuperação por SMS")}
+                  aria-label={t("Enviar código de recuperação por e-mail")}
                   className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-4 px-6 rounded-2xl transition-all duration-300 shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? "Enviando..." : "Enviar código"}
@@ -326,7 +326,7 @@ export default function RecoverPasswordPage() {
               <form onSubmit={handleSmsVerify} className="space-y-6">
                 <div>
                   <label htmlFor="otp" className="block text-foreground text-sm font-medium mb-2">
-                    {t("Código SMS")}
+                    {t("Código")}
                   </label>
                   <input
                     type="text"
@@ -355,7 +355,7 @@ export default function RecoverPasswordPage() {
                 <button
                   type="submit"
                   disabled={loading || code.length !== 6 || expiry <= 0}
-                  aria-label={t("Validar código SMS")}
+                  aria-label={t("Validar código")}
                   className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-4 px-6 rounded-2xl transition-all duration-300 shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? "Validando..." : "Validar código"}
@@ -381,7 +381,7 @@ export default function RecoverPasswordPage() {
                     onClick={() => handleSmsRequest()}
                     disabled={loading || cooldown > 0}
                     className="text-primary hover:text-primary text-sm font-medium transition-colors duration-300 hover:underline disabled:opacity-50 disabled:cursor-not-allowed disabled:no-underline"
-                    aria-label={t("Reenviar código SMS")}
+                    aria-label={t("Reenviar código")}
                     tabIndex={0}
                   >
                     {cooldown > 0 ? `Reenviar em ${cooldown}s` : "Reenviar código"}
