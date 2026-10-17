@@ -213,6 +213,7 @@ export function FormEventLogin() {
 
             <input
               type="text"
+              autoComplete="username"
               id="username"
               name="username"
               value={formData.username}
@@ -245,6 +246,7 @@ export function FormEventLogin() {
             <input
               type={showPassword ? "text" : "password"}
               id="password"
+              autoComplete="current-password"
               name="password"
               value={formData.password}
               onChange={handleChange}

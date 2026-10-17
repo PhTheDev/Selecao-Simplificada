@@ -11,11 +11,11 @@ import SplitWords from '@/components/motion/SplitWords';
 import { Stagger, StaggerItem } from '@/components/motion/Stagger';
 import Reveal from "@/components/Reveal";
 import { parseLocalCalendarDate } from '@/utils/selectionProcessDates';
-import { ArrowRight, ArrowUpRight, ChevronDown } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, CalendarClock, ChevronDown, ChevronLeft, ChevronRight, FolderOpen, Users } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Three.js só carrega no cliente e só em telas largas.
 const HeroScene = dynamic(() => import('@/components/main-page/HeroScene'), { ssr: false });
@@ -49,6 +49,9 @@ export default function Home() {
   const { processes, isLoading } = useProcessGrid();
   const [open, setOpen] = useState(0);
   const [wide, setWide] = useState(false);
+  const [tab, setTab] = useState<'all' | 'active' | 'upcoming' | 'finished'>('all');
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 768px)');
@@ -58,14 +61,28 @@ export default function Home() {
     return () => mq.removeEventListener('change', sync);
   }, []);
 
-  const groups = useMemo(() => {
-    const by = (s: string) => processes.filter((p) => p.status === s);
-    return [
-      { name: 'Inscrições abertas', list: by('active') },
-      { name: 'Em breve', list: by('upcoming') },
-      { name: 'Encerrados', list: by('finished').slice(0, 4) },
-    ].filter((g) => g.list.length > 0);
-  }, [processes]);
+  const tabs = [
+    { key: 'all', name: 'Todos' },
+    { key: 'active', name: 'Inscrições abertas' },
+    { key: 'upcoming', name: 'Em breve' },
+    { key: 'finished', name: 'Encerrados' },
+  ] as const;
+  const countOf = (k: string) => (k === 'all' ? processes.length : processes.filter((p) => p.status === k).length);
+  const shown = tab === 'all' ? processes : processes.filter((p) => p.status === tab);
+  const n = shown.length;
+  const cur = n ? index % n : 0;
+  const go = (d: number) => setIndex((cur + d + n) % n);
+  // Avança sozinho; pausa com o mouse em cima e respeita "reduzir movimento".
+  useEffect(() => {
+    if (n < 2 || paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = setInterval(() => setIndex((i) => (i + 1) % n), 4000);
+    return () => clearInterval(id);
+  }, [n, paused]);
+  // Distância circular até o card central: o carrossel é um loop.
+  const offsetOf = (i: number) => {
+    const o = (((i - cur) % n) + n) % n;
+    return o > n / 2 ? o - n : o;
+  };
 
   const active = processes.filter((p) => p.status === 'active');
   const vagas = active.reduce((n, p) => n + (p.number_vacancies || 0), 0);
@@ -114,13 +131,17 @@ export default function Home() {
           <Stagger>
             <dl className="mx-auto grid max-w-6xl gap-4 md:grid-cols-3">
               {[
-                { v: isLoading ? '…' : <CountUp value={active.length} />, d: t('processos com inscrição aberta') },
-                { v: isLoading ? '…' : <CountUp value={vagas} />, d: t('vagas disponíveis nos editais abertos') },
-                { v: nextEnd ? fmt(nextEnd.ending_date, loc) : '—', d: t('próximo encerramento de inscrições') },
-              ].map((f) => (
-                <StaggerItem key={f.d} whileHover={{ y: -4 }} className="rounded-3xl border bg-card p-8 transition-shadow hover:shadow-md">
-                  <dd className="tabular text-5xl font-medium leading-none tracking-tight">{f.v}</dd>
-                  <dt className="mt-4 text-muted-foreground">{f.d}</dt>
+                { Icon: FolderOpen, v: isLoading ? '…' : <CountUp value={active.length} />, d: t('processos com inscrição aberta') },
+                { Icon: Users, v: isLoading ? '…' : <CountUp value={vagas} />, d: t('vagas disponíveis nos editais abertos') },
+                { Icon: CalendarClock, v: nextEnd ? fmt(nextEnd.ending_date, loc) : '—', d: t('próximo encerramento de inscrições') },
+              ].map(({ Icon, v, d }) => (
+                <StaggerItem key={d} whileHover={{ y: -4 }} className="group relative overflow-hidden rounded-3xl border bg-card p-8 transition-shadow hover:border-primary/40 hover:shadow-md">
+                  <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/10 blur-2xl" />
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-soft text-accent-foreground">
+                    <Icon className="h-5 w-5" strokeWidth={1.5} />
+                  </span>
+                  <dd className="tabular mt-6 text-5xl font-medium leading-none tracking-tight">{v}</dd>
+                  <dt className="mt-4 text-muted-foreground">{d}</dt>
                 </StaggerItem>
               ))}
             </dl>
@@ -130,43 +151,96 @@ export default function Home() {
         {/* Processos */}
         <section id="processos" className="scroll-mt-24 px-5 pb-24 md:px-8 md:pb-36">
           <Reveal>
-            <div className="mx-auto max-w-4xl">
-              <h2 className="text-4xl font-medium md:text-5xl">{t('Quadro de processos')}</h2>
-              <p className="mt-3 text-muted-foreground">{t('Editais publicados, do mais recente ao encerrado.')}</p>
+            <div className="mx-auto max-w-6xl">
+              <div className="flex flex-wrap items-end justify-between gap-4">
+                <div>
+                  <h2 className="text-4xl font-medium md:text-5xl">{t('Quadro de processos')}</h2>
+                  <p className="mt-3 text-muted-foreground">{t('Editais publicados, do mais recente ao encerrado.')}</p>
+                </div>
+                <div className="flex gap-2">
+                  {[-1, 1].map((d) => (
+                    <button key={d} onClick={() => go(d)} disabled={n < 2} aria-label={d < 0 ? 'Anterior' : 'Próximo'} className="flex h-11 w-11 items-center justify-center rounded-full border bg-card transition-colors hover:bg-secondary disabled:opacity-40">
+                      {d < 0 ? <ChevronLeft className="h-5 w-5" strokeWidth={1.5} /> : <ChevronRight className="h-5 w-5" strokeWidth={1.5} />}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div role="tablist" className="mt-8 flex flex-wrap gap-2">
+                {tabs.map((x) => (
+                  <button
+                    key={x.key}
+                    role="tab"
+                    aria-selected={tab === x.key}
+                    onClick={() => { setTab(x.key); setIndex(0); }}
+                    className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${tab === x.key ? 'border-primary bg-primary text-primary-foreground' : 'bg-card hover:bg-secondary'}`}
+                  >
+                    {t(x.name)} <span className="tabular opacity-70">{countOf(x.key)}</span>
+                  </button>
+                ))}
+              </div>
 
               {isLoading && <p className="mt-10 text-muted-foreground">{t('Carregando editais…')}</p>}
-              {!isLoading && groups.length === 0 && (
-                <p className="mt-10 rounded-3xl border bg-card p-8 text-lg">{t('Nenhum processo publicado no momento.')}</p>
+              {!isLoading && shown.length === 0 && (
+                <p className="mt-8 rounded-3xl border bg-card p-8 text-lg">{t('Nenhum processo publicado no momento.')}</p>
               )}
 
-              {groups.map((g) => (
-                <div key={g.name} className="mt-12">
-                  <h3 className="text-sm font-medium uppercase tracking-wide text-muted-foreground">{t(g.name)}</h3>
-                  <ul className="mt-4 space-y-3">
-                    {g.list.map((p) => (
-                      <li key={p.id}>
-                        <Link
-                          href={p.status === 'active' ? `/aplicar/${p.slug}` : '/processos-seletivos'}
-                          className="lift group flex items-center justify-between gap-6 rounded-2xl border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-primary-soft md:p-6"
-                        >
-                          <span>
-                            <span className="block text-lg font-medium">{p.title}</span>
-                            <span className="block text-sm text-muted-foreground">
-                              {p.course} · {t(p.number_vacancies === 1 ? '{n} vaga' : '{n} vagas', { n: p.number_vacancies })}
-                            </span>
+              {/* Coverflow: no máximo 5 cards visíveis, o do meio em destaque */}
+              <motion.ul
+                className="relative mt-8 h-[25rem] touch-pan-y select-none overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)]"
+                onHoverStart={() => setPaused(true)}
+                onHoverEnd={() => setPaused(false)}
+                onPanEnd={(_, info) => { if (info.offset.x < -50) go(1); else if (info.offset.x > 50) go(-1); }}
+              >
+                {shown.map((p, i) => {
+                  const o = offsetOf(i);
+                  const a = Math.abs(o);
+                  return (
+                  <motion.li
+                    key={p.id}
+                    initial={false}
+                    animate={{ x: `calc(-50% + ${o * (wide ? 270 : 110)}px)`, scale: 1 - a * 0.12, opacity: a > 2 ? 0 : 1 - a * 0.25 }}
+                    transition={{ type: 'spring', stiffness: 260, damping: 30 }}
+                    style={{ zIndex: 10 - a, pointerEvents: a > 2 ? 'none' : 'auto' }}
+                    className="absolute left-1/2 top-0 w-64 md:w-80"
+                  >
+                    <Link
+                      href={p.status === 'active' ? `/aplicar/${p.slug}` : '/processos-seletivos'}
+                      onClick={(e) => { if (o !== 0) { e.preventDefault(); setIndex(i); } }}
+                      draggable={false}
+                      className="lift group flex h-[24rem] flex-col overflow-hidden rounded-3xl border bg-card shadow-lg transition-colors hover:border-primary/40"
+                    >
+                      <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary/30 to-primary-soft">
+                        {p.process_banner && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={p.process_banner} alt="" loading="lazy" draggable={false} className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${p.status === 'finished' ? 'grayscale' : ''}`} />
+                        )}
+                        <span className="absolute left-3 top-3 inline-flex items-center gap-2 rounded-full bg-background/90 px-3 py-1 text-xs font-medium">
+                          <span className={`h-1.5 w-1.5 rounded-full ${p.status === 'active' ? 'bg-highlight' : p.status === 'upcoming' ? 'bg-primary' : 'bg-muted-foreground'}`} />
+                          {p.status === 'upcoming' ? t('abre {d}', { d: fmt(p.beginning_date, loc) }) : p.status === 'active' ? t('até {d}', { d: fmt(p.ending_date, loc) }) : t('encerrado')}
+                        </span>
+                      </div>
+                      <div className="flex flex-1 flex-col p-5 pt-3">
+                        <span className="w-fit rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-medium text-accent-foreground">{p.course}</span>
+                        <span className="mt-3 line-clamp-2 text-lg font-medium leading-snug">{p.title}</span>
+                        <div className="mt-auto flex items-center justify-between border-t pt-4 text-sm">
+                          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                            <Users className="h-4 w-4" strokeWidth={1.5} />
+                            {t(p.number_vacancies === 1 ? '{n} vaga' : '{n} vagas', { n: p.number_vacancies })}
                           </span>
-                          <span className="tabular flex shrink-0 items-center gap-3 text-sm text-muted-foreground">
-                            {p.status === 'upcoming' ? t('abre {d}', { d: fmt(p.beginning_date, loc) }) : p.status === 'active' ? t('até {d}', { d: fmt(p.ending_date, loc) }) : t('encerrado')}
+                          <span className="inline-flex items-center gap-1 font-medium text-primary">
+                            {t(p.status === 'active' ? 'Inscrever-se' : 'Ver detalhes')}
                             <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" strokeWidth={1.5} />
                           </span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.li>
+                  );
+                })}
+              </motion.ul>
 
-              <p className="mt-10">
+              <p className="mt-6">
                 <Link href="/processos-seletivos" className="font-medium text-primary underline-offset-4 hover:underline">{t('Ver todos os processos')}</Link>
               </p>
             </div>

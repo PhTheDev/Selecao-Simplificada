@@ -1,8 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { toast } from 'sonner';
+import { motion } from 'framer-motion';
+import AuthField from './AuthField';
 
 // ✅ use seu util atualizado
 import { setCandidateSession } from '@/utils/candidateAuth';
@@ -276,7 +279,12 @@ export function FormEventLoginCandidate() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="auth-card bg-card rounded-3xl p-8 border">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="auth-card bg-card rounded-3xl p-8 border shadow-xl shadow-primary/5"
+      >
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-foreground mb-2">Acessar Conta</h2>
           <p className="text-muted-foreground text-sm">Entre com suas credenciais</p>
@@ -363,57 +371,8 @@ export function FormEventLoginCandidate() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="email" className="block text-foreground text-sm font-medium mb-2">
-              E-mail
-            </label>
-
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={`w-full px-4 py-3 bg-background border rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300 disabled:opacity-50 ${
-                fieldErrors.email ? 'border-destructive/70 focus:ring-destructive' : 'border-input focus:ring-ring'
-              }`}
-              placeholder="seu@email.com"
-              required
-              disabled={isLoading}
-            />
-
-            {fieldErrors.email && (
-              <p className="mt-2 text-xs text-destructive">
-                {fieldErrors.email}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-foreground text-sm font-medium mb-2">
-              Senha
-            </label>
-
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className={`w-full px-4 py-3 bg-background border rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300 disabled:opacity-50 ${
-                fieldErrors.password ? 'border-destructive/70 focus:ring-destructive' : 'border-input focus:ring-ring'
-              }`}
-              placeholder="Sua senha"
-              required
-              disabled={isLoading}
-            />
-
-            {fieldErrors.password && (
-              <p className="mt-2 text-xs text-destructive">
-                {fieldErrors.password}
-              </p>
-            )}
-          </div>
+          <AuthField id="email" label="E-mail" type="email" value={formData.email} onChange={handleChange} placeholder="seu@email.com" error={fieldErrors.email} disabled={isLoading} />
+          <AuthField id="password" label="Senha" type="password" value={formData.password} onChange={handleChange} placeholder="Sua senha" error={fieldErrors.password} disabled={isLoading} />
 
           <div className="flex justify-end">
             <Link
@@ -427,7 +386,7 @@ export function FormEventLoginCandidate() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-4 px-6 rounded-2xl transition-all duration-300 shadow-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-4 px-6 rounded-2xl transition-all duration-300 shadow-lg shadow-primary/25 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center group"
           >
             {isLoading ? (
               <>
@@ -438,7 +397,9 @@ export function FormEventLoginCandidate() {
                 Entrando...
               </>
             ) : (
-              'Entrar'
+              <>
+                Entrar <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" strokeWidth={1.5} />
+              </>
             )}
           </button>
         </form>
@@ -454,7 +415,7 @@ export function FormEventLoginCandidate() {
             </Link>
           </p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

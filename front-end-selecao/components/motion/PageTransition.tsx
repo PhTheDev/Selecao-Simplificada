@@ -5,7 +5,23 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 const ease = [0.76, 0, 0.24, 1] as const;
-const COVER_MS = 550;
+const COLS = 5;
+const STEP = 0.04; // atraso entre colunas: o degrau
+const DUR = 0.28;
+// cobrir ≈ 0,44s e revelar ≈ 0,44s: rápido o bastante para não virar espera
+// rampa na cor do tema: do tom mais fundo ao mais claro, fechando com o destaque (lima)
+const SHADES = [
+  'color-mix(in srgb, var(--primary) 30%, #0b0a10)',
+  'color-mix(in srgb, var(--primary) 65%, #0b0a10)',
+  'var(--primary)',
+  'color-mix(in srgb, var(--primary) 70%, white)',
+  'var(--highlight)',
+];
+const variants = {
+  hidden: { y: '100%' },
+  cover: (i: number) => ({ y: 0, transition: { duration: DUR, delay: i * STEP, ease } }),
+  reveal: (i: number) => ({ y: '-100%', transition: { duration: DUR, delay: i * STEP, ease } }),
+};
 
 const zone = (p: string) =>
   p.startsWith('/painel-admin') ? 'admin'
@@ -35,8 +51,8 @@ export default function PageTransition() {
     if (!pending.current) return;
     pending.current = false;
     clearTimeout(failsafe.current);
-    await controls.start({ y: '-100%', transition: { duration: 0.6, ease } });
-    controls.set({ y: '100%' });
+    await controls.start('reveal');
+    controls.set('hidden');
   };
 
   // a rota mudou: abre a cortina
@@ -62,7 +78,7 @@ export default function PageTransition() {
       detail.handled = true;
       pending.current = true;
       failsafe.current = setTimeout(reveal, 5000);
-      await controls.start({ y: 0, transition: { duration: COVER_MS / 1000, ease } });
+      await controls.start('cover');
       router.push(url.pathname + url.search + url.hash);
     };
     window.addEventListener('curtain:navigate', onNavigate);
@@ -86,7 +102,7 @@ export default function PageTransition() {
       if (pending.current) return;
       pending.current = true;
       failsafe.current = setTimeout(reveal, 5000); // se a navegação falhar, não prende a tela
-      await controls.start({ y: 0, transition: { duration: COVER_MS / 1000, ease } });
+      await controls.start('cover');
       router.push(url.pathname + url.search + url.hash);
     };
     document.addEventListener('click', onClick, true);
@@ -94,17 +110,18 @@ export default function PageTransition() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced, router]);
 
+  // Cinco colunas que sobem em degrau, em degradê da cor do tema.
   return (
-    <motion.div
-      aria-hidden="true"
-      initial={{ y: '100%' }}
-      animate={controls}
-      className="pointer-events-none fixed inset-0 z-[200] flex items-center justify-center bg-foreground"
-    >
-      <svg viewBox="0 0 36 36" className="h-14 w-14">
-        <rect width="36" height="36" rx="9" className="fill-primary" />
-        <path d="M10 18.5l5.5 5.5L26 12.5" fill="none" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="stroke-primary-foreground" />
-      </svg>
+    <motion.div aria-hidden="true" initial="hidden" animate={controls} className="pointer-events-none fixed inset-0 z-[200] overflow-hidden">
+      {Array.from({ length: COLS }, (_, i) => (
+        <motion.div
+          key={i}
+          custom={i}
+          variants={variants}
+          style={{ left: `${(i * 100) / COLS}%`, width: `calc(${100 / COLS}% + 1px)`, background: SHADES[i] }}
+          className="absolute inset-y-0"
+        />
+      ))}
     </motion.div>
   );
 }

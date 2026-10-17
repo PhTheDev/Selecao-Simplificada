@@ -192,18 +192,13 @@ export default function Register() {
     return (
         <div className="flex flex-col lg:flex-row min-h-screen">
             {/* Seção da Imagem */}
-            <div className="relative hidden flex-1 flex-col justify-between bg-primary-soft p-12 lg:flex lg:min-h-screen">
-        <BrandMark />
-        <p className="max-w-sm font-serif text-5xl leading-[1.05] text-foreground">
-          Um edital, <span className="italic">uma chance.</span>
-        </p>
-        <p className="text-sm text-muted-foreground">Inscrição, acompanhamento e resultado em um só lugar.</p>
-      </div>
+            <div className="hidden flex-1 lg:block" aria-hidden="true" />
 
             {/* Seção do Formulário */}
             <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 bg-background">
 
                 <div className="relative z-10 w-full max-w-md">
+<div className="mb-10 flex justify-center lg:hidden"><BrandMark /></div>
                     {isSuccess ? (
                         // Tela de sucesso após registro
                         <div className="auth-card bg-card rounded-3xl p-8 border">

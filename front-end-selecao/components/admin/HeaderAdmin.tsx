@@ -1,4 +1,6 @@
 "use client";
+import { useI18n } from '@/components/i18n/LanguageProvider';
+import LanguageToggle from "@/components/i18n/LanguageToggle";
 import ThemeToggle from "@/components/theme/ThemeToggle";
 import BrandMark from "@/components/BrandMark";
 
@@ -12,6 +14,7 @@ import {
     LogOut,
     Menu,
     Settings,
+    Shield,
     User,
     X
 } from "lucide-react";
@@ -71,6 +74,7 @@ interface HeaderAdminProps {
 }
 
 export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdminProps) {
+    const { t } = useI18n();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [imageError, setImageError] = useState(false);
@@ -377,8 +381,15 @@ export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdmin
                                 animate={{ opacity: 1, x: 0 }}
                                 className="flex flex-col"
                             >
-                                <div className="text-foreground font-semibold text-lg">SELEÇÃO {nomeConselho}</div>
-                                <div className="text-muted-foreground text-xs">ADMIN PORTAL</div>
+                                <div className="flex items-center gap-3">
+                                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-accent-foreground">
+                                        <Shield className="h-5 w-5" strokeWidth={1.5} />
+                                    </span>
+                                    <span className="flex flex-col leading-tight">
+                                        <span className="text-base font-semibold text-foreground">{t("Painel admin")}</span>
+                                        <span className="text-[0.65rem] font-medium uppercase tracking-[0.2em] text-muted-foreground">Admin portal</span>
+                                    </span>
+                                </div>
                             </motion.div>
                         )}
                     </motion.div>
@@ -409,20 +420,20 @@ export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdmin
                         />
                     )}
                     <SidebarLink
-                        text="Dashboard"
+                        text={t("Dashboard")}
                         href="/painel-admin"
                         icon={<LayoutDashboard className="w-5 h-5" />}
                     />
 
                     <SidebarLink
-                        text="Processos Seletivos"
+                        text={t("Processos Seletivos")}
                         href="/painel-admin/processos"
                         icon={<FileText className="w-5 h-5" />}
                         submenu
                     />
 
                     <SidebarLink
-                        text="Configurações"
+                        text={t("Configurações")}
                         href="/painel-admin/configuracoes"
                         icon={<Settings className="w-5 h-5" />}
                     />
@@ -454,7 +465,7 @@ export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdmin
                             transition={{ duration: 0.2 }}
                             className="text-sm font-medium"
                         >
-                            Sair
+                            {t("Sair")}
                         </motion.span>
                     </motion.button>
                 </div>
@@ -472,21 +483,22 @@ export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdmin
                         <button
                             onClick={() => setMobileMenuOpen(true)}
                             className="lg:hidden p-2 hover:bg-muted rounded-xl transition-colors mobile-menu-button"
-                            aria-label="Abrir menu"
+                            aria-label={t("Abrir menu")}
                         >
                             <Menu className="w-5 h-5 text-muted-foreground" />
                         </button>
                         <div className="flex flex-col">
                             <h1 className="text-lg lg:text-2xl font-bold text-foreground leading-tight">
-                                {getPageTitle(pathname)}
+                                {t(getPageTitle(pathname))}
                             </h1>
                             <p className="text-xs lg:text-sm text-muted-foreground mt-0.5 lg:mt-1">
-                                {getPageDescription(pathname)}
+                                {t(getPageDescription(pathname))}
                             </p>
                         </div>
                     </div>
 
                     <div className="flex items-center gap-2 lg:gap-4">
+                        <LanguageToggle />
                         <ThemeToggle />
                         <div className="relative">
                             <motion.div
@@ -555,7 +567,7 @@ export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdmin
                                                 className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground/80 hover:bg-muted rounded-xl transition-all duration-200"
                                             >
                                                 <User className="w-4 h-4" />
-                                                Meu Perfil
+                                                {t("Meu Perfil")}
                                             </Link>
 
                                             <button
@@ -563,7 +575,7 @@ export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdmin
                                                 className="w-full flex items-center gap-3 px-4 py-3 text-sm text-destructive hover:bg-destructive-soft rounded-xl transition-all duration-200"
                                             >
                                                 <LogOut className="w-4 h-4" />
-                                                Sair do Sistema
+                                                {t("Sair do Sistema")}
                                             </button>
                                         </div>
                                     </motion.div>
@@ -602,7 +614,7 @@ export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdmin
                                 <div className="flex items-center gap-3">
                                     <div>
                                         <div className="text-foreground font-semibold text-base">{nomeConselho}</div>
-                                        <div className="text-muted-foreground text-xs">Administração</div>
+                                        <div className="text-muted-foreground text-xs">{t("Administração")}</div>
                                     </div>
                                 </div>
                                 <button
@@ -616,9 +628,9 @@ export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdmin
                             {/* Navegação mobile */}
                             <nav className="p-4 space-y-1">
                                 {[
-                                    { href: "/painel-admin", icon: LayoutDashboard, text: "Dashboard" },
-                                    { href: "/painel-admin/processos", icon: FileText, text: "Processos Seletivos" },
-                                    { href: "/painel-admin/configuracoes", icon: Settings, text: "Configurações" },
+                                    { href: "/painel-admin", icon: LayoutDashboard, text: t("Dashboard") },
+                                    { href: "/painel-admin/processos", icon: FileText, text: t("Processos Seletivos") },
+                                    { href: "/painel-admin/configuracoes", icon: Settings, text: t("Configurações") },
                                 ].map((item) => {
                                     const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
                                     return (
@@ -652,7 +664,7 @@ export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdmin
                                         className="w-full flex items-center justify-center gap-3 px-4 py-3 text-muted-foreground hover:text-destructive hover:bg-destructive-soft rounded-2xl transition-all duration-300 border border-border"
                                     >
                                         <LogOut className="w-4 h-4" />
-                                        <span className="font-medium">Sair do Sistema</span>
+                                        <span className="font-medium">{t("Sair do Sistema")}</span>
                                     </button>
                                 </div>
                             </div>

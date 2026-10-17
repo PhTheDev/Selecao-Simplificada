@@ -1,3 +1,4 @@
+import AuthPanel from '@/components/auth/AuthPanel';
 import LanguageToggle from '@/components/i18n/LanguageToggle';
 import ThemeToggle from '@/components/theme/ThemeToggle';
 
@@ -8,6 +9,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <LanguageToggle />
         <ThemeToggle />
       </div>
+      <AuthPanel />
       {children}
     </>
   );

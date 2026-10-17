@@ -1,4 +1,6 @@
 'use client';
+import { useI18n } from '@/components/i18n/LanguageProvider';
+import LanguageToggle from '@/components/i18n/LanguageToggle';
 import ThemeToggle from '@/components/theme/ThemeToggle';
 import BrandMark from "@/components/BrandMark";
 
@@ -28,6 +30,7 @@ type HeaderCandidateProps = {
 };
 
 export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderCandidateProps) {
+    const { t } = useI18n();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -232,8 +235,8 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                     >
                         {sidebarOpen && (
                             <div className="flex flex-col">
-                                <span className="text-foreground font-semibold text-base">Área do Candidato</span>
-                                <span className="text-muted-foreground text-xs">Acompanhe suas inscrições</span>
+                                <span className="text-foreground font-semibold text-base">{t('Área do Candidato')}</span>
+                                <span className="text-muted-foreground text-xs">{t('Acompanhe suas inscrições')}</span>
                             </div>
                         )}
                     </motion.div>
@@ -262,9 +265,9 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                             style={{ transform: `translateY(${activeIdx * 52}px)` }}
                         />
                     )}
-                    {renderSidebarLink({ text: 'Dashboard', href: '/candidato', icon: <LayoutDashboard className="w-5 h-5" /> })}
-                    {renderSidebarLink({ text: 'Meus Processos', href: '/candidato/meus-processos', icon: <FileText className="w-5 h-5" />, submenu: true })}
-                    {renderSidebarLink({ text: 'Meu Perfil', href: '/candidato/perfil', icon: <User className="w-5 h-5" /> })}
+                    {renderSidebarLink({ text: t('Dashboard'), href: '/candidato', icon: <LayoutDashboard className="w-5 h-5" /> })}
+                    {renderSidebarLink({ text: t('Meus Processos'), href: '/candidato/meus-processos', icon: <FileText className="w-5 h-5" />, submenu: true })}
+                    {renderSidebarLink({ text: t('Meu Perfil'), href: '/candidato/perfil', icon: <User className="w-5 h-5" /> })}
                 </nav>
 
                 <div className="p-4 border-t border-border space-y-4">
@@ -295,7 +298,7 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                             transition={{ duration: 0.15 }}
                             className="text-sm font-medium"
                         >
-                            Sair
+                            {t('Sair')}
                         </motion.span>
                     </motion.button>
                 </div>
@@ -319,12 +322,13 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                         </button>
 
                         <div className="hidden sm:block">
-                            <p className="text-sm font-bold text-foreground leading-none">Área do Candidato</p>
-                            <p className="text-xs text-muted-foreground mt-1">Acompanhe suas inscrições e atualize seu perfil</p>
+                            <p className="text-sm font-bold text-foreground leading-none">{t('Área do Candidato')}</p>
+                            <p className="text-xs text-muted-foreground mt-1">{t('Acompanhe suas inscrições e atualize seu perfil')}</p>
                         </div>
                     </div>
 
                     <div className="flex items-center gap-3">
+                    <LanguageToggle />
                     <ThemeToggle />
                     <div className="relative">
                         <motion.div
@@ -402,7 +406,7 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                                             className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground/80 hover:bg-muted rounded-xl transition-all"
                                         >
                                             <User className="w-4 h-4" />
-                                            Meu Perfil
+                                            {t('Meu Perfil')}
                                         </Link>
 
                                         <button
@@ -410,7 +414,7 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                                             className="w-full flex items-center gap-3 px-4 py-3 text-sm text-destructive hover:bg-destructive-soft rounded-xl transition-all"
                                         >
                                             <LogOut className="w-4 h-4" />
-                                            Sair do Sistema
+                                            {t('Sair do Sistema')}
                                         </button>
                                     </div>
                                 </motion.div>
@@ -427,9 +431,9 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                 className="fixed inset-x-3 bottom-3 z-30 grid grid-cols-3 gap-1 rounded-full border bg-card/90 p-1.5 shadow-lg backdrop-blur lg:hidden"
             >
                 {[
-                    { href: '/candidato', label: 'Início', icon: LayoutDashboard },
-                    { href: '/candidato/meus-processos', label: 'Processos', icon: FileText },
-                    { href: '/candidato/perfil', label: 'Perfil', icon: User },
+                    { href: '/candidato', label: t('Início'), icon: LayoutDashboard },
+                    { href: '/candidato/meus-processos', label: t('Processos'), icon: FileText },
+                    { href: '/candidato/perfil', label: t('Perfil'), icon: User },
                 ].map((item) => {
                     const on = pathname === item.href || (item.href !== '/candidato' && pathname?.startsWith(item.href));
                     return (
@@ -485,8 +489,8 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
 
                             <nav className="p-4 space-y-1">
                                 {[
-                                    { href: '/candidato', icon: LayoutDashboard, text: 'Dashboard' },
-                                    { href: '/candidato/meus-processos', icon: FileText, text: 'Meus Processos' },
+                                    { href: '/candidato', icon: LayoutDashboard, text: t('Dashboard') },
+                                    { href: '/candidato/meus-processos', icon: FileText, text: t('Meus Processos') },
                                 ].map((item) => {
                                     const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
                                     return (
@@ -513,7 +517,7 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                                     className="w-full flex items-center justify-center gap-3 px-4 py-3 text-muted-foreground hover:text-destructive hover:bg-destructive-soft rounded-2xl transition-all border"
                                 >
                                     <LogOut className="w-4 h-4" />
-                                    <span className="font-medium">Sair</span>
+                                    <span className="font-medium">{t('Sair')}</span>
                                 </button>
                             </div>
                         </motion.div>

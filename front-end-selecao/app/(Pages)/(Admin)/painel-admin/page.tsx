@@ -1,7 +1,9 @@
 'use client';
 
 import { ApiResponse, SelectionProcess } from '@/api/types/selection';
-import { Title } from '@/components/ui/Title';
+import { useI18n } from '@/components/i18n/LanguageProvider';
+import CountUp from '@/components/motion/CountUp';
+import { Stagger, StaggerItem } from '@/components/motion/Stagger';
 import {
     AlertTriangle,
     ArrowRight,
@@ -166,8 +168,8 @@ function getStatusBadgeInfo(processo: SelectionProcess) {
   };
 }
 
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString('pt-BR');
+function formatDate(dateString: string, locale = 'pt-BR') {
+  return new Date(dateString).toLocaleDateString(locale);
 }
 
 function byNewest(a: SelectionProcess, b: SelectionProcess) {
@@ -178,6 +180,8 @@ function byNewest(a: SelectionProcess, b: SelectionProcess) {
 }
 
 export default function PainelAdmin() {
+  const { t, lang } = useI18n();
+  const loc = lang === 'en' ? 'en-US' : 'pt-BR';
   const [processos, setProcessos] = useState<SelectionProcess[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -297,7 +301,7 @@ export default function PainelAdmin() {
   const analyzeProcess = (p: SelectionProcess) => {
     const state = getAnalyzeButtonState(p);
     if (!state.primary.enabled) {
-      toast.info(state.primary.label);
+      toast.info(t(state.primary.label));
       return;
     }
     window.location.href = `/painel-admin/processos/analise/${p.slug}`;
@@ -305,296 +309,229 @@ export default function PainelAdmin() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-background">
-        <div className="relative">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent" />
-          <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-4 border-primary/30" />
-        </div>
-        <p className="mt-6 text-muted-foreground font-medium text-lg">Carregando dashboard...</p>
-        <p className="text-muted-foreground/70 text-sm mt-2">Isso pode levar alguns instantes</p>
+      <div className="flex min-h-screen flex-col items-center justify-center bg-background">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <p className="mt-6 text-lg font-medium text-muted-foreground">{t('Carregando dashboard...')}</p>
       </div>
     );
   }
 
+  const sections = [
+    { title: 'Expirando em breve', subtitle: 'Inscrições encerrando em até 7 dias', empty: 'Nenhum processo expirando no momento.', items: quickActions.expiringList, action: 'Abrir', run: () => goToProcessList(), Icon: AlertTriangle, tone: 'text-warning bg-warning-soft' },
+    { title: 'Prontos para analisar', subtitle: 'Inscrições encerradas, liberar análise', empty: 'Nenhum processo pronto para análise.', items: quickActions.analyzeNow, action: 'Analisar', run: (p: SelectionProcess) => analyzeProcess(p), Icon: ListChecks, tone: 'text-primary bg-primary-soft' },
+    { title: 'Finalizados', subtitle: 'Acesso rápido à página de análise', empty: 'Nenhum processo finalizado.', items: quickActions.openAnalysis, action: 'Abrir análise', run: (p: SelectionProcess) => openAnalysisPage(p.slug), Icon: Flag, tone: 'text-muted-foreground bg-muted' },
+  ];
+
+  // distribuição por status para a barra empilhada
+  const dist = [
+    { key: 'in_application', label: 'Em Inscrição', n: stats.inApplication + stats.expiring, bar: 'bg-success' },
+    { key: 'in_analysis', label: 'Em Análise', n: stats.inAnalysis, bar: 'bg-warning' },
+    { key: 'created', label: 'Criado', n: stats.created, bar: 'bg-primary' },
+    { key: 'finished', label: 'Finalizados', n: stats.finished, bar: 'bg-muted-foreground' },
+    { key: 'inactive', label: 'Inativo', n: stats.inactive, bar: 'bg-destructive' },
+  ];
+  const distTotal = dist.reduce((a, d) => a + d.n, 0) || 1;
+
   return (
-    <div className="min-h-screen bg-background p-6">
-      <Title
-        title="Painel do Administrador"
-        icon={Users}
-      />
-
-      {/* Erro */}
-      {error && (
-        <div className="bg-destructive-soft border border-destructive/30 rounded-2xl p-8 text-center shadow-sm mb-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-destructive-soft rounded-full mb-4">
-            <AlertTriangle className="w-8 h-8 text-destructive" />
-          </div>
-          <h3 className="text-destructive font-semibold text-lg mb-2">Erro ao carregar</h3>
-          <p className="text-destructive mb-4">{error}</p>
-          <button
-            onClick={fetchAllFirstPage}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-destructive text-white font-medium rounded-xl hover:bg-destructive transition-colors"
-          >
-            <Loader2 className="w-4 h-4 animate-spin" />
-            Tentar Novamente
-          </button>
-        </div>
-      )}
-
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-4 mb-6">
-        <KpiCard label="Total" value={stats.total} icon={Users} tone="blue" />
-        <KpiCard label="Ativos" value={stats.active} icon={CheckCircle} tone="green" />
-        <KpiCard label="Em Inscrição" value={stats.inApplication} icon={Clock} tone="emerald" />
-        <KpiCard label="Expirando" value={stats.expiring} icon={AlertTriangle} tone="amber" />
-        <KpiCard label="Em Análise" value={stats.inAnalysis} icon={ListChecks} tone="orange" />
-        <KpiCard label="Finalizados" value={stats.finished} icon={Flag} tone="gray" />
-      </div>
-
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
-        <QuickList
-          title="⚠️ Expirando em breve"
-          subtitle="Processos com inscrições encerrando em até 7 dias"
-          emptyText="Nenhum processo expirando no momento."
-          items={quickActions.expiringList}
-          actionLabel="Abrir"
-          onAction={() => (window.location.href = '/painel-admin/processos')}
-        />
-
-        <QuickList
-          title="🧾 Prontos para analisar"
-          subtitle="Inscrições encerradas — liberar análise"
-          emptyText="Nenhum processo pronto para análise."
-          items={quickActions.analyzeNow}
-          actionLabel="Analisar"
-          onAction={(p) => analyzeProcess(p)}
-        />
-
-        <QuickList
-          title="🏁 Finalizados"
-          subtitle="Acesso rápido à página de análise"
-          emptyText="Nenhum processo finalizado."
-          items={quickActions.openAnalysis}
-          actionLabel="Abrir análise"
-          onAction={(p) => openAnalysisPage(p.slug)}
-        />
-      </div>
-
-      {/* Últimos processos (mini cards) */}
-      <div className="bg-card rounded-2xl shadow-sm border border-border p-6">
-        <div className="flex items-center justify-between mb-4">
+    <div className="min-h-screen bg-background p-6 md:p-8">
+      <div className="mx-auto max-w-7xl space-y-8">
+        {/* Cabeçalho */}
+        <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className="text-lg font-bold text-foreground">Visão rápida</h2>
-            <p className="text-sm text-muted-foreground">
-              Mostrando {filteredProcessos.length} de {processos.length} processos (na página atual).
-            </p>
+            <h1 className="text-3xl font-medium md:text-4xl">{t('Painel do Administrador')}</h1>
+            <p className="mt-2 text-muted-foreground">{t('Visão geral dos processos seletivos e o que precisa da sua atenção.')}</p>
           </div>
-
           <button
             onClick={goToNewProcess}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-medium bg-primary text-primary-foreground hover:shadow-md hover:scale-[1.02] transition-all"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
           >
-            <Plus className="w-5 h-5" />
-            Criar processo
+            <Plus className="h-4 w-4" strokeWidth={1.5} />
+            {t('Criar processo')}
           </button>
         </div>
 
-        {filteredProcessos.length === 0 ? (
-          <div className="bg-background border border-border rounded-xl p-10 text-center">
-            <h3 className="text-foreground font-semibold text-lg mb-2">Nenhum processo encontrado</h3>
-            <p className="text-muted-foreground mb-4">Tente ajustar a busca/filtros.</p>
-            <button
-              onClick={() => {
-                setSearchTerm('');
-                setStatusFilter('all');
-              }}
-              className="px-6 py-3 rounded-xl bg-card border border-border text-foreground/80 hover:bg-background hover:shadow transition-all"
-            >
-              Limpar filtros
+        {error && (
+          <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-destructive/30 bg-destructive-soft p-5">
+            <div className="flex items-center gap-3 text-destructive">
+              <AlertTriangle className="h-5 w-5" strokeWidth={1.5} />
+              <span><strong>{t('Erro ao carregar')}</strong>: {error}</span>
+            </div>
+            <button onClick={fetchAllFirstPage} className="inline-flex items-center gap-2 rounded-full bg-destructive px-5 py-2 text-sm font-medium text-white">
+              <Loader2 className="h-4 w-4" strokeWidth={1.5} />
+              {t('Tentar Novamente')}
             </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {quickActions.latest.map((p) => {
-              const statusInfo = getStatusBadgeInfo(p);
-              const StatusIcon = statusInfo.icon;
-              const analyzeState = getAnalyzeButtonState(p);
-              const PrimaryIcon = analyzeState.primary.icon;
-
-              return (
-                <div key={p.id} className="border border-border rounded-2xl p-5 hover:shadow-md transition-all bg-card">
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <div>
-                      <h3 className="font-bold text-foreground line-clamp-2">{p.title}</h3>
-                      <p className="text-sm text-muted-foreground line-clamp-1">{p.course}</p>
-                    </div>
-
-                    <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold ${statusInfo.color} ${statusInfo.textColor}`}>
-                      <StatusIcon className="w-4 h-4" />
-                      {statusInfo.label}
-                    </span>
-                  </div>
-
-                  <div className="text-sm text-muted-foreground space-y-1">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-muted-foreground/70" />
-                      <span>
-                        {formatDate(p.beginning_date)} → {formatDate(p.ending_date)}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4 text-muted-foreground/70" />
-                      <span>{p.number_vacancies} vaga(s)</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex gap-2">
-                    <button
-                      onClick={() => window.location.href = `/painel-admin/processos`}
-                      className="flex-1 px-4 py-2 rounded-xl bg-card border border-border text-foreground/80 hover:bg-background hover:shadow transition-all"
-                    >
-                      Ver lista
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        if (analyzeState.secondary?.enabled) return openAnalysisPage(p.slug);
-                        return analyzeProcess(p);
-                      }}
-                      disabled={!analyzeState.primary.enabled && !analyzeState.secondary?.enabled}
-                      className={`flex-1 px-4 py-2 rounded-xl font-medium transition-all ${
-                        analyzeState.secondary?.enabled || analyzeState.primary.enabled
-                          ? 'bg-primary text-primary-foreground hover:shadow hover:scale-[1.01]'
-                          : 'bg-muted text-muted-foreground/70 cursor-not-allowed'
-                      }`}
-                    >
-                      <span className="inline-flex items-center justify-center gap-2">
-                        {analyzeState.secondary?.enabled ? <Eye className="w-4 h-4" /> : <PrimaryIcon className="w-4 h-4" />}
-                        {analyzeState.secondary?.enabled ? 'Abrir' : 'Analisar'}
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
           </div>
         )}
 
-        <div className="mt-6 flex justify-end">
-          <button
-            onClick={goToProcessList}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-medium bg-card border border-border text-foreground/80 hover:bg-background hover:shadow transition-all"
-          >
-            Ver todos os processos
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
+        {/* Alerta de expiração */}
+        {stats.expiring > 0 && (
+          <div className="flex items-center gap-3 rounded-2xl border border-warning/30 bg-warning-soft px-5 py-4 text-warning">
+            <AlertTriangle className="h-5 w-5 shrink-0" strokeWidth={1.5} />
+            <p className="text-sm font-medium">
+              {t(stats.expiring === 1 ? '{n} processo com inscrições encerrando em até 7 dias.' : '{n} processos com inscrições encerrando em até 7 dias.', { n: stats.expiring })}
+            </p>
+          </div>
+        )}
 
-/* ------------------ UI components ------------------ */
+        {/* KPIs */}
+        <Stagger>
+          <dl className="grid grid-cols-2 gap-4 xl:grid-cols-4">
+            {[
+              { label: 'Total', value: stats.total, Icon: Users, tone: 'bg-primary-soft text-accent-foreground' },
+              { label: 'Em Inscrição', value: stats.inApplication + stats.expiring, Icon: Clock, tone: 'bg-success-soft text-success' },
+              { label: 'Em Análise', value: stats.inAnalysis, Icon: ListChecks, tone: 'bg-warning-soft text-warning' },
+              { label: 'Finalizados', value: stats.finished, Icon: Flag, tone: 'bg-muted text-muted-foreground' },
+            ].map(({ label, value, Icon, tone }) => (
+              <StaggerItem key={label} whileHover={{ y: -3 }} className="rounded-3xl border bg-card p-6 transition-shadow hover:shadow-md">
+                <span className={`flex h-10 w-10 items-center justify-center rounded-full ${tone}`}>
+                  <Icon className="h-5 w-5" strokeWidth={1.5} />
+                </span>
+                <dd className="tabular mt-5 text-4xl font-medium leading-none tracking-tight"><CountUp value={value} /></dd>
+                <dt className="mt-2 text-sm text-muted-foreground">{t(label)}</dt>
+              </StaggerItem>
+            ))}
+          </dl>
+        </Stagger>
 
-function KpiCard({
-  label,
-  value,
-  icon: Icon,
-  tone,
-}: {
-  label: string;
-  value: number;
-  icon: any;
-  tone: 'blue' | 'green' | 'emerald' | 'amber' | 'orange' | 'gray';
-}) {
-  const toneMap: Record<string, { bg: string; iconBg: string; icon: string }> = {
-    blue: { bg: 'from-primary-soft to-primary-soft', iconBg: 'bg-primary-soft', icon: 'text-primary' },
-    green: { bg: 'from-success-soft to-success-soft', iconBg: 'bg-success-soft', icon: 'text-success' },
-    emerald: { bg: 'from-success-soft to-primary-soft', iconBg: 'bg-success-soft', icon: 'text-success' },
-    amber: { bg: 'from-warning-soft to-warning-soft', iconBg: 'bg-warning-soft', icon: 'text-warning' },
-    orange: { bg: 'from-warning-soft to-warning-soft', iconBg: 'bg-warning-soft', icon: 'text-warning' },
-    gray: { bg: 'from-background to-background', iconBg: 'bg-muted', icon: 'text-foreground/80' },
-  };
+        {/* Distribuição */}
+        {stats.total > 0 && (
+          <div className="rounded-3xl border bg-card p-6">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <h2 className="text-lg font-medium">{t('Distribuição por status')}</h2>
+              <p className="text-sm text-muted-foreground">{t('{n} processos na página atual', { n: processos.length })}</p>
+            </div>
+            <div className="mt-4 flex h-3 overflow-hidden rounded-full bg-muted">
+              {dist.filter((d) => d.n > 0).map((d) => (
+                <div key={d.key} className={`${d.bar} transition-all`} style={{ width: `${(d.n / distTotal) * 100}%` }} title={`${t(d.label)}: ${d.n}`} />
+              ))}
+            </div>
+            <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+              {dist.filter((d) => d.n > 0).map((d) => (
+                <li key={d.key} className="flex items-center gap-2">
+                  <span className={`h-2.5 w-2.5 rounded-full ${d.bar}`} />
+                  {t(d.label)} <span className="tabular font-medium text-foreground">{d.n}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-  const t = toneMap[tone];
-
-  return (
-    <div className={`bg-gradient-to-br ${t.bg} rounded-2xl border border-border shadow-sm p-5`}>
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="text-sm text-muted-foreground font-medium">{label}</div>
-          <div className="text-3xl font-bold text-foreground mt-1">{value}</div>
-        </div>
-        <div className={`w-12 h-12 rounded-2xl ${t.iconBg} flex items-center justify-center`}>
-          <Icon className={`w-6 h-6 ${t.icon}`} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function QuickList({
-  title,
-  subtitle,
-  items,
-  emptyText,
-  actionLabel,
-  onAction,
-}: {
-  title: string;
-  subtitle: string;
-  items: SelectionProcess[];
-  emptyText: string;
-  actionLabel: string;
-  onAction: (p: SelectionProcess) => void;
-}) {
-  return (
-    <div className="bg-card rounded-2xl shadow-sm border border-border p-6">
-      <div className="mb-4">
-        <h3 className="text-lg font-bold text-foreground">{title}</h3>
-        <p className="text-sm text-muted-foreground">{subtitle}</p>
-      </div>
-
-      {items.length === 0 ? (
-        <div className="bg-background border border-border rounded-xl p-6 text-sm text-muted-foreground text-center">
-          {emptyText}
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {items.map((p) => {
-            const statusInfo = getStatusBadgeInfo(p);
-            const StatusIcon = statusInfo.icon;
-
-            return (
-              <div key={p.id} className="border border-border rounded-xl p-4 hover:shadow-sm transition-all">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="font-bold text-foreground line-clamp-1">{p.title}</div>
-                    <div className="text-sm text-muted-foreground line-clamp-1">{p.course}</div>
-                    <div className="text-xs text-muted-foreground mt-1">Até {formatDate(p.ending_date)}</div>
-                  </div>
-
-                  <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold ${statusInfo.color} ${statusInfo.textColor}`}>
-                    <StatusIcon className="w-4 h-4" />
-                    {statusInfo.label}
-                  </span>
-                </div>
-
-                <div className="mt-3 flex justify-end">
-                  <button
-                    onClick={() => onAction(p)}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-card border border-border text-foreground/80 hover:bg-background hover:shadow transition-all"
-                  >
-                    {actionLabel}
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+        {/* Atenção */}
+        <div className="grid gap-6 xl:grid-cols-3">
+          {sections.map((sec) => (
+            <div key={sec.title} className="rounded-3xl border bg-card p-6">
+              <div className="flex items-start gap-3">
+                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${sec.tone}`}>
+                  <sec.Icon className="h-4 w-4" strokeWidth={1.5} />
+                </span>
+                <div>
+                  <h3 className="font-medium">{t(sec.title)}</h3>
+                  <p className="text-sm text-muted-foreground">{t(sec.subtitle)}</p>
                 </div>
               </div>
-            );
-          })}
+
+              {sec.items.length === 0 ? (
+                <p className="mt-5 rounded-2xl bg-background p-5 text-center text-sm text-muted-foreground">{t(sec.empty)}</p>
+              ) : (
+                <ul className="mt-5 divide-y">
+                  {sec.items.map((p) => (
+                    <li key={p.id} className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0">
+                      <div className="min-w-0">
+                        <p className="line-clamp-1 font-medium">{p.title}</p>
+                        <p className="text-xs text-muted-foreground">{t('Até {d}', { d: formatDate(p.ending_date, loc) })}</p>
+                      </div>
+                      <button
+                        onClick={() => sec.run(p)}
+                        className="inline-flex shrink-0 items-center gap-1 rounded-full border px-3.5 py-1.5 text-sm transition-colors hover:bg-secondary"
+                      >
+                        {t(sec.action)} <ArrowRight className="h-3.5 w-3.5" strokeWidth={1.5} />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
         </div>
-      )}
+
+        {/* Processos recentes */}
+        <div>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 className="text-2xl font-medium">{t('Processos recentes')}</h2>
+              <p className="text-sm text-muted-foreground">
+                {t('Mostrando {n} de {total} processos (na página atual).', { n: quickActions.latest.length, total: processos.length })}
+              </p>
+            </div>
+            <button onClick={goToProcessList} className="inline-flex items-center gap-2 rounded-full border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:bg-secondary">
+              {t('Ver todos os processos')} <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
+            </button>
+          </div>
+
+          {quickActions.latest.length === 0 ? (
+            <p className="mt-6 rounded-3xl border bg-card p-10 text-center text-muted-foreground">{t('Nenhum processo encontrado')}</p>
+          ) : (
+            <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {quickActions.latest.map((p) => {
+                const statusInfo = getStatusBadgeInfo(p);
+                const StatusIcon = statusInfo.icon;
+                const analyzeState = getAnalyzeButtonState(p);
+                const PrimaryIcon = analyzeState.primary.icon;
+                const canOpen = !!analyzeState.secondary?.enabled;
+                const canAct = canOpen || analyzeState.primary.enabled;
+                const { beginning, ending, today } = parseProcessDates(p);
+                const pct = Math.min(100, Math.max(0, ((today.getTime() - beginning.getTime()) / (ending.getTime() - beginning.getTime())) * 100));
+
+                return (
+                  <div key={p.id} className="flex flex-col rounded-3xl border bg-card p-6 transition-shadow hover:shadow-md">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <h3 className="line-clamp-2 font-medium leading-snug">{p.title}</h3>
+                        <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">{p.course}</p>
+                      </div>
+                      <span className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${statusInfo.color} ${statusInfo.textColor}`}>
+                        <StatusIcon className="h-3.5 w-3.5" strokeWidth={1.5} />
+                        {t(statusInfo.label)}
+                      </span>
+                    </div>
+
+                    <div className="mt-5">
+                      <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+                        <div className="h-full rounded-full bg-primary" style={{ width: `${pct}%` }} />
+                      </div>
+                      <div className="tabular mt-2 flex items-center justify-between text-xs text-muted-foreground">
+                        <span>{formatDate(p.beginning_date, loc)}</span>
+                        <span>{formatDate(p.ending_date, loc)}</span>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+                      <Users className="h-4 w-4" strokeWidth={1.5} />
+                      {t(p.number_vacancies === 1 ? '{n} vaga' : '{n} vagas', { n: p.number_vacancies })}
+                    </div>
+
+                    <div className="mt-5 flex gap-2">
+                      <button onClick={goToProcessList} className="flex-1 rounded-full border px-4 py-2 text-sm transition-colors hover:bg-secondary">
+                        {t('Ver lista')}
+                      </button>
+                      <button
+                        onClick={() => (canOpen ? openAnalysisPage(p.slug) : analyzeProcess(p))}
+                        disabled={!canAct}
+                        className={`inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                          canAct ? 'bg-primary text-primary-foreground hover:bg-primary-hover' : 'cursor-not-allowed bg-muted text-muted-foreground/70'
+                        }`}
+                      >
+                        {canOpen ? <Eye className="h-4 w-4" strokeWidth={1.5} /> : <PrimaryIcon className="h-4 w-4" strokeWidth={1.5} />}
+                        {t(canOpen ? 'Abrir' : 'Analisar')}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
