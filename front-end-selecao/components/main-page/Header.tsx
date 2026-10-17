@@ -46,7 +46,8 @@ export default function Header() {
         <header className="sticky top-0 z-50 px-3 pt-3 md:px-8">
             <div className="relative z-[70] mx-auto flex max-w-6xl items-center justify-between rounded-full border bg-background/80 px-5 py-2.5 backdrop-blur md:px-6">
                 <Link href="/" aria-label={t('Ir para a página inicial')} onClick={() => setOpen(false)}>
-                    <BrandMark />
+                    <span className="md:hidden"><BrandMark compact /></span>
+                    <span className="hidden md:inline"><BrandMark /></span>
                 </Link>
 
                 <nav className="hidden items-center gap-1 md:flex" aria-label="Principal">
@@ -70,9 +71,7 @@ export default function Header() {
                     </Link>
                 </nav>
 
-                <div className="flex items-center gap-2 md:hidden">
-                <LanguageToggle />
-                <ThemeToggle />
+                <div className="flex items-center md:hidden">
                 <button
                     className="relative flex h-10 w-10 items-center justify-center rounded-full"
                     onClick={() => setOpen((v) => !v)}
@@ -136,6 +135,13 @@ export default function Header() {
                             animate={{ opacity: 1, y: 0, transition: { delay: 0.55, duration: 0.6, ease } }}
                             exit={{ opacity: 0, transition: { duration: 0.15 } }}
                         >
+                            <div className="mb-5 flex items-center justify-between rounded-full border px-4 py-2">
+                                <span className="text-sm text-muted-foreground">{t('Idioma e tema')}</span>
+                                <div className="flex items-center gap-2">
+                                    <LanguageToggle />
+                                    <ThemeToggle />
+                                </div>
+                            </div>
                             <Link
                                 href={area}
                                 onClick={() => setOpen(false)}

@@ -10,6 +10,7 @@ import AuthField from './AuthField';
 // ✅ use seu util atualizado
 import { setCandidateSession } from '@/utils/candidateAuth';
 import { safeInternalRedirect } from '@/utils/safeNavigation';
+import { useI18n } from '@/components/i18n/LanguageProvider';
 
 interface LoginFormData {
   email: string;
@@ -79,12 +80,12 @@ function parseLoginError(errorData: ErrorResponse) {
 
   // fallback padrão (mais amigável)
   const message = isEmailNotVerified
-    ? 'Email não verificado. Por favor, verifique seu email antes de fazer login.'
+    ? "Email não verificado. Por favor, verifique seu email antes de fazer login."
     : isInvalidCredentials
-      ? 'E-mail ou senha incorretos. Verifique e tente novamente.'
+      ? "E-mail ou senha incorretos. Verifique e tente novamente."
       : raw
         ? raw
-        : 'Não foi possível entrar. Tente novamente.';
+        : "Não foi possível entrar. Tente novamente.";
 
   return {
     message,
@@ -96,6 +97,7 @@ function parseLoginError(errorData: ErrorResponse) {
 }
 
 export function FormEventLoginCandidate() {
+  const { t } = useI18n();
   const [formData, setFormData] = useState<LoginFormData>({ email: '', password: '' });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -149,7 +151,7 @@ export function FormEventLoginCandidate() {
           process.env.NODE_ENV === 'production' ? '; secure' : ''
         }`;
 
-        toast.success(`Bem-vindo, ${data.candidate.name}!`);
+        toast.success(t('Bem-vindo, {name}!', { name: data.candidate.name }));
 
         const urlParams = new URLSearchParams(window.location.search);
         const redirectUrl = safeInternalRedirect(urlParams.get('redirect'), '/candidato');
@@ -178,24 +180,24 @@ export function FormEventLoginCandidate() {
       const passErr = Array.isArray(errorData.password) ? errorData.password.join(', ') : errorData.password;
 
       setFieldErrors({
-        email: emailErr || (parsed.isInvalidCredentials ? 'Confira seu e-mail.' : undefined),
-        password: passErr || (parsed.isInvalidCredentials ? 'Confira sua senha.' : undefined),
+        email: emailErr || (parsed.isInvalidCredentials ? t("Confira seu e-mail.") : undefined),
+        password: passErr || (parsed.isInvalidCredentials ? t("Confira sua senha.") : undefined),
       });
 
       setError(parsed.message);
 
       if (parsed.isEmailNotVerified) {
         setShowResendOption(true);
-        toast.error('Email não verificado. Verifique seu email.');
+        toast.error(t('Email não verificado. Verifique seu email.'));
       } else if (parsed.isInvalidCredentials) {
-        toast.error('E-mail ou senha incorretos.');
+        toast.error(t('E-mail ou senha incorretos.'));
       } else {
-        toast.error(parsed.message);
+        toast.error(t(parsed.message));
       }
     } catch {
-      const msg = 'Erro ao conectar com o servidor. Verifique sua conexão.';
+      const msg = t("Erro ao conectar com o servidor. Verifique sua conexão.");
       setError(msg);
-      toast.error(msg);
+      toast.error(t(msg));
     } finally {
       setIsLoading(false);
     }
@@ -203,8 +205,8 @@ export function FormEventLoginCandidate() {
 
   const handleResendVerification = async () => {
     if (!formData.email) {
-      toast.error('Digite seu email para reenviar a confirmação.');
-      setFieldErrors((prev) => ({ ...prev, email: 'Informe seu e-mail para reenviar.' }));
+      toast.error(t('Digite seu email para reenviar a confirmação.'));
+      setFieldErrors((prev) => ({ ...prev, email: t("Informe seu e-mail para reenviar.") }));
       return;
     }
 
@@ -223,8 +225,8 @@ export function FormEventLoginCandidate() {
 
       if (response.ok) {
         await response.json();
-        setResendMessage('Email de verificação reenviado com sucesso! Verifique sua caixa de entrada.');
-        toast.success('Email de verificação reenviado com sucesso!');
+        setResendMessage(t("Email de verificação reenviado com sucesso! Verifique sua caixa de entrada."));
+        toast.success(t('Email de verificação reenviado com sucesso!'));
 
         setTimeout(() => {
           setShowResendOption(false);
@@ -246,14 +248,14 @@ export function FormEventLoginCandidate() {
         (Array.isArray(errorData.non_field_errors) ? errorData.non_field_errors.join(', ') : errorData.non_field_errors) ||
         (Array.isArray(errorData.error) ? errorData.error.join(', ') : errorData.error) ||
         (Array.isArray(errorData.detail) ? errorData.detail.join(', ') : errorData.detail) ||
-        'Erro ao reenviar email de verificação.';
+        t("Erro ao reenviar email de verificação.");
 
       setResendMessage(msg);
-      toast.error(msg);
+      toast.error(t(msg));
     } catch {
-      const msg = 'Erro ao conectar com o servidor.';
+      const msg = t("Erro ao conectar com o servidor.");
       setResendMessage(msg);
-      toast.error(msg);
+      toast.error(t(msg));
     } finally {
       setIsResending(false);
     }
@@ -286,8 +288,8 @@ export function FormEventLoginCandidate() {
         className="auth-card bg-card rounded-3xl p-8 border shadow-xl shadow-primary/5"
       >
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-foreground mb-2">Acessar Conta</h2>
-          <p className="text-muted-foreground text-sm">Entre com suas credenciais</p>
+          <h2 className="text-3xl font-bold text-foreground mb-2">{t("Acessar Conta")}</h2>
+          <p className="text-muted-foreground text-sm">{t("Entre com suas credenciais")}</p>
         </div>
 
         {error && (
@@ -309,7 +311,7 @@ export function FormEventLoginCandidate() {
               </svg>
 
               <div>
-                <p>{error}</p>
+                <p>{t(error)}</p>
 
                 {showResendOption && (
                   <div className="mt-3">
@@ -334,7 +336,7 @@ export function FormEventLoginCandidate() {
                               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                             ></path>
                           </svg>
-                          Enviando...
+                          {t("Enviando...")}
                         </>
                       ) : (
                         <>
@@ -346,12 +348,12 @@ export function FormEventLoginCandidate() {
                               d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                             />
                           </svg>
-                          Reenviar email de confirmação
+                          {t("Reenviar email de confirmação")}
                         </>
                       )}
                     </button>
 
-                    <p className="text-xs text-warning/70 mt-2">Verifique também sua pasta de spam/lixo eletrônico</p>
+                    <p className="text-xs text-warning/70 mt-2">{t("Verifique também sua pasta de spam/lixo eletrônico")}</p>
                   </div>
                 )}
               </div>
@@ -365,21 +367,21 @@ export function FormEventLoginCandidate() {
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              {resendMessage}
+              {t(resendMessage)}
             </div>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <AuthField id="email" label="E-mail" type="email" value={formData.email} onChange={handleChange} placeholder="seu@email.com" error={fieldErrors.email} disabled={isLoading} />
-          <AuthField id="password" label="Senha" type="password" value={formData.password} onChange={handleChange} placeholder="Sua senha" error={fieldErrors.password} disabled={isLoading} />
+          <AuthField id="email" label={t("E-mail")} type="email" value={formData.email} onChange={handleChange} placeholder={t("seu@email.com")} error={fieldErrors.email} disabled={isLoading} />
+          <AuthField id="password" label={t("Senha")} type="password" value={formData.password} onChange={handleChange} placeholder={t("Sua senha")} error={fieldErrors.password} disabled={isLoading} />
 
           <div className="flex justify-end">
             <Link
               href="/auth/recuperar-senha"
               className="text-primary hover:text-primary text-sm font-medium transition-colors duration-300"
             >
-              Esqueceu sua senha?
+              {t("Esqueceu sua senha?")}
             </Link>
           </div>
 
@@ -394,7 +396,7 @@ export function FormEventLoginCandidate() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Entrando...
+                {t("Entrando...")}
               </>
             ) : (
               <>
@@ -406,12 +408,12 @@ export function FormEventLoginCandidate() {
 
         <div className="mt-6 text-center">
           <p className="text-muted-foreground text-sm">
-            Não tem uma conta?{' '}
+            {t('Não tem uma conta?')}{' '}
             <Link
               href="/auth/register"
               className="text-primary hover:text-primary font-medium transition-colors duration-300 hover:underline"
             >
-              Cadastre-se
+              {t("Cadastre-se")}
             </Link>
           </p>
         </div>

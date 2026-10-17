@@ -5,6 +5,7 @@
 import { useI18n } from '@/components/i18n/LanguageProvider';
 import { useProcessGrid } from '@/api/hooks/useProcessGrid';
 import Footer from "@/components/Footer";
+import BackToTop from '@/components/main-page/BackToTop';
 import Header from "@/components/main-page/Header";
 import CountUp from '@/components/motion/CountUp';
 import SplitWords from '@/components/motion/SplitWords';
@@ -333,6 +334,7 @@ export default function Home() {
         </section>
       </main>
       <Footer />
+      <BackToTop />
     </div>
   );
 }

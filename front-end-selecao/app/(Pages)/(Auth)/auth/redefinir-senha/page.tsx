@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useI18n } from '@/components/i18n/LanguageProvider';
 
 // Componente que realmente usa useSearchParams (precisa de Suspense)
 function ResetPasswordForm() {
+  const { t } = useI18n();
   const params = useSearchParams();
   const router = useRouter();
   const token = params.get("token");
@@ -45,15 +47,15 @@ function ResetPasswordForm() {
     e.preventDefault();
 
     if (!token) {
-      toast.error("Token ausente.");
+      toast.error(t("Token ausente."));
       return;
     }
     if (password.length < 6) {
-      toast.error("A senha deve ter pelo menos 6 caracteres.");
+      toast.error(t("A senha deve ter pelo menos 6 caracteres."));
       return;
     }
     if (password !== confirm) {
-      toast.error("As senhas não coincidem.");
+      toast.error(t("As senhas não coincidem."));
       return;
     }
 
@@ -75,14 +77,14 @@ function ResetPasswordForm() {
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data?.error || "Não foi possível redefinir a senha.");
+        toast.error(t(data?.error || "Não foi possível redefinir a senha."));
         return;
       }
 
-      toast.success("Senha redefinida com sucesso!");
+      toast.success(t("Senha redefinida com sucesso!"));
       router.push("/auth/login-candidato");
     } catch {
-      toast.error("Erro ao conectar com o servidor.");
+      toast.error(t("Erro ao conectar com o servidor."));
     } finally {
       setLoading(false);
     }
@@ -91,23 +93,23 @@ function ResetPasswordForm() {
   return (
     <>
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-foreground mb-2">Redefinir senha</h2>
+        <h2 className="text-3xl font-bold text-foreground mb-2">{t("Redefinir senha")}</h2>
         <p className="text-muted-foreground text-sm">
-          Crie uma nova senha para sua conta.
+          {t("Crie uma nova senha para sua conta.")}
         </p>
       </div>
 
       {validating ? (
-        <div className="text-muted-foreground text-center py-6">Validando link...</div>
+        <div className="text-muted-foreground text-center py-6">{t("Validando link...")}</div>
       ) : !isValidToken ? (
         <div className="bg-destructive/20 border border-destructive/50 text-destructive rounded-2xl p-4 text-sm">
-          Token inválido ou expirado. Solicite uma nova recuperação.
+          {t("Token inválido ou expirado. Solicite uma nova recuperação.")}
           <div className="mt-4 text-center">
             <Link
               href="/auth/recuperar-senha"
               className="text-primary hover:text-primary font-medium underline"
             >
-              Solicitar novo link
+              {t("Solicitar novo link")}
             </Link>
           </div>
         </div>
@@ -115,14 +117,14 @@ function ResetPasswordForm() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-foreground text-sm font-medium mb-2">
-              Nova senha
+              {t("Nova senha")}
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-300 disabled:opacity-50"
-              placeholder="Nova senha"
+              placeholder={t("Nova senha")}
               required
               disabled={loading}
             />
@@ -130,14 +132,14 @@ function ResetPasswordForm() {
 
           <div>
             <label className="block text-foreground text-sm font-medium mb-2">
-              Confirmar senha
+              {t("Confirmar senha")}
             </label>
             <input
               type="password"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               className="w-full px-4 py-3 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-300 disabled:opacity-50"
-              placeholder="Confirmar senha"
+              placeholder={t("Confirmar senha")}
               required
               disabled={loading}
             />
@@ -148,7 +150,7 @@ function ResetPasswordForm() {
             disabled={loading}
             className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-4 px-6 rounded-2xl transition-all duration-300 shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Salvando..." : "Redefinir senha"}
+            {loading ? "Salvando..." : t("Redefinir senha")}
           </button>
 
           <div className="mt-4 text-center">
@@ -156,7 +158,7 @@ function ResetPasswordForm() {
               href="/auth/login-candidato"
               className="text-primary hover:text-primary font-medium transition-colors duration-300 hover:underline"
             >
-              Voltar para o login
+              {t("Voltar para o login")}
             </Link>
           </div>
         </form>
@@ -167,6 +169,7 @@ function ResetPasswordForm() {
 
 // Página principal – agora com Suspense
 export default function ResetPasswordPage() {
+  const { t } = useI18n();
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
       {/* Imagem de fundo */}
@@ -178,7 +181,7 @@ export default function ResetPasswordPage() {
         <div className="relative z-10 w-full max-w-md">
 <div className="mb-10 flex justify-center lg:hidden"><BrandMark /></div>
           <div className="auth-card bg-card rounded-3xl p-8 border">
-            <Suspense fallback={<div className="text-muted-foreground text-center py-6">Carregando...</div>}>
+            <Suspense fallback={<div className="text-muted-foreground text-center py-6">{t('Carregando...')}</div>}>
               <ResetPasswordForm />
             </Suspense>
 

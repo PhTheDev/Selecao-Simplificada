@@ -1,9 +1,11 @@
 "use client";
 import BrandMark from "@/components/BrandMark";
+import { useI18n } from '@/components/i18n/LanguageProvider';
 
 import { FormEventLogin } from "@/components/auth/FormEventLogin";
 
 export default function Login() {
+  const { t } = useI18n();
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
       {/* Seção da Imagem (Esquerda) */}
@@ -24,10 +26,10 @@ export default function Login() {
           {/* Rodapé */}
           <div className="mt-8 text-center">
             <p className="text-xs text-muted-foreground">
-              Caso esqueceu a senha entre em contanto com o suporte
+              {t('Caso esqueceu a senha entre em contanto com o suporte')}
             </p>
             <p className="mt-6 text-xs text-muted-foreground">
-              &copy; {new Date().getFullYear()} Seleção Simplificada. Todos os direitos reservados.
+              &copy; {new Date().getFullYear()} Seleção Simplificada. {t('Todos os direitos reservados.')}
             </p>
           </div>
         </div>

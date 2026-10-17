@@ -2,6 +2,7 @@
 
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { useI18n } from '@/components/i18n/LanguageProvider';
 
 type Props = {
   id: string;
@@ -16,6 +17,7 @@ type Props = {
 
 /** Campo de login: ícone à esquerda, mostrar/ocultar senha, aviso de Caps Lock e autocomplete correto. */
 export default function AuthField({ id, label, type, value, onChange, placeholder, error, disabled }: Props) {
+  const { t } = useI18n();
   const [show, setShow] = useState(false);
   const [caps, setCaps] = useState(false);
   const isPassword = type === 'password';
@@ -51,14 +53,14 @@ export default function AuthField({ id, label, type, value, onChange, placeholde
             type="button"
             onClick={() => setShow((s) => !s)}
             disabled={disabled}
-            aria-label={show ? 'Ocultar senha' : 'Mostrar senha'}
+            aria-label={t(show ? 'Ocultar senha' : 'Mostrar senha')}
             className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-muted-foreground transition-colors hover:text-foreground"
           >
             {show ? <EyeOff className="h-[18px] w-[18px]" strokeWidth={1.5} /> : <Eye className="h-[18px] w-[18px]" strokeWidth={1.5} />}
           </button>
         )}
       </div>
-      {caps && <p className="mt-2 text-xs text-warning">Caps Lock está ativado.</p>}
+      {caps && <p className="mt-2 text-xs text-warning">{t('Caps Lock está ativado.')}</p>}
       {error && <p id={`${id}-err`} role="alert" className="mt-2 text-xs text-destructive">{error}</p>}
     </div>
   );

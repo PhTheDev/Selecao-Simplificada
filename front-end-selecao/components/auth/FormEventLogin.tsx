@@ -5,6 +5,7 @@ import { safeInternalRedirect } from "@/utils/safeNavigation";
 import { Eye, EyeOff, Lock, Shield, User } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import { toast } from "sonner";
+import { useI18n } from '@/components/i18n/LanguageProvider';
 
 interface AdminLoginResponse {
   administrator: {
@@ -78,6 +79,7 @@ function parseAdminLoginError(payload: ErrorResponse) {
 }
 
 export function FormEventLogin() {
+  const { t } = useI18n();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -134,7 +136,7 @@ export function FormEventLogin() {
           process.env.NODE_ENV === "production" ? "; secure" : ""
         }`;
 
-        toast.success(`Bem-vindo, ${data.administrator.full_name}!`);
+        toast.success(t('Bem-vindo, {name}!', { name: data.administrator.full_name }));
 
         const urlParams = new URLSearchParams(window.location.search);
         const redirectUrl = safeInternalRedirect(urlParams.get("redirect"), "/painel-admin/");
@@ -160,12 +162,12 @@ export function FormEventLogin() {
         password: parsed.fieldErrors.password || undefined,
       });
 
-      toast.error(parsed.message);
+      toast.error(t(parsed.message));
     } catch (err) {
       console.error("Erro no login:", err);
-      const msg = "Erro ao conectar com o servidor. Verifique sua conexão.";
+      const msg = t("Erro ao conectar com o servidor. Verifique sua conexão.");
       setError(msg);
-      toast.error(msg);
+      toast.error(t(msg));
     } finally {
       setLoading(false);
     }
@@ -179,10 +181,10 @@ export function FormEventLogin() {
           <Shield className="h-8 w-8 text-current" />
         </div>
         <h1 className="text-3xl sm:text-4xl font-semibold text-primary mb-2">
-          Painel Administrativo
+          {t("Painel Administrativo")}
         </h1>
         <p className="text-muted-foreground text-sm sm:text-base font-medium">
-          Sistema de Administração <br /> {nomeConselho}
+          {t('Sistema de Administração')} <br /> {nomeConselho}
         </p>
       </div>
 
@@ -193,7 +195,7 @@ export function FormEventLogin() {
             <svg className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <p>{error}</p>
+            <p>{t(error)}</p>
           </div>
         </div>
       )}
@@ -203,7 +205,7 @@ export function FormEventLogin() {
         {/* Username */}
         <div className="space-y-2">
           <label htmlFor="username" className="block text-sm font-semibold text-muted-foreground">
-            Usuário:
+            {t("Usuário:")}
           </label>
 
           <div className="relative group">
@@ -235,7 +237,7 @@ export function FormEventLogin() {
         {/* Password */}
         <div className="space-y-2">
           <label htmlFor="password" className="block text-sm font-semibold text-muted-foreground">
-            Senha:
+            {t("Senha:")}
           </label>
 
           <div className="relative group">
@@ -288,11 +290,11 @@ export function FormEventLogin() {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              Acessando...
+              {t("Acessando...")}
             </>
           ) : (
             <>
-              <span className="mr-2">Acessar Painel</span>
+              <span className="mr-2">{t("Acessar Painel")}</span>
               <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
@@ -303,7 +305,7 @@ export function FormEventLogin() {
         {/* dica: só aparece se teve erro */}
         {hasAnyError && !loading && (
           <p className="text-xs text-muted-foreground text-center">
-            Se você esqueceu a senha, peça ao suporte para redefinir o acesso do administrador.
+            {t("Se você esqueceu a senha, peça ao suporte para redefinir o acesso do administrador.")}
           </p>
         )}
       </form>
@@ -312,7 +314,7 @@ export function FormEventLogin() {
       <div className="mt-6 p-4 bg-white/5 rounded-lg border border-input">
         <p className="text-muted-foreground text-xs text-center">
           <Shield className="w-3 h-3 inline mr-1" />
-          Acesso restrito para administradores do sistema
+          {t("Acesso restrito para administradores do sistema")}
         </p>
       </div>
     </div>

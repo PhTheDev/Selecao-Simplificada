@@ -2,10 +2,12 @@ type BrandMarkProps = {
   className?: string;
   /** Use "light" sobre fundos escuros ou coloridos (ex.: lateral do login, rodapé). */
   tone?: "default" | "light";
+  /** Só "</ Seleção >": para barras estreitas (mobile). */
+  compact?: boolean;
 };
 
 // Marca no estilo </PH>: o nome inteiro vira uma tag de código. Só tipografia, uma linha.
-export default function BrandMark({ className = "", tone = "default" }: BrandMarkProps) {
+export default function BrandMark({ className = "", tone = "default", compact = false }: BrandMarkProps) {
   const light = tone === "light";
   const tag = light ? "text-white/70" : "text-primary";
   return (
@@ -15,7 +17,7 @@ export default function BrandMark({ className = "", tone = "default" }: BrandMar
     >
       <span aria-hidden="true" className={`font-bold transition-transform duration-300 group-hover:-translate-x-0.5 ${tag}`}>&lt;/</span>
       <span aria-hidden="true" className="font-extrabold">Seleção</span>
-      <span aria-hidden="true" className={light ? "font-normal text-white/70" : "font-normal text-muted-foreground"}>Simplificada</span>
+      {!compact && <span aria-hidden="true" className={light ? "font-normal text-white/70" : "font-normal text-muted-foreground"}>Simplificada</span>}
       <span aria-hidden="true" className={`font-bold transition-transform duration-300 group-hover:translate-x-0.5 ${tag}`}>&gt;</span>
     </span>
   );
