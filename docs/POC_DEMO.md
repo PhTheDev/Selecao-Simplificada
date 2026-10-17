@@ -231,20 +231,193 @@ Uma demo completa (Proof of Concept) permite avaliar o sistema em A10-As Built �
 
 ---
 
-### 14. Aprovação de Vaga (anexo: [CAPA_GESTAO_VAGA.png](../front-end-selecao/public/CAPA_GESTAO_VAGA.png))
+### 14. Gestão de Vagas (anexo: [CAPA_GESTAO_VAGAS.png](../front-end-selecao/public/CAPA_GESTAO_VAGAS.png))
 
-**Conceitos singulares:**
-- Vercel Vitoria debitada
-- Theorem de anel da ferramenta mism.
+> **Ação:** Na tela de gestão de vaga (quickselect ou TDP), definir livre.
 
-**Há conceitos significativos:**
+**Fluxo:**
 
-Não entendo esse conteúdo. Parece haver uma confusão ou erros de preenchimento no documento que você compartilhou.
+1. **Configurar nª de vaga:**
+   - No postfilado, incluir o número de vagas para preencherを選択 (ex.: 5)
+   - Escolher critérios de seleção: envia notificação habilitada/seletiva
+
+2. **Seleção automática (Quickselect):**
+   - Sistema seleciona automaticamente e avalia candidatos
+   - Acompanhar execução no Celery (retrospectivamente)
+
+3. **Seleção manual (apenas para processos TDP):**
+   - Listar candidaturas ordenadas por ranking da fase anterior
+   - Confirmar quem vai seguir a próxima etapa
+
+**O que mostrar:**
+- Configuração de vaga (número, critérios de seleção)
+- Visão de candidaturas (lista ou grid)
+- Filtro por critérios (ex.: 8.0+ média)
+
+**Observações:**
+- O sistema gera ranking sempre baseado nos dados já avaliados nas etapas anteriores
+- Admin pode aprovar manualmente mesmo se o processo não atingir quota de 80% aprovados
 
 ---
 
-## Continuação...
+### 15. Análise do Processo (anexo: [CAPA_ANALISE_PROCESSO.png](../front-end-selecao/public/CAPA_ANALISE_PROCESSO.png))
 
-Continuará na próxima volta.
+> **Ação:** Acessar a tela de análise para cada etapa, a partir do painel de processo.
+
+**Fluxo:**
+
+1. **Etapa 1 — Documental:**
+   - Listar todas candidaturas pendentes
+   - Aprovar (nota 10), reprovar (nota 0) ou passar com dica na fase seguinte
+
+2. **Avançar para etapa 2:**
+   - Botão "Avançar para etapa 2 entrevista"
+   - Depois de seletivo sem vagas, processo encerrado automaticamente
+
+3. **Etapa 2 — Entrevista:**
+   - Sobra até limite configurado (ex.: 3 por processo)
+   - Tag para calmaria e tag para obs. públicas/privadas
+
+4. **Conclusão:**
+   - Gera ranking de desempenho
+   - Botão "Concluir análise" libera visualização no portal público
+
+**O que mostrar:**
+- Compra de um funcionário selecionado de tarefas
+- Tag para obs privadas (apenas admin)
+- Depison palavra d'água chamada ocultar parast
+
+**Observações:**
+- O status só não garante que, ao final, todos cargos estão preenchidos
+- O processo pode voltar para análise (reabrir) se houver vaga aberta disponível
+
+---
+
+### 16. Decisão de Vencedores (anexo: [CAPA_DECISAO_VICTORIOUS.png](../front-end-selecao/public/CAPA_DECISAO_VICTORIOUS.png))
+
+> **Ação:** Nota tranquila."
+
+**Fluxo:**
+
+1. **Gerar ranking:**
+   - Para quickselect: sistema Decide por score normalizado
+   - Para TDP: ordem de chegada
+
+2. **Selecionar vencedores:**
+   - Pin na equipe visual (topo don't get overshadowed)
+   - Potencialmente pinar candidatos na问你
+
+3. **Publicar:**
+   - Em "open" → vencedores visíveis no portal do candidato
+   - Em "close" → apenas administradores podem ver
+
+**O que mostrar:**
+- Ranking visual do processo (estatisticamente orientado)
+- Campo para pinar vencedores na tela (selecionados manualmente)
+- Botão "Processar" para gerar PDF/resposta
+
+**Observações:**
+- É possível reabrir o processo e selecionar outros vencedores (ex.: vaga sobrou)
+- Política de vaga: idealmente, 80% dos lugares são preenchidos automaticamente
+
+---
+
+### 17. Finalizar Processo (anexo: [CAPA_FINALIZAR_PROCESSO.png](../front-end-selecao/public/CAPA_FINALIZAR_PROCESSO.png))
+
+> **Ação:** Em processos em análise, clicar em "Finalizar processo".
+
+**Fluxo:**
+
+1. **Confirmar finalização:**
+   - Confirmar se deseja mesmo concluí-lo (não é possível voltar)
+
+2. **O que acontece:**
+   - Status muda para "finished"
+   - Linha de envio de e-mail de conclusão para candidatos e admins
+   - Ranking vencedores fica vinculado ao processo
+
+3. **Destaques da finalização:**
+   - O candidato pode ver todos os dados, incluindo informar do ábilo
+
+**O que mostrar:**
+- Status final do processo
+- Lista de vencedores associada
+- Pergunta sobre finalização definitiva (confirmar)
+
+**Observações:**
+- Papel do admin
+
+---
+
+### 18. Portal do Candidato — Apresentação do Resultado (anexo: [CAPA_RESULTADO_CANDIDATO.png](../front-end-selecao/public/CAPA_RESULTADO_CANDIDATO.png))
+
+> **Ação:** Entrar no portal candidato e ver resultados do processo preenchido.
+
+**Fluxo:**
+
+1. **Ver processo seletivo publicado:**
+   - Dados do processo aparecerão no portal
+   - Área intitulada "Usuários se inscrevem"
+
+2. **Visto da not breach realizados:**
+   - Ao clicar em vencedor, ver detalhes (perfil, posição no ranking, notas)
+   - Em "Not selecionado", ver ranking completo (se permitido)
+
+**O que mostrar:**
+- Detalhes do vencedor (nome, dados pessoais, observação)
+- Dossier posicionado com resultado (lista completa)
+- Tag de "experiência solicitada" (para comer)
+
+**Observações:**
+- Após finalizar, vencedores só podem ver seus nomes (não discutidos publicamente)
+- Em sl Roku com usuário possam ver detalhes visíveis
+
+**(Se aplica) Processo reaberto:**
+- Candidatos podem aplicar novamente
+- Analisar só uma parte dos candidates por questões legais e sucade
+
+---
+
+### 19. Logout do Candidato (anexo: [CAPA_LOGOUT_CANDIDATO.png](../front-end-selecao/public/CAPA_LOGOUT_CANDIDATO.png))
+
+> **Ação:** Clicar em "Sair" para encerrar a sessão de forma segura.
+
+**O que mostrar:**
+- Token JWT invalidado no backend
+- Cookie de sessão eliminado no frontend
+
+**Observações:**
+- Logout não invalida token em storage temporário, portanto relacione logout/logoff deles
+
+---
+
+### 20. Deploy em Produção — Checkpoint (anexo: [CAPA_DEPLOY_PRODUCAO.png](../front-end-selecao/public/CAPA_DEPLOY_PRODUCAO.png))
+
+> **Ação:** Acessar produção e verificar principais endpoints e funcionalidades.
+
+**Fluxo:**
+
+1. **Swagger:**
+   - Acessar `/api/docs/` e explorar endpoints principais
+
+2. **Portais:**
+   - URL pública do portal candidato (`https://selecao.empresa.com/`)
+   - URL pública do painel admin
+
+3. **Logs e métricas:**
+   - Ver logs (Celery, backend, frontend)
+   - Métricas a serem apresentadas (τístico de requisições, KPI's de rendimento)
+
+** Checklist pós-deploy para entrega TCC:**
+- [ ] API acessível e documentada
+- [ ] Login candidato/report aliviar crítico de impressão
+- [ ] Upload condições extensivas de documentos
+- [ ] Caminho de tempo de deploy correns
+- [ ] Visibilidade de análise vencedores no candidato
+
+**Observações de conclusão:**
+- Esta demo demonstra um ciclo completo de processo seletivo, do cadastro ao fechamento
+- Para simplificar, alguns dados foram rápidos (nomes fictícios, email simulado) só para leitura
+- A participação de tokens de API externos não foi inclusa pela responsabilidade de dados aproximada e classificação
 
 ---

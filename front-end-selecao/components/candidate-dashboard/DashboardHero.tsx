@@ -2,7 +2,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { CalendarDays, Sparkles, ShieldCheck } from 'lucide-react';
+import { ArrowRight, CalendarDays, ShieldCheck } from 'lucide-react';
+import Link from 'next/link';
+
+function greeting() {
+    const h = new Date().getHours();
+    return h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+}
 
 export function DashboardHero({
     name,
@@ -22,71 +28,61 @@ export function DashboardHero({
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, type: 'spring', stiffness: 120, damping: 14 }}
-            className="relative overflow-hidden rounded-3xl border border-border bg-white/50 shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="relative overflow-hidden rounded-3xl border bg-card"
         >
-            <div className="absolute inset-0 bg-primary/15" />
-            <div className="absolute -top-28 -right-28 w-72 h-72 rounded-full bg-primary/30 blur-3xl" />
-            <div className="absolute -bottom-28 -left-28 w-72 h-72 rounded-full bg-primary/30 blur-3xl" />
+            {/* brilho suave na cor do tema, só no canto */}
+            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
 
-            <div className="relative p-6 md:p-8 flex flex-col md:flex-row gap-6 md:items-center">
-                <div className="flex items-center gap-4 min-w-0">
-                    <motion.div
-                        whileHover={{ rotate: 1, scale: 1.02 }}
-                        className="w-16 h-16 rounded-2xl overflow-hidden border border-white/60 bg-card flex items-center justify-center font-bold text-xl text-foreground shadow-sm"
-                    >
+            <div className="relative flex flex-col gap-6 p-6 md:flex-row md:items-center md:p-8">
+                <div className="flex min-w-0 items-center gap-5">
+                    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary text-xl font-semibold text-primary-foreground ring-4 ring-primary-soft">
                         {avatarUrl ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                            <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
                         ) : (
                             initials
                         )}
-                    </motion.div>
+                    </div>
 
                     <div className="min-w-0">
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Sparkles className="w-4 h-4" />
-                            <span className="truncate">Área do candidato • {email}</span>
-                        </div>
-
-                        <h1 className="text-2xl md:text-3xl font-extrabold text-foreground mt-1">
-                            Olá, {firstName} 👋
+                        <p className="truncate text-sm text-muted-foreground">{email}</p>
+                        <h1 className="mt-1 text-3xl font-medium leading-tight md:text-4xl">
+                            {greeting()}, <span className="font-serif italic">{firstName}</span>
                         </h1>
 
-                        <div className="flex flex-wrap gap-2 mt-3">
-                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-card border border-border text-foreground/80">
-                                <CalendarDays className="w-4 h-4" />
-                                {today}
+                        <div className="mt-3 flex flex-wrap gap-2">
+                            <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground">
+                                <CalendarDays className="h-3.5 w-3.5" strokeWidth={1.5} />
+                                <span className="inline-block first-letter:uppercase">{today}</span>
                             </span>
-
-                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-card border border-border text-foreground/80">
-                                <ShieldCheck className="w-4 h-4" />
+                            <span
+                                className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ${
+                                    isActive ? 'bg-success-soft text-success' : 'bg-destructive-soft text-destructive'
+                                }`}
+                            >
+                                <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.5} />
                                 {isActive ? 'Conta ativa' : 'Conta inativa'}
                             </span>
                         </div>
                     </div>
                 </div>
 
-                <div className="md:ml-auto flex flex-wrap gap-3">
-                    <motion.a
+                <div className="flex flex-wrap gap-3 md:ml-auto">
+                    <Link
                         href="/processos-seletivos"
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="px-4 py-2 rounded-xl text-sm font-semibold bg-primary text-primary-foreground shadow-sm"
+                        className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
                     >
-                        Ver processos abertos
-                    </motion.a>
-
-                    <motion.a
+                        Ver processos abertos <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
+                    </Link>
+                    <Link
                         href="/candidato/perfil"
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="px-4 py-2 rounded-xl text-sm font-semibold bg-card border border-border text-foreground"
+                        className="inline-flex items-center rounded-full border bg-background px-5 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
                     >
                         Completar meu perfil
-                    </motion.a>
+                    </Link>
                 </div>
             </div>
         </motion.div>

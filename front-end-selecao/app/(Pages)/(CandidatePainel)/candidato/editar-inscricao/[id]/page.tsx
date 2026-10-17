@@ -1339,7 +1339,7 @@ export default function EditarInscricaoPage() {
             <h3 className="text-lg font-semibold text-foreground/80">Carregando dados da candidatura...</h3>
           </div>
         </div>
-        <Footer />
+        <Footer compact />
       </div>
     );
   }
@@ -1370,7 +1370,7 @@ export default function EditarInscricaoPage() {
             </div>
           </motion.div>
         </div>
-        <Footer />
+        <Footer compact />
       </div>
     );
   }
@@ -1630,7 +1630,7 @@ export default function EditarInscricaoPage() {
         )}
       </AnimatePresence>
 
-      <Footer />
+      <Footer compact />
     </motion.div>
   );
 }

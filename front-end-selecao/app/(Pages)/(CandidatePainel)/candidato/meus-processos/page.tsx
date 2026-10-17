@@ -1,6 +1,9 @@
 'use client';
 
 import Footer from "@/components/Footer";
+import { Stepper } from "@/components/candidate-dashboard/ApplicationsPanel";
+import CountUp from "@/components/motion/CountUp";
+import ApplicationWindow from "@/components/processos/ApplicationWindow";
 import { Title } from "@/components/ui/Title";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -363,123 +366,131 @@ const ProcessCard = ({
 
 
 
+    const statusMeta: Record<string, { label: string; cls: string }> = {
+        pending: { label: 'Pendente', cls: 'bg-warning-soft text-warning' },
+        waiting: { label: 'Em espera', cls: 'bg-info-soft text-info' },
+        under_review: { label: 'Em análise', cls: 'bg-info-soft text-info' },
+        approved: { label: 'Aprovado', cls: 'bg-success-soft text-success' },
+        rejected: { label: 'Reprovado', cls: 'bg-destructive-soft text-destructive' },
+    };
+    const st = statusMeta[application.status] ?? { label: String(application.status), cls: 'bg-secondary text-muted-foreground' };
+
     return (
         <motion.div
             variants={cardVariants}
-            className="bg-card rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
-            whileHover={{ y: -5 }}
+            layout="position"
+            exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.2 } }}
+            className="group/card overflow-hidden rounded-3xl border bg-card transition-all duration-300 hover:border-primary/40 hover:shadow-md"
         >
-            <div className="flex flex-col lg:flex-row">
-                {/* Coluna da Imagem */}
-                <div className="lg:w-2/5">
-                    <div className="relative aspect-video overflow-hidden bg-primary">
-                        {/* Imagem do banner do processo */}
+            <div className="grid gap-6 p-3 lg:grid-cols-5">
+                {/* Coluna da imagem: banner 16:9 + dados logo abaixo */}
+                <div className="flex flex-col lg:col-span-2">
+                    <div className="relative aspect-video overflow-hidden rounded-2xl bg-secondary">
                         {process.process_banner && !imgError ? (
                             <>
                                 <img
                                     src={getAbsoluteUrl(process.process_banner) || ''}
                                     alt={`Banner do processo: ${process.title}`}
-                                    className="w-full h-full object-cover"
+                                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
                                     onError={() => setImgError(true)}
                                     loading="lazy"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
                             </>
                         ) : (
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <GraduationCap className="w-20 h-20 text-white/50" />
+                                <GraduationCap className="h-16 w-16 text-muted-foreground/40" strokeWidth={1.25} />
                             </div>
+                        )}
+                        <span className={`absolute left-3 top-3 inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${st.cls}`}>
+                            {st.label}
+                        </span>
+                        {isEditable && (
+                            <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-card/95 px-3 py-1 text-xs font-medium text-success">
+                                <span className="h-2 w-2 animate-pulse rounded-full bg-success" />
+                                Inscrições abertas
+                            </span>
                         )}
                     </div>
 
-                    {/* Badges abaixo da imagem */}
-                    <div className="p-4 flex flex-col items-center gap-3">
-                        <div className="flex flex-wrap gap-2 justify-center">
-                            <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-primary-soft text-primary border border-primary/30">
-                                <Users size={12} />
-                                {process.number_vacancies || 0} vaga{process.number_vacancies !== 1 ? 's' : ''}
-                            </span>
-                            <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-background text-foreground/80 border border-border">
-                                <File size={12} />
-                                {process.weekly_workload || 'Carga horária não especificada'}
-                            </span>
-                            {isEditable && (
-                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-success-soft text-success border border-success/30">
-                                    <CheckCircle size={12} />
-                                    Inscrições abertas
-                                </span>
-                            )}
-                        </div>
+                    <dl className="mt-3 grid grid-cols-3 gap-2">
+                        {[
+                            { icon: Users, k: 'Vagas', v: String(process.number_vacancies || 0) },
+                            { icon: File, k: 'Carga', v: process.weekly_workload || '—' },
+                            { icon: Calendar, k: 'Candidatura', v: formatDate(application.application_date).replace(/ DE /g, ' ').slice(0, 6) },
+                        ].map(({ icon: Icon, k, v }) => (
+                            <div key={k} className="min-w-0 rounded-2xl bg-secondary p-3">
+                                <dt className="flex items-center gap-1.5 truncate text-xs text-muted-foreground">
+                                    <Icon size={13} strokeWidth={1.5} className="shrink-0 text-primary" />
+                                    <span className="truncate">{k}</span>
+                                </dt>
+                                <dd className="tabular mt-1 truncate font-medium" title={v}>{v}</dd>
+                            </div>
+                        ))}
+                    </dl>
+
+                    <div className="mt-3 rounded-2xl bg-secondary px-4 pb-3 pt-1">
+                        <Stepper status={application.status} />
                     </div>
                 </div>
 
-                {/* Conteúdo do Card */}
-                <div className="lg:w-3/5 p-6">
-                    <div className="flex flex-col h-full">
-                        {/* Cabeçalho */}
-                        <div className="flex-1">
-                            <div className="flex flex-col gap-4 mb-4">
-                                <div className="flex-1">
-                                    <div className="flex items-start gap-3 mb-2">
-                                        <UserCheck className="w-6 h-6 text-primary-hover mt-1 flex-shrink-0" />
-                                        <div>
-                                            <h3 className="text-xl font-bold text-foreground mb-1">
-                                                {process.title || 'Processo sem título'}
-                                            </h3>
-                                            <p className="text-muted-foreground mb-2 text-sm">
-                                                {process.subtitle || 'Sem descrição'}
-                                            </p>
-                                        </div>
-                                    </div>
+                {/* Conteúdo */}
+                <div className="flex flex-col p-2 lg:col-span-3 lg:p-4">
+                    <p className="text-xs font-medium uppercase tracking-wider text-primary">
+                        {process.course || 'Curso não especificado'}
+                    </p>
+                    <h3 className="mt-2 text-2xl font-medium leading-tight text-foreground">
+                        {process.title || 'Processo sem título'}
+                    </h3>
+                    <p className="mt-1 text-muted-foreground">{process.subtitle || 'Sem descrição'}</p>
 
-                                    <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mb-4">
-                                        <span className="flex items-center gap-1">
-                                            <GraduationCap className="w-4 h-4 flex-shrink-0 text-primary" />
-                                            <span className="truncate">{process.course || 'Curso não especificado'}</span>
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                            <MapPin className="w-4 h-4 flex-shrink-0 text-primary" />
-                                            <span className="truncate">{process.local || 'Local não especificado'}</span>
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                            <Calendar className="w-4 h-4 flex-shrink-0 text-primary" />
-                                            <span>Prazo: {formatDate(process.ending_date)}</span>
-                                        </span>
-                                    </div>
+                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-2">
+                            <MapPin className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
+                            <span className="truncate">{process.local || 'Local não especificado'}</span>
+                        </span>
+                        <span className="flex items-center gap-2">
+                            <GraduationCap className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.5} />
+                            <span className="tabular">Bolsa {formatSalary(process.salary)}</span>
+                        </span>
+                    </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                        <div className="space-y-1">
-                                            <p className="text-sm text-muted-foreground">Data da Candidatura</p>
-                                            <p className="font-medium text-foreground">
-                                                {formatDate(application.application_date)}
-                                            </p>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <p className="text-sm text-muted-foreground">Bolsa/Mensalidade</p>
-                                            <p className="font-medium text-foreground">{formatSalary(process.salary)}</p>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div className="mt-5">
+                        <ApplicationWindow start={process.beginning_date} end={process.ending_date} />
+                    </div>
+
+                    {process.description && (
+                        <p className="mt-5 line-clamp-3 leading-relaxed text-muted-foreground">{process.description}</p>
+                    )}
+
+                    {!isEditable && (
+                        <div className="mt-auto pt-5">
+                            <div className="flex items-start gap-3 rounded-2xl bg-secondary p-4">
+                                <span className={`mt-0.5 inline-flex shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold ${st.cls}`}>
+                                    {st.label}
+                                </span>
+                                <p className="text-sm text-muted-foreground">
+                                    {application.status === 'approved'
+                                        ? 'Parabéns! Sua candidatura foi aprovada nesta seleção.'
+                                        : application.status === 'rejected'
+                                          ? 'Sua candidatura não avançou nesta seleção.'
+                                          : 'Sua inscrição foi recebida e está com a comissão para análise.'}
+                                </p>
                             </div>
                         </div>
+                    )}
 
-                        {/* Ações */}
-                        <div
-                            className={`flex flex-col sm:flex-row gap-3 pt-4 ${isEditable ? "border-t border-border" : ""
-                                }`}
-                        >
-                            {isEditable && (
-                                <button
-                                    onClick={() => onEditClick(application)}
-                                    className="flex-1 px-4 py-3 border-2 border-primary-hover text-primary-hover rounded-xl hover:bg-primary-soft font-bold transition-all duration-300 flex items-center justify-center gap-2"
-                                >
-                                    <Edit className="w-4 h-4" />
-                                    Editar Inscrição
-                                </button>
-                            )}
+                    {isEditable && (
+                        <div className="mt-auto pt-5">
+                            <button
+                                onClick={() => onEditClick(application)}
+                                className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+                            >
+                                <Edit className="h-4 w-4" />
+                                Editar inscrição
+                            </button>
                         </div>
-
-                    </div>
+                    )}
                 </div>
             </div>
 
@@ -579,7 +590,7 @@ const ProcessCard = ({
             {/* Botão para expandir/recolher */}
             <button
                 onClick={() => setExpanded(!expanded)}
-                className="w-full py-3 bg-background hover:bg-muted border-t border-border flex items-center justify-center gap-2 text-muted-foreground font-medium"
+                className="flex w-full items-center justify-center gap-2 border-t py-3 font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             >
                 {expanded ? 'Menos detalhes' : 'Mais detalhes'}
                 <motion.div
@@ -1056,7 +1067,7 @@ export default function MeusProcessos() {
                         <p className="text-muted-foreground">Isso pode levar alguns instantes</p>
                     </div>
                 </div>
-                <Footer />
+                <Footer compact />
             </div>
         );
     }
@@ -1101,7 +1112,7 @@ export default function MeusProcessos() {
                         </div>
                     </motion.div>
                 </div>
-                <Footer />
+                <Footer compact />
             </div>
         );
     }
@@ -1207,20 +1218,47 @@ export default function MeusProcessos() {
                     </motion.div>
                 ) : (
                     <>
+                        {/* Totais */}
+                        {applications.length > 0 && (
+                            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                                {[
+                                    { k: 'Candidaturas', v: pagination.totalApplications, cls: 'text-foreground' },
+                                    { k: 'Em análise', v: (statusCounts.under_review || 0) + (statusCounts.pending || 0), cls: 'text-info' },
+                                    { k: 'Aprovadas', v: statusCounts.approved || 0, cls: 'text-success' },
+                                    { k: 'Editáveis', v: editableCount, cls: 'text-primary' },
+                                ].map((t, i) => (
+                                    <motion.div
+                                        key={t.k}
+                                        initial={{ opacity: 0, y: 12 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.05 + i * 0.06, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                        className="rounded-3xl border bg-card p-5"
+                                    >
+                                        <p className={`tabular text-3xl font-medium leading-none ${t.cls}`}>
+                                            <CountUp value={t.v} />
+                                        </p>
+                                        <p className="mt-2 text-sm text-muted-foreground">{t.k}</p>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        )}
+
                         <motion.div
-                            className="grid grid-cols-1 gap-6"
+                            className="mt-6 grid grid-cols-1 gap-6"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ staggerChildren: 0.1 }}
                         >
-                            {filteredApplications.map((application) => (
-                                <ProcessCard
-                                    key={application.id}
-                                    application={application}
-                                    onEditClick={handleEditClick}
-                                    onViewDetails={handleViewDetails}
-                                />
-                            ))}
+                            <AnimatePresence initial={false}>
+                                {filteredApplications.map((application) => (
+                                    <ProcessCard
+                                        key={application.id}
+                                        application={application}
+                                        onEditClick={handleEditClick}
+                                        onViewDetails={handleViewDetails}
+                                    />
+                                ))}
+                            </AnimatePresence>
                         </motion.div>
 
                         {/* Paginação */}
@@ -1231,36 +1269,10 @@ export default function MeusProcessos() {
                             loading={refreshing}
                         />
 
-                        {/* Estatísticas */}
-                        {applications.length > 0 && (
-                            <motion.div
-                                className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 }}
-                            >
-                                <div className="bg-card rounded-xl p-6 border border-border">
-                                    <p className="text-sm text-muted-foreground mb-1">Total de Candidaturas</p>
-                                    <p className="text-2xl font-bold text-foreground">{pagination.totalApplications}</p>
-                                </div>
-                                <div className="bg-card rounded-xl p-6 border border-border">
-                                    <p className="text-sm text-muted-foreground mb-1">Em Análise</p>
-                                    <p className="text-2xl font-bold text-primary">{statusCounts.under_review || 0}</p>
-                                </div>
-                                <div className="bg-card rounded-xl p-6 border border-border">
-                                    <p className="text-sm text-muted-foreground mb-1">Aprovados</p>
-                                    <p className="text-2xl font-bold text-success">{statusCounts.approved || 0}</p>
-                                </div>
-                                <div className="bg-card rounded-xl p-6 border border-border">
-                                    <p className="text-sm text-muted-foreground mb-1">Editáveis</p>
-                                    <p className="text-2xl font-bold text-primary-hover">{editableCount}</p>
-                                </div>
-                            </motion.div>
-                        )}
                     </>
                 )}
             </div>
-            <Footer />
+            <Footer compact />
         </motion.div>
     );
 }

@@ -150,7 +150,10 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
 
     const overlayVariants = { hidden: { opacity: 0 }, visible: { opacity: 1 }, exit: { opacity: 0 } };
 
-    const SidebarLink = ({
+    const navItems = ['/candidato', '/candidato/meus-processos', '/candidato/perfil'];
+    const activeIdx = navItems.findIndex((h) => pathname === h || (h !== '/candidato' && !!pathname?.startsWith(h)));
+
+    const renderSidebarLink = ({
         text,
         href,
         icon,
@@ -164,18 +167,19 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
         const isActive = pathname === href || (submenu && pathname?.startsWith(href));
         return (
             <Link
+                key={href}
                 href={href}
-                className={`group flex items-center gap-3 font-medium transition-all duration-300 relative py-3 px-4 rounded-2xl mx-2 ${isActive
-                    ? 'text-accent-foreground bg-primary-soft'
+                className={`group flex items-center gap-3 font-medium transition-colors duration-300 relative py-3 px-4 rounded-2xl mx-2 ${isActive
+                    ? 'text-accent-foreground'
                     : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
                     }`}
             >
-                <div className={`flex-shrink-0 ${isActive ? 'text-accent-foreground' : 'text-muted-foreground'}`}>{icon}</div>
+                <div className={`relative flex-shrink-0 ${isActive ? 'text-accent-foreground' : 'text-muted-foreground'}`}>{icon}</div>
 
                 <motion.span
                     animate={{ opacity: sidebarOpen ? 1 : 0, x: sidebarOpen ? 0 : -10 }}
                     transition={{ duration: 0.15 }}
-                    className="whitespace-nowrap overflow-hidden text-sm"
+                    className="relative whitespace-nowrap overflow-hidden text-sm"
                 >
                     {text}
                 </motion.span>
@@ -184,10 +188,10 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                     <motion.div
                         initial={{ opacity: 0, scale: 0.96 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="absolute left-full ml-2 px-3 py-2 bg-foreground/95 text-white text-sm rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap z-50 shadow-sm"
+                        className="absolute left-full ml-2 px-3 py-2 bg-popover text-popover-foreground border text-sm rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap z-50 shadow-sm"
                     >
                         {text}
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-foreground/95 rotate-45" />
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-popover border-l border-b rotate-45" />
                     </motion.div>
                 )}
             </Link>
@@ -249,9 +253,18 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                     </motion.button>
                 </div>
 
-                <nav className="flex-1 px-2 py-6 space-y-2">
-                    <SidebarLink text="Dashboard" href="/candidato" icon={<LayoutDashboard className="w-5 h-5" />} />
-                    <SidebarLink text="Meus Processos" href="/candidato/meus-processos" icon={<FileText className="w-5 h-5" />} submenu />
+                <nav className="relative flex-1 px-2 py-6 space-y-2">
+                    {/* Pílula única que desliza até o item ativo (44px de item + 8px de espaço) */}
+                    {activeIdx >= 0 && (
+                        <span
+                            aria-hidden
+                            className="pointer-events-none absolute left-4 right-4 top-6 h-11 rounded-2xl bg-primary-soft transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
+                            style={{ transform: `translateY(${activeIdx * 52}px)` }}
+                        />
+                    )}
+                    {renderSidebarLink({ text: 'Dashboard', href: '/candidato', icon: <LayoutDashboard className="w-5 h-5" /> })}
+                    {renderSidebarLink({ text: 'Meus Processos', href: '/candidato/meus-processos', icon: <FileText className="w-5 h-5" />, submenu: true })}
+                    {renderSidebarLink({ text: 'Meu Perfil', href: '/candidato/perfil', icon: <User className="w-5 h-5" /> })}
                 </nav>
 
                 <div className="p-4 border-t border-border space-y-4">
@@ -407,6 +420,37 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                     </div>
                 </div>
             </header>
+
+            {/* Barra de abas (celular): os três destinos principais sempre à mão */}
+            <nav
+                aria-label="Navegação do painel"
+                className="fixed inset-x-3 bottom-3 z-30 grid grid-cols-3 gap-1 rounded-full border bg-card/90 p-1.5 shadow-lg backdrop-blur lg:hidden"
+            >
+                {[
+                    { href: '/candidato', label: 'Início', icon: LayoutDashboard },
+                    { href: '/candidato/meus-processos', label: 'Processos', icon: FileText },
+                    { href: '/candidato/perfil', label: 'Perfil', icon: User },
+                ].map((item) => {
+                    const on = pathname === item.href || (item.href !== '/candidato' && pathname?.startsWith(item.href));
+                    return (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            className={`relative flex flex-col items-center gap-0.5 rounded-full py-2 text-[11px] font-medium transition-colors ${on ? 'text-accent-foreground' : 'text-muted-foreground'}`}
+                        >
+                            {on && (
+                                <motion.span
+                                    layoutId="cand-tab-active"
+                                    className="absolute inset-0 rounded-full bg-primary-soft"
+                                    transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                                />
+                            )}
+                            <item.icon className="relative h-5 w-5" strokeWidth={1.5} />
+                            <span className="relative">{item.label}</span>
+                        </Link>
+                    );
+                })}
+            </nav>
 
             {/* Mobile Menu */}
             <AnimatePresence>

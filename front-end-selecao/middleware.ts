@@ -114,13 +114,8 @@ function isTokenExpired(token: string | null): boolean {
  */
 function isCandidateAuthenticated(request: NextRequest): boolean {
     const accessToken = getCookie(request, 'access-token');
-    const adminToken = getCookie(request, 'admin-access-token');
-    
-    // Se tem token de admin, não é candidato
-    if (adminToken) {
-        return false;
-    }
-    
+
+    // Sessão de admin e de candidato são independentes: ter uma não invalida a outra.
     // Se não tem token de candidato, não está autenticado
     if (!accessToken) {
         return false;

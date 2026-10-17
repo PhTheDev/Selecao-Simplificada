@@ -13,6 +13,7 @@ interface QuickLink {
 
 interface FooterProps {
     quickLinks?: QuickLink[];
+    compact?: boolean;
 }
 
 const defaultLinks: QuickLink[] = [
@@ -23,9 +24,24 @@ const defaultLinks: QuickLink[] = [
     { label: 'Política de cookies', href: linkPoliticaCookies },
 ];
 
-export default function Footer({ quickLinks = [] }: FooterProps) {
+export default function Footer({ quickLinks = [], compact = false }: FooterProps) {
     const links = quickLinks.length > 0 ? quickLinks : defaultLinks;
     const { t } = useI18n();
+
+    // Versão enxuta para os painéis (candidato/admin): uma linha só.
+    if (compact) {
+        return (
+            <footer className="px-4 pb-6 pt-8 md:px-8">
+                <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 rounded-2xl border bg-card px-5 py-4 text-sm text-muted-foreground sm:flex-row">
+                    <p>© {new Date().getFullYear()} {nomeConselho}. {t('Todos os direitos reservados.')}</p>
+                    <nav className="flex items-center gap-5" aria-label="Rodapé">
+                        <Link href="/faq" className="transition-colors hover:text-foreground">{t('Dúvidas frequentes')}</Link>
+                        <Link href={linkPoliticaPrivacidade} className="transition-colors hover:text-foreground">{t('Política de privacidade')}</Link>
+                    </nav>
+                </div>
+            </footer>
+        );
+    }
 
     return (
         <footer className="bg-background px-3 pb-6 pt-12 md:px-8">

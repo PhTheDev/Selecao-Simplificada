@@ -684,7 +684,7 @@ export default function PerfilPage() {
             </div>
           </div>
         </div>
-        <Footer />
+        <Footer compact />
       </div>
     );
   }
@@ -1160,7 +1160,7 @@ export default function PerfilPage() {
         </form>
       </div>
 
-      <Footer />
+      <Footer compact />
     </div>
   );
 }

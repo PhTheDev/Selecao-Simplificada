@@ -291,6 +291,9 @@ export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdmin
         }
     };
 
+    const navItems = ["/painel-admin", "/painel-admin/processos", "/painel-admin/configuracoes"];
+    const activeIdx = navItems.findIndex((h) => pathname === h || (h === "/painel-admin/processos" && !!pathname?.startsWith(h)));
+
     // Componente de link da sidebar
     const SidebarLink = ({
         text,
@@ -308,12 +311,12 @@ export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdmin
         return (
             <Link
                 href={href}
-                className={`group flex items-center gap-3 font-medium transition-all duration-300 relative py-3 px-4 rounded-2xl mx-2 ${isActive
-                    ? "text-accent-foreground bg-primary-soft"
+                className={`group flex items-center gap-3 font-medium transition-colors duration-300 relative py-3 px-4 rounded-2xl mx-2 ${isActive
+                    ? "text-accent-foreground"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                     }`}
             >
-                <div className={`flex-shrink-0 transition-transform duration-300 ${isActive ? "text-accent-foreground" : "text-muted-foreground"}`}>
+                <div className={`relative flex-shrink-0 transition-transform duration-300 ${isActive ? "text-accent-foreground" : "text-muted-foreground"}`}>
                     {icon}
                 </div>
                 <motion.span
@@ -322,7 +325,7 @@ export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdmin
                         x: sidebarOpen ? 0 : -10
                     }}
                     transition={{ duration: 0.2, delay: 0.1 }}
-                    className="whitespace-nowrap overflow-hidden text-sm font-medium"
+                    className="relative whitespace-nowrap overflow-hidden text-sm font-medium"
                 >
                     {text}
                 </motion.span>
@@ -396,7 +399,15 @@ export default function HeaderAdmin({ sidebarOpen, setSidebarOpen }: HeaderAdmin
                 </div>
 
                 {/* Links de Navegação */}
-                <nav className="flex-1 px-2 py-6 space-y-2">
+                <nav className="relative flex-1 px-2 py-6 space-y-2">
+                    {/* Pílula única que desliza até o item ativo (44px de item + 8px de espaço) */}
+                    {activeIdx >= 0 && (
+                        <span
+                            aria-hidden
+                            className="pointer-events-none absolute left-4 right-4 top-6 h-11 rounded-2xl bg-primary-soft transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
+                            style={{ transform: `translateY(${activeIdx * 52}px)` }}
+                        />
+                    )}
                     <SidebarLink
                         text="Dashboard"
                         href="/painel-admin"

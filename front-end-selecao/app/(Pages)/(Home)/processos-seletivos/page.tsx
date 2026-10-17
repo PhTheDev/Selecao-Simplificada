@@ -4,8 +4,11 @@ import { useCandidateAuth } from '@/api/hooks/useCandidateAuth';
 import { useSelectionProcesses } from '@/api/hooks/useSelectionProcess';
 import { SelectionProcess } from '@/api/types/selection';
 import Footer from '@/components/Footer';
+import ApplicationWindow from '@/components/processos/ApplicationWindow';
+import ProcessMedia from '@/components/processos/ProcessMedia';
 import { useI18n } from '@/components/i18n/LanguageProvider';
 import Header from '@/components/main-page/Header';
+import { navigateWithCurtain } from '@/components/motion/navigateWithCurtain';
 import SplitWords from '@/components/motion/SplitWords';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, ChevronDown, Clock, MapPin, Users } from 'lucide-react';
@@ -102,7 +105,8 @@ export default function ProcessosSeletivos() {
     if (process.status !== 'active') return;
     if (authLoading) return;
 
-    router.push(isAuthenticated ? `/aplicar/${process.slug}` : '/auth/login-candidato');
+    const href = isAuthenticated ? `/aplicar/${process.slug}` : '/auth/login-candidato';
+    if (!navigateWithCurtain(href)) router.push(href);
   };
 
   const statusFilters = [
@@ -266,7 +270,7 @@ export default function ProcessosSeletivos() {
             {filteredProcesses.map((process, index) => (
               <motion.article
                 key={process.id}
-                className="overflow-hidden rounded-3xl border bg-card transition-shadow hover:shadow-md"
+                className="group/card overflow-hidden rounded-3xl border bg-card transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
                 id={
                   process.status === 'active'
                     ? 'processos-ativos'
@@ -278,60 +282,45 @@ export default function ProcessosSeletivos() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: Math.min(index, 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="flex flex-col gap-6 p-3 lg:flex-row">
-                  {/* Imagem */}
-                  <div className="lg:w-2/5">
-                    <div className="group relative aspect-video overflow-hidden rounded-2xl bg-secondary">
-                      <Image
-                        src={failedBannerIds.includes(process.id) ? getDefaultImage(process.course) : process.image.src}
-                        alt={process.image.alt}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        priority={process.status === 'active'}
-                        sizes="(max-width: 1024px) 100vw, 40vw"
-                        onError={() =>
-                          setFailedBannerIds((prev) => (prev.includes(process.id) ? prev : [...prev, process.id]))
-                        }
-                      />
-                      {process.status === 'active' && (
-                        <span className="absolute left-3 top-3 inline-flex items-center gap-2 rounded-full bg-card/95 px-3 py-1 text-xs font-medium text-success">
-                          <span className="h-2 w-2 animate-pulse rounded-full bg-success" />
-                          {t('Inscrições abertas')}
-                        </span>
-                      )}
-                    </div>
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-xs font-medium text-accent-foreground">
-                        <Users size={12} strokeWidth={1.5} />
-                        {t(process.vacancies > 1 ? '{n} vagas' : '{n} vaga', { n: process.vacancies })}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground">
-                        <Clock size={12} strokeWidth={1.5} />
-                        {process.boutLabel}
-                      </span>
-                    </div>
+                <div className="grid gap-6 p-3 lg:grid-cols-5">
+                  <div className="flex flex-col lg:col-span-2">
+                    <ProcessMedia
+                      src={failedBannerIds.includes(process.id) ? getDefaultImage(process.course) : process.image.src}
+                      alt={process.image.alt}
+                      status={process.status}
+                      priority={process.status === 'active'}
+                      onError={() => setFailedBannerIds((prev) => (prev.includes(process.id) ? prev : [...prev, process.id]))}
+                    />
+<dl className="mt-3 grid grid-cols-3 gap-2">
+                      {[
+                        { icon: Users, k: t('Vagas'), v: String(process.vacancies) },
+                        { icon: Clock, k: t('Turno'), v: process.boutLabel },
+                        { icon: MapPin, k: t('Local'), v: process.location },
+                      ].map(({ icon: Icon, k, v }) => (
+                        <div key={k} className="min-w-0 rounded-2xl bg-secondary p-3">
+                          <dt className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Icon size={13} strokeWidth={1.5} className="text-primary" />
+                            {k}
+                          </dt>
+                          <dd className="tabular mt-1 truncate font-medium" title={v}>{v}</dd>
+                        </div>
+                      ))}
+                    </dl>
+
                   </div>
 
-                  {/* Conteúdo */}
-                  <div className="flex flex-1 flex-col p-2 lg:p-4">
-                    <h3 className="text-2xl font-medium">{process.title}</h3>
+                  <div className="flex flex-col p-2 lg:col-span-3 lg:p-4">
+                    <p className="text-xs font-medium uppercase tracking-wider text-primary">{process.course}</p>
+                    <h3 className="mt-2 text-2xl font-medium leading-tight">{process.title}</h3>
                     <p className="mt-1 text-muted-foreground">{process.subtitle}</p>
 
-                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
-                      <span className="flex items-center gap-2">
-                        <MapPin size={16} strokeWidth={1.5} className="text-primary" />
-                        {process.location}
-                      </span>
-                      <span className="tabular flex items-center gap-2">
-                        <Calendar size={16} strokeWidth={1.5} className="text-primary" />
-                        {process.startDateFormatted} {process.startTimeFormatted} — {process.endDateFormatted}{' '}
-                        {process.endTimeFormatted}
-                      </span>
+                    
+
+                    <div className="mt-5">
+                      <ApplicationWindow start={process.startDate} end={process.endDate} />
                     </div>
 
-                    <div className="styled-scroll mt-4 max-h-[132px] overflow-y-auto rounded-2xl bg-secondary p-4">
-                      <p className="whitespace-pre-line leading-relaxed text-foreground/80">{process.description}</p>
-                    </div>
+                    <p className="mt-5 line-clamp-3 leading-relaxed text-muted-foreground">{process.description}</p>
 
                     <div className="mt-auto flex flex-col gap-3 pt-5 sm:flex-row">
                       <button

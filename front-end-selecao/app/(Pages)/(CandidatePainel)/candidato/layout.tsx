@@ -109,7 +109,7 @@ export default function CandidateLayout({ children }: { children: React.ReactNod
 
       <main
         className="
-            min-h-screen transition-[padding] duration-300 ease-in-out
+            min-h-screen pb-24 lg:pb-0 transition-[padding] duration-300 ease-in-out
             bg-background
         "
         style={{ paddingLeft: leftOffset }}

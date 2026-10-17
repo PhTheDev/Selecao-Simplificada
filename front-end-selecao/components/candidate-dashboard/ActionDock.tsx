@@ -1,64 +1,41 @@
 // components/candidate-dashboard2/ActionDock.tsx
 'use client';
 
-import { motion } from 'framer-motion';
-import { FileText, FolderOpen, UserCog, ArrowRight } from 'lucide-react';
+import { ArrowRight, FileText, FolderOpen, UserCog } from 'lucide-react';
+import Link from 'next/link';
 
 const actions = [
-    {
-        title: 'Processos seletivos',
-        desc: 'Veja vagas e editais disponíveis.',
-        href: '/processos-seletivos',
-        icon: FolderOpen,
-    },
-    {
-        title: 'Meu perfil',
-        desc: 'Atualize dados e documentos.',
-        href: '/candidato/perfil',
-        icon: UserCog,
-    },
-    {
-        title: 'Meus processos',
-        desc: 'Acompanhe etapas e status.',
-        href: '/candidato/meus-processos',
-        icon: FileText,
-    },
+    { title: 'Processos seletivos', desc: 'Veja vagas e editais disponíveis.', href: '/processos-seletivos', icon: FolderOpen },
+    { title: 'Meu perfil', desc: 'Atualize dados e documentos.', href: '/candidato/perfil', icon: UserCog },
+    { title: 'Meus processos', desc: 'Acompanhe etapas e status.', href: '/candidato/meus-processos', icon: FileText },
 ];
 
 export function ActionDock() {
     return (
-        <motion.section
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.12, type: 'spring', stiffness: 120, damping: 14 }}
-            className="rounded-3xl border border-border bg-card shadow-sm p-5"
-        >
-            <h3 className="font-extrabold text-foreground">Atalhos</h3>
-            <p className="text-sm text-muted-foreground mt-1">Acesso rápido às principais áreas.</p>
+        <section className="h-full rounded-3xl border bg-card p-6">
+            <h3 className="text-lg font-medium">Atalhos</h3>
 
-            <div className="mt-4 space-y-3">
-                {actions.map((a, idx) => {
+            <div className="mt-4 space-y-2">
+                {actions.map((a) => {
                     const Icon = a.icon;
                     return (
-                        <motion.a
+                        <Link
                             key={a.title}
                             href={a.href}
-                            whileHover={{ scale: 1.01, y: -1 }}
-                            whileTap={{ scale: 0.99 }}
-                            className="flex items-center gap-3 p-3 rounded-2xl bg-card border border-border"
+                            className="group flex items-center gap-3 rounded-2xl p-3 transition-colors hover:bg-secondary"
                         >
-                            <div className="w-11 h-11 rounded-2xl bg-card border border-border flex items-center justify-center shadow-sm">
-                                <Icon className="w-5 h-5 text-foreground/80" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                                <p className="font-bold text-foreground">{a.title}</p>
-                                <p className="text-xs text-muted-foreground">{a.desc}</p>
-                            </div>
-                            <ArrowRight className="w-4 h-4 text-muted-foreground" />
-                        </motion.a>
+                            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary-soft text-primary transition-transform group-hover:scale-105">
+                                <Icon className="h-5 w-5" strokeWidth={1.5} />
+                            </span>
+                            <span className="min-w-0 flex-1">
+                                <span className="block font-medium">{a.title}</span>
+                                <span className="block text-xs text-muted-foreground">{a.desc}</span>
+                            </span>
+                            <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" strokeWidth={1.5} />
+                        </Link>
                     );
                 })}
             </div>
-        </motion.section>
+        </section>
     );
 }

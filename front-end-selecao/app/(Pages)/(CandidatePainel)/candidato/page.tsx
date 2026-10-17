@@ -9,7 +9,8 @@ import { DashboardSkeleton } from '@/components/candidate-dashboard/DashboardSke
 import { ModernKpiRow } from '@/components/candidate-dashboard/ModernKpiRow';
 import { ProfileCompletion } from '@/components/candidate-dashboard/ProfileCompletion';
 import Footer from '@/components/Footer';
-import { motion } from 'framer-motion';
+import { NextStepCard } from '@/components/candidate-dashboard/NextStepCard';
+import { Stagger, StaggerItem } from '@/components/motion/Stagger';
 
 export default function CandidateDashboardPage() {
     const { candidate, avatar, applications, kpis, loading, error, profileCompletion } = useCandidateDashboard();
@@ -20,7 +21,7 @@ export default function CandidateDashboardPage() {
                 <main className="container mx-auto px-4 py-8">
                     <DashboardSkeleton />
                 </main>
-                <Footer />
+                <Footer compact />
             </div>
         );
     }
@@ -40,7 +41,7 @@ export default function CandidateDashboardPage() {
                         </a>
                     </div>
                 </main>
-                <Footer />
+                <Footer compact />
             </div>
         );
     }
@@ -57,30 +58,29 @@ export default function CandidateDashboardPage() {
                     isActive={candidate.is_active}
                 />
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.45, type: 'spring', stiffness: 120, damping: 14 }}
-                        className="lg:col-span-2 space-y-6"
-                    >
-                        <ModernKpiRow kpis={kpis} />
-                        <ApplicationsPanel items={applications} />
-                    </motion.div>
-
-                    <motion.aside
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.45, delay: 0.05, type: 'spring', stiffness: 120, damping: 14 }}
-                        className="space-y-6"
-                    >
+                {/* Bento: próximo passo + perfil em cima, números, depois inscrições e atalhos */}
+                <Stagger className="grid grid-cols-1 gap-4 lg:grid-cols-12" gap={0.07}>
+                    <StaggerItem className="lg:col-span-7">
+                        <NextStepCard completion={profileCompletion} applications={applications} kpis={kpis} />
+                    </StaggerItem>
+                    <StaggerItem className="lg:col-span-5">
                         <ProfileCompletion completion={profileCompletion} />
+                    </StaggerItem>
+
+                    <div className="grid grid-cols-2 gap-4 lg:col-span-12 lg:grid-cols-4">
+                        <ModernKpiRow kpis={kpis} />
+                    </div>
+
+                    <StaggerItem className="lg:col-span-8">
+                        <ApplicationsPanel items={applications} />
+                    </StaggerItem>
+                    <StaggerItem className="lg:col-span-4">
                         <ActionDock />
-                    </motion.aside>
-                </div>
+                    </StaggerItem>
+                </Stagger>
             </main>
 
-            <Footer />
+            <Footer compact />
         </div>
     );
 }

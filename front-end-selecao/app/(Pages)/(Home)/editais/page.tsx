@@ -3,6 +3,8 @@
 import { useSelectionProcesses } from '@/api/hooks/useSelectionProcess';
 import { SelectionProcess } from '@/api/types/selection';
 import Footer from '@/components/Footer';
+import ApplicationWindow from '@/components/processos/ApplicationWindow';
+import ProcessMedia from '@/components/processos/ProcessMedia';
 import { useI18n } from '@/components/i18n/LanguageProvider';
 import Header from '@/components/main-page/Header';
 import SplitWords from '@/components/motion/SplitWords';
@@ -287,7 +289,7 @@ export default function EditaisProcessosSeletivos() {
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:bg-primary-hover transition-colors w-full sm:w-auto"
+              className="bg-primary text-primary-foreground px-6 py-3 rounded-full font-medium hover:bg-primary-hover transition-colors w-full sm:w-auto"
             >
               Recarregar Página
             </button>
@@ -440,7 +442,7 @@ export default function EditaisProcessosSeletivos() {
       `}</style>
 
       {/* Lista de processos */}
-      <div className="container mx-auto px-4 py-6 md:py-8">
+      <div className="mx-auto max-w-5xl px-5 py-6 pb-24 md:px-8 md:py-8">
         {isLoading ? (
           <LoadingSkeleton />
         ) : (
@@ -455,113 +457,63 @@ export default function EditaisProcessosSeletivos() {
               return (
                 <motion.div
                   key={process.id}
-                  className="bg-card rounded-2xl shadow-sm transition-all duration-300 overflow-hidden"
-                  initial={{ opacity: 0, y: 20 }}
+                  className="group/card overflow-hidden rounded-3xl border bg-card transition-all duration-300 hover:border-primary/40 hover:shadow-md"
+                  initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.08 }}
+                  transition={{ duration: 0.6, delay: Math.min(index, 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
                   whileHover={{ y: -2 }}
                 >
-                  <div className="flex flex-col lg:flex-row">
-                    {/* Imagem */}
-                    <div className="lg:w-2/5">
-                      <motion.div
-                        className="relative aspect-video overflow-hidden"
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <Image
-                          src={failedBannerIds.includes(process.id) ? getDefaultImage(process.course) : process.image.src}
-                          alt={process.image.alt}
-                          fill
-                          className="object-cover"
-                          priority={process.status === 'active' && index < 2}
-                          sizes="(max-width: 1024px) 100vw, 40vw"
-                          onError={() =>
-                            setFailedBannerIds((prev) =>
-                              prev.includes(process.id) ? prev : [...prev, process.id]
-                            )
-                          }
-                        />
-                        <div className="absolute inset-0 bg-black/10"></div>
-                      </motion.div>
+                  <div className="grid gap-6 p-3 lg:grid-cols-5">
+                    <div className="flex flex-col lg:col-span-2">
+                      <ProcessMedia
+                        src={failedBannerIds.includes(process.id) ? getDefaultImage(process.course) : process.image.src}
+                        alt={process.image.alt}
+                        status={process.status}
+                        priority={process.status === 'active' && index < 2}
+                        onError={() => setFailedBannerIds((prev) => (prev.includes(process.id) ? prev : [...prev, process.id]))}
+                        badge={
+                          <>
+                            <FileText size={12} strokeWidth={1.5} />
+                            {t(docsCount === 1 ? '{n} documento' : '{n} documentos', { n: docsCount })}
+                          </>
+                        }
+                      />
+<dl className="mt-3 grid grid-cols-3 gap-2">
+                        {[
+                          { icon: Users, k: t('Vagas'), v: String(process.vacancies) },
+                          { icon: Calendar, k: t('Publicado'), v: process.date.split(',').pop()?.trim() || process.date },
+                          { icon: MapPin, k: t('Local'), v: process.location },
+                        ].map(({ icon: Icon, k, v }) => (
+                          <div key={k} className="min-w-0 rounded-2xl bg-secondary p-3">
+                            <dt className="flex items-center gap-1.5 truncate text-xs text-muted-foreground">
+                              <Icon size={13} strokeWidth={1.5} className="shrink-0 text-primary" />
+                              <span className="truncate">{k}</span>
+                            </dt>
+                            <dd className="tabular mt-1 truncate font-medium" title={v}>{v}</dd>
+                          </div>
+                        ))}
+                      </dl>
 
-                      {/* Badges */}
-                      <div className="p-4 flex flex-col items-center gap-4 mt-2">
-                        <div className="flex flex-wrap gap-2 justify-center">
-                          <span
-                            className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${getStatusPillClass(
-                              process.status
-                            )}`}
-                          >
-                            <Clock size={12} />
-                            {getStatusText(process.status)}
-                          </span>
-                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-primary-soft text-primary border border-primary/30">
-                            <Users size={12} />
-                            {process.vacancies} vaga{process.vacancies > 1 ? 's' : ''}
-                          </span>
-                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-primary-soft text-primary border border-primary/30">
-                            <FileText size={12} />
-                            {docsCount} documento{docsCount > 1 ? 's' : ''}
-                          </span>
-                          {process.status === 'active' && (
-                            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-success-soft text-success border border-success/30">
-                              <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
-                              Edital vigente
-                            </span>
-                          )}
-                        </div>
-                      </div>
                     </div>
 
-                    {/* Conteúdo */}
-                    <div className="lg:w-3/5 p-5 md:p-6">
-                      <div className="flex flex-col h-full">
-                        <div className="flex-1">
-                          <div className="flex flex-col gap-3 mb-4">
-                            <div className="flex-1">
-                              <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-                                <h3 className="text-xl md:text-2xl font-semibold text-foreground">
-                                  {process.title}
-                                </h3>
-                              </div>
-                              <p className="text-muted-foreground font-medium text-sm md:text-base mb-3">
-                                {process.subtitle}
-                              </p>
-                              <div className="flex flex-wrap gap-3 md:gap-4 text-xs md:text-sm text-muted-foreground mb-4">
-                                <div className="flex items-center gap-2">
-                                  <MapPin size={14} className="text-primary" />
-                                  <span className="truncate max-w-[150px] sm:max-w-none">
-                                    {process.location}
-                                  </span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Calendar size={14} className="text-primary" />
-                                  <span>
-                                    {process.date} - {process.time}
-                                  </span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Users size={14} className="text-primary" />
-                                  <span>{process.vacancies} vaga(s)</span>
-                                </div>
-                              </div>
-                              <div className="relative">
-                                <div className="styled-scroll max-h-[100px] md:max-h-[132px] overflow-y-auto pr-2 rounded-xl border border-border bg-background/40 p-3 md:p-4">
-                                  <p className="text-foreground/80 leading-relaxed whitespace-pre-line text-sm md:text-base">
-                                    {process.description}
-                                  </p>
-                                </div>
-                                <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-6 md:h-8 bg-gradient-to-t from-card via-white/70 to-transparent"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                    <div className="flex flex-col p-2 lg:col-span-3 lg:p-4">
+                      <p className="text-xs font-medium uppercase tracking-wider text-primary">{process.course}</p>
+                      <h3 className="mt-2 text-2xl font-medium leading-tight">{process.title}</h3>
+                      <p className="mt-1 text-muted-foreground">{process.subtitle}</p>
 
+                      
+
+                      <div className="mt-5">
+                        <ApplicationWindow start={process.startDate} end={process.endDate} />
+                      </div>
+
+                    <p className="mt-5 line-clamp-3 leading-relaxed text-muted-foreground">{process.description}</p>
+
+                      <div className="mt-auto">
                         {/* Botões de ação */}
                         <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-border mt-4">
                           <motion.button
-                            className={`flex items-center justify-center gap-2 flex-1 py-3 px-4 md:px-6 rounded-xl font-bold text-sm md:text-base text-white transition-all duration-300 ${
+                            className={`flex items-center justify-center gap-2 flex-1 py-3 px-4 md:px-6 rounded-full font-medium text-sm md:text-base text-white transition-all duration-300 ${
                               !hasDocs || isDownloading
                                 ? 'bg-muted-foreground cursor-not-allowed'
                                 : 'bg-primary'
@@ -576,7 +528,7 @@ export default function EditaisProcessosSeletivos() {
                           >
                             {isDownloading ? (
                               <>
-                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                <div className="w-4 h-4 border border-white border-t-transparent rounded-full animate-spin"></div>
                                 <span>Baixando...</span>
                               </>
                             ) : (
@@ -590,7 +542,7 @@ export default function EditaisProcessosSeletivos() {
                           </motion.button>
                           <motion.button
                             onClick={() => toggleExpand(process.id)}
-                            className={`flex items-center justify-center gap-2 px-4 md:px-6 py-3 border-2 rounded-xl font-bold text-sm md:text-base transition-colors ${
+                            className={`flex items-center justify-center gap-2 px-4 md:px-6 py-3 border rounded-full font-medium text-sm md:text-base transition-colors ${
                               hasDocs
                                 ? 'text-primary border-primary hover:bg-primary hover:text-primary-foreground'
                                 : 'text-muted-foreground/70 border-input cursor-not-allowed'
@@ -752,7 +704,7 @@ export default function EditaisProcessosSeletivos() {
                             transition={{ duration: 0.3, delay: 0.35 }}
                           >
                             <motion.a
-                              className="px-6 py-3 border-2 border-input text-foreground/80 rounded-xl font-bold hover:bg-muted transition-all duration-300 text-center sm:text-left"
+                              className="px-6 py-3 border border-input text-foreground/80 rounded-full font-medium hover:bg-muted transition-all duration-300 text-center sm:text-left"
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
                               href="/faq"

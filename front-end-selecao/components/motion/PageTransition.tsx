@@ -45,15 +45,30 @@ export default function PageTransition() {
     if (from === pathname) return;
     prevPath.current = pathname;
     if (reduced) return;
-    if (!pending.current) {
-      if (!wantsCurtain(from, pathname)) return;
-      // navegação feita por código (router.push, redirect): fecha na hora e abre
-      pending.current = true;
-      controls.set({ y: 0 });
-    }
+    // navegação por código sem cortina prévia (redirect, router.push direto): não fecha depois que
+    // a página já trocou, isso piscava. Para ter cortina, use navigateWithCurtain().
+    if (!pending.current || !wantsCurtain(from, pathname)) return;
     reveal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  // navegação por código com cortina: veja navigateWithCurtain()
+  useEffect(() => {
+    if (reduced) return;
+    const onNavigate = async (e: Event) => {
+      const detail = (e as CustomEvent<{ href: string; handled: boolean }>).detail;
+      const url = new URL(detail.href, location.href);
+      if (url.origin !== location.origin || !wantsCurtain(location.pathname, url.pathname) || pending.current) return;
+      detail.handled = true;
+      pending.current = true;
+      failsafe.current = setTimeout(reveal, 5000);
+      await controls.start({ y: 0, transition: { duration: COVER_MS / 1000, ease } });
+      router.push(url.pathname + url.search + url.hash);
+    };
+    window.addEventListener('curtain:navigate', onNavigate);
+    return () => window.removeEventListener('curtain:navigate', onNavigate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduced, router]);
 
   useEffect(() => {
     if (reduced) return;
