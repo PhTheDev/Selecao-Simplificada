@@ -183,7 +183,7 @@ function InputField({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className={`w-full px-4 py-2.5 border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:border-transparent ${
+          className={`w-full px-4 py-2.5 border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:border-[#ccff00]/50 ${
             error
               ? 'border-destructive/30 focus:ring-destructive bg-destructive-soft'
               : 'border-input focus:ring-primary-hover focus:border-primary-hover hover:border-input'
@@ -239,7 +239,7 @@ function SelectField({
         name={name}
         value={value}
         onChange={onChange}
-        className={`w-full px-4 py-2.5 border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:border-transparent ${
+        className={`w-full px-4 py-2.5 border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:border-[#ccff00]/50 ${
           error
             ? 'border-destructive/30 focus:ring-destructive bg-destructive-soft'
             : 'border-input focus:ring-primary-hover focus:border-primary-hover hover:border-input'
@@ -1020,7 +1020,7 @@ export default function EditarInscricaoPage() {
                 value={formData.cep}
                 onChange={handleCepChange}
                 placeholder="00000-000"
-                className={`w-full px-4 py-2.5 pl-10 pr-32 border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:border-transparent ${
+                className={`w-full px-4 py-2.5 pl-10 pr-32 border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:border-[#ccff00]/50 ${
                   formErrors.cep
                     ? 'border-destructive/30 focus:ring-destructive bg-destructive-soft'
                     : addressFetched

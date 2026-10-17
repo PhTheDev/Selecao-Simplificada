@@ -244,7 +244,7 @@ function InputWithIcon(props: {
           "py-2.5 sm:py-3",
           "border border-input rounded-lg",
           "bg-card",
-          "focus:ring-2 focus:ring-ring focus:border-transparent",
+          "focus:ring-2 focus:ring-ring focus:border-[#ccff00]/50",
           "transition-all",
           "text-sm sm:text-base",
           "shadow-sm",
@@ -280,7 +280,7 @@ function SelectWithIcon(props: {
           "py-2.5 sm:py-3",
           "border border-input rounded-lg",
           "bg-card",
-          "focus:ring-2 focus:ring-ring focus:border-transparent",
+          "focus:ring-2 focus:ring-ring focus:border-[#ccff00]/50",
           "transition-all",
           "text-sm sm:text-base",
           "shadow-sm",
@@ -831,7 +831,7 @@ export default function PerfilPage() {
                             "py-2.5 sm:py-3",
                             "border border-input rounded-lg",
                             "bg-card",
-                            "focus:ring-2 focus:ring-ring focus:border-transparent",
+                            "focus:ring-2 focus:ring-ring focus:border-[#ccff00]/50",
                             "transition-all text-sm sm:text-base shadow-sm",
                         ].join(" ")}
                         />
@@ -1125,7 +1125,7 @@ export default function PerfilPage() {
                 >
                   {isFormLoading ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <div className="w-4 h-4 border-2 border-white/10 border-t-transparent rounded-full animate-spin" />
                       {isUploading ? "Enviando imagem..." : "Salvando..."}
                     </>
                   ) : (

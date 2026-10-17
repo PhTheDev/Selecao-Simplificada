@@ -105,7 +105,7 @@ export default function Home() {
                 : t('Acompanhe os próximos processos')}
             </p>
             <h1 className="rise mt-8 text-[clamp(2.75rem,7vw,5.5rem)] font-medium leading-[0.98]" style={{ ['--i' as string]: 1 }}>
-              <SplitWords text={t('Seu estágio começa')} /><SplitWords text={t('no edital.')} className="font-serif font-normal italic" delay={0.3} />
+              <SplitWords text={t('Seu próximo passo')} /><SplitWords text={t('é um estágio.')} className="font-serif font-normal italic" delay={0.3} />
             </h1>
             <p className="rise mx-auto mt-6 max-w-xl text-lg text-muted-foreground md:text-xl" style={{ ['--i' as string]: 2 }}>
               {t('Veja os processos abertos, inscreva-se e acompanhe cada etapa até o resultado.')}
