@@ -163,18 +163,18 @@ const CandidateJourney = ({ status }: { status: Application["status"] }) => {
     const isRejected = status === "rejected";
 
     return (
-        <div className="w-full bg-slate-50 rounded-xl border border-slate-200 px-4 py-3 mb-4">
+        <div className="w-full bg-background rounded-xl border border-border px-4 py-3 mb-4">
             <div className="flex items-center justify-between mb-3 gap-2">
                 <div>
-                    <p className="text-xs font-semibold tracking-wide text-[#005f73] uppercase">
+                    <p className="text-xs font-semibold tracking-wide text-primary uppercase">
                         Jornada do Candidato
                     </p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-muted-foreground">
                         Conheça as etapas do nosso processo seletivo
                     </p>
                 </div>
-                <div className="hidden sm:flex items-center gap-1 text-[11px] text-slate-500">
-                    <Clock className="w-3 h-3 text-[#0a9396]" />
+                <div className="hidden sm:flex items-center gap-1 text-[11px] text-muted-foreground">
+                    <Clock className="w-3 h-3 text-primary-hover" />
                     <span>
                         {status === "pending" && "Aguardando análise dos documentos"}
                         {status === "under_review" && "Em análise pela equipe de seleção"}
@@ -192,20 +192,20 @@ const CandidateJourney = ({ status }: { status: Application["status"] }) => {
                     const circleBase =
                         "flex items-center justify-center rounded-full w-7 h-7 text-xs font-bold border-2";
 
-                    let circleClasses = "border-slate-300 bg-white text-slate-400";
+                    let circleClasses = "border-input bg-card text-muted-foreground/70";
                     if (isCompleted) {
-                        circleClasses = "border-emerald-500 bg-emerald-500 text-white";
+                        circleClasses = "border-success bg-success text-white";
                     } else if (isCurrent) {
                         if (isRejected && stage.id === 4) {
-                            circleClasses = "border-red-500 bg-red-500 text-white";
+                            circleClasses = "border-destructive bg-destructive text-white";
                         } else {
-                            circleClasses = "border-[#0a9396] bg-[#0a9396] text-white";
+                            circleClasses = "border-primary-hover bg-primary-hover text-primary-foreground";
                         }
                     }
 
-                    const labelColor = isCompleted || isCurrent ? "text-slate-900" : "text-slate-400";
+                    const labelColor = isCompleted || isCurrent ? "text-foreground" : "text-muted-foreground/70";
                     const descriptionColor =
-                        isCompleted || isCurrent ? "text-slate-500" : "text-slate-400";
+                        isCompleted || isCurrent ? "text-muted-foreground" : "text-muted-foreground/70";
 
                     return (
                         <div key={stage.id} className="flex-1 flex items-center gap-2 sm:gap-3">
@@ -228,7 +228,7 @@ const CandidateJourney = ({ status }: { status: Application["status"] }) => {
                             </div>
 
                             {index < stages.length - 1 && (
-                                <div className="hidden sm:block flex-1 h-px bg-gradient-to-r from-slate-200 via-slate-200 to-slate-200" />
+                                <div className="hidden sm:block flex-1 h-px bg-border" />
                             )}
                         </div>
                     );
@@ -246,13 +246,13 @@ const ResultBanner = ({ status }: { status: Application["status"] }) => {
     return (
         <div
             className={`w-full px-5 py-3 flex items-center justify-between gap-3
-        ${isApproved ? "bg-emerald-50 border-emerald-200" : "bg-red-50 border-red-200"}
+        ${isApproved ? "bg-success-soft border-success/30" : "bg-destructive-soft border-destructive/30"}
         border-b`}
         >
             <div className="flex items-center gap-3">
                 <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center
-            ${isApproved ? "bg-emerald-500" : "bg-red-500"} text-white`}
+            ${isApproved ? "bg-success" : "bg-destructive"} text-white`}
                 >
                     {isApproved ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
                 </div>
@@ -260,11 +260,11 @@ const ResultBanner = ({ status }: { status: Application["status"] }) => {
                 <div>
                     <p
                         className={`text-sm font-extrabold tracking-wide uppercase
-              ${isApproved ? "text-emerald-700" : "text-red-700"}`}
+              ${isApproved ? "text-success" : "text-destructive"}`}
                     >
                         {isApproved ? "APROVADO" : "REPROVADO"}
                     </p>
-                    <p className="text-xs text-slate-600">
+                    <p className="text-xs text-muted-foreground">
                         {isApproved
                             ? "Parabéns! Você foi selecionado para a próxima etapa/resultado final."
                             : "Obrigado por participar. Você não foi selecionado desta vez."}
@@ -272,7 +272,7 @@ const ResultBanner = ({ status }: { status: Application["status"] }) => {
                 </div>
             </div>
 
-            <div className="hidden sm:flex items-center gap-2 text-xs text-slate-600">
+            <div className="hidden sm:flex items-center gap-2 text-xs text-muted-foreground">
                 <AlertCircle className="w-4 h-4" />
                 <span>Confira os detalhes no botão “Ver Detalhes”.</span>
             </div>
@@ -308,16 +308,16 @@ const ProcessCard = ({
         return (
             <motion.div
                 variants={cardVariants}
-                className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden p-6"
+                className="bg-card rounded-xl shadow-sm border border-border overflow-hidden p-6"
             >
 
                 <ResultBanner status={application.status} />
-                <div className="flex items-center gap-3 text-yellow-600">
+                <div className="flex items-center gap-3 text-warning">
                     <AlertCircle className="w-5 h-5" />
                     <div>
                         <h3 className="font-semibold">Processo não encontrado</h3>
-                        <p className="text-sm text-gray-500">ID da aplicação: {application.id}</p>
-                        <p className="text-xs text-gray-400 mt-1">Status: {application.status}</p>
+                        <p className="text-sm text-muted-foreground">ID da aplicação: {application.id}</p>
+                        <p className="text-xs text-muted-foreground/70 mt-1">Status: {application.status}</p>
                     </div>
                 </div>
             </motion.div>
@@ -366,13 +366,13 @@ const ProcessCard = ({
     return (
         <motion.div
             variants={cardVariants}
-            className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+            className="bg-card rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
             whileHover={{ y: -5 }}
         >
             <div className="flex flex-col lg:flex-row">
                 {/* Coluna da Imagem */}
                 <div className="lg:w-2/5">
-                    <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-[#005f73] to-[#0a9396]">
+                    <div className="relative aspect-video overflow-hidden bg-primary">
                         {/* Imagem do banner do processo */}
                         {process.process_banner && !imgError ? (
                             <>
@@ -395,16 +395,16 @@ const ProcessCard = ({
                     {/* Badges abaixo da imagem */}
                     <div className="p-4 flex flex-col items-center gap-3">
                         <div className="flex flex-wrap gap-2 justify-center">
-                            <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                            <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-primary-soft text-primary border border-primary/30">
                                 <Users size={12} />
                                 {process.number_vacancies || 0} vaga{process.number_vacancies !== 1 ? 's' : ''}
                             </span>
-                            <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-50 text-gray-700 border border-gray-200">
+                            <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-background text-foreground/80 border border-border">
                                 <File size={12} />
                                 {process.weekly_workload || 'Carga horária não especificada'}
                             </span>
                             {isEditable && (
-                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200">
+                                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-success-soft text-success border border-success/30">
                                     <CheckCircle size={12} />
                                     Inscrições abertas
                                 </span>
@@ -421,42 +421,42 @@ const ProcessCard = ({
                             <div className="flex flex-col gap-4 mb-4">
                                 <div className="flex-1">
                                     <div className="flex items-start gap-3 mb-2">
-                                        <UserCheck className="w-6 h-6 text-[#0a9396] mt-1 flex-shrink-0" />
+                                        <UserCheck className="w-6 h-6 text-primary-hover mt-1 flex-shrink-0" />
                                         <div>
-                                            <h3 className="text-xl font-bold text-gray-900 mb-1">
+                                            <h3 className="text-xl font-bold text-foreground mb-1">
                                                 {process.title || 'Processo sem título'}
                                             </h3>
-                                            <p className="text-gray-600 mb-2 text-sm">
+                                            <p className="text-muted-foreground mb-2 text-sm">
                                                 {process.subtitle || 'Sem descrição'}
                                             </p>
                                         </div>
                                     </div>
 
-                                    <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-4">
+                                    <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mb-4">
                                         <span className="flex items-center gap-1">
-                                            <GraduationCap className="w-4 h-4 flex-shrink-0 text-[#005f73]" />
+                                            <GraduationCap className="w-4 h-4 flex-shrink-0 text-primary" />
                                             <span className="truncate">{process.course || 'Curso não especificado'}</span>
                                         </span>
                                         <span className="flex items-center gap-1">
-                                            <MapPin className="w-4 h-4 flex-shrink-0 text-[#005f73]" />
+                                            <MapPin className="w-4 h-4 flex-shrink-0 text-primary" />
                                             <span className="truncate">{process.local || 'Local não especificado'}</span>
                                         </span>
                                         <span className="flex items-center gap-1">
-                                            <Calendar className="w-4 h-4 flex-shrink-0 text-[#005f73]" />
+                                            <Calendar className="w-4 h-4 flex-shrink-0 text-primary" />
                                             <span>Prazo: {formatDate(process.ending_date)}</span>
                                         </span>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                         <div className="space-y-1">
-                                            <p className="text-sm text-gray-500">Data da Candidatura</p>
-                                            <p className="font-medium text-gray-900">
+                                            <p className="text-sm text-muted-foreground">Data da Candidatura</p>
+                                            <p className="font-medium text-foreground">
                                                 {formatDate(application.application_date)}
                                             </p>
                                         </div>
                                         <div className="space-y-1">
-                                            <p className="text-sm text-gray-500">Bolsa/Mensalidade</p>
-                                            <p className="font-medium text-gray-900">{formatSalary(process.salary)}</p>
+                                            <p className="text-sm text-muted-foreground">Bolsa/Mensalidade</p>
+                                            <p className="font-medium text-foreground">{formatSalary(process.salary)}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -465,13 +465,13 @@ const ProcessCard = ({
 
                         {/* Ações */}
                         <div
-                            className={`flex flex-col sm:flex-row gap-3 pt-4 ${isEditable ? "border-t border-gray-200" : ""
+                            className={`flex flex-col sm:flex-row gap-3 pt-4 ${isEditable ? "border-t border-border" : ""
                                 }`}
                         >
                             {isEditable && (
                                 <button
                                     onClick={() => onEditClick(application)}
-                                    className="flex-1 px-4 py-3 border-2 border-[#0a9396] text-[#0a9396] rounded-xl hover:bg-[#e6f7f9] font-bold transition-all duration-300 flex items-center justify-center gap-2"
+                                    className="flex-1 px-4 py-3 border-2 border-primary-hover text-primary-hover rounded-xl hover:bg-primary-soft font-bold transition-all duration-300 flex items-center justify-center gap-2"
                                 >
                                     <Edit className="w-4 h-4" />
                                     Editar Inscrição
@@ -487,7 +487,7 @@ const ProcessCard = ({
             <AnimatePresence>
                 {expanded && (
                     <motion.div
-                        className="bg-gray-50 border-t border-gray-100 overflow-hidden"
+                        className="bg-background border-t border-border overflow-hidden"
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
@@ -498,8 +498,8 @@ const ProcessCard = ({
 
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div>
-                                    <h4 className="font-bold text-gray-900 mb-3 text-lg flex items-center gap-2">
-                                        <FileText className="w-5 h-5 text-[#005f73]" />
+                                    <h4 className="font-bold text-foreground mb-3 text-lg flex items-center gap-2">
+                                        <FileText className="w-5 h-5 text-primary" />
                                         Documentos Enviados
                                     </h4>
                                     <div className="space-y-2">
@@ -510,9 +510,9 @@ const ProcessCard = ({
                                             { label: 'Declaração de Frequência', field: application.frequency_statement },
                                             { label: 'Certificados de Cursos', field: application.course_certificates },
                                         ].map((doc, index) => (
-                                            <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border">
+                                            <div key={index} className="flex items-center justify-between p-3 bg-card rounded-lg border">
                                                 <div className="flex items-center gap-3">
-                                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${doc.field ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'
+                                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${doc.field ? 'bg-success-soft text-success' : 'bg-muted text-muted-foreground/70'
                                                         }`}>
                                                         {doc.field ? (
                                                             <CheckCircle className="w-4 h-4" />
@@ -522,7 +522,7 @@ const ProcessCard = ({
                                                     </div>
                                                     <div>
                                                         <p className="font-medium text-sm">{doc.label}</p>
-                                                        <p className="text-xs text-gray-500">
+                                                        <p className="text-xs text-muted-foreground">
                                                             {doc.field ? 'Enviado' : 'Não enviado'}
                                                         </p>
                                                     </div>
@@ -532,7 +532,7 @@ const ProcessCard = ({
                                                         href={doc.field}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="px-3 py-1.5 bg-[#0a9396] text-white rounded-lg hover:bg-[#087e8b] text-sm flex items-center gap-2"
+                                                        className="px-3 py-1.5 bg-primary-hover text-primary-foreground rounded-lg hover:bg-primary text-sm flex items-center gap-2"
                                                     >
                                                         <Download className="w-3 h-3" />
                                                         Baixar
@@ -544,25 +544,25 @@ const ProcessCard = ({
                                 </div>
 
                                 <div>
-                                    <h4 className="font-bold text-gray-900 mb-3 text-lg flex items-center gap-2">
-                                        <Calendar className="w-5 h-5 text-[#005f73]" />
+                                    <h4 className="font-bold text-foreground mb-3 text-lg flex items-center gap-2">
+                                        <Calendar className="w-5 h-5 text-primary" />
                                         Informações Adicionais
                                     </h4>
                                     <div className="space-y-3">
                                         {application.portfolio_link && (
-                                            <div className="bg-white rounded-lg border p-4">
-                                                <p className="text-sm font-medium text-gray-700 mb-1">Portfólio</p>
+                                            <div className="bg-card rounded-lg border p-4">
+                                                <p className="text-sm font-medium text-foreground/80 mb-1">Portfólio</p>
                                                 {isSafeHttpUrl(application.portfolio_link) ? (
                                                     <a
                                                         href={application.portfolio_link}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="text-[#0a9396] hover:underline text-sm break-all"
+                                                        className="text-primary-hover hover:underline text-sm break-all"
                                                     >
                                                         {application.portfolio_link}
                                                     </a>
                                                 ) : (
-                                                    <p className="text-sm text-gray-500 break-all">
+                                                    <p className="text-sm text-muted-foreground break-all">
                                                         {application.portfolio_link}
                                                     </p>
                                                 )}
@@ -579,7 +579,7 @@ const ProcessCard = ({
             {/* Botão para expandir/recolher */}
             <button
                 onClick={() => setExpanded(!expanded)}
-                className="w-full py-3 bg-gray-50 hover:bg-gray-100 border-t border-gray-200 flex items-center justify-center gap-2 text-gray-600 font-medium"
+                className="w-full py-3 bg-background hover:bg-muted border-t border-border flex items-center justify-center gap-2 text-muted-foreground font-medium"
             >
                 {expanded ? 'Menos detalhes' : 'Mais detalhes'}
                 <motion.div
@@ -618,7 +618,7 @@ const FilterBar = ({
 
     return (
         <motion.div
-            className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-8"
+            className="bg-card rounded-xl shadow-sm border border-border p-6 mb-8"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
         >
@@ -630,9 +630,9 @@ const FilterBar = ({
                             placeholder="Buscar por título, curso ou local..."
                             value={filters.search}
                             onChange={(e) => setFilters({ ...filters, search: e.target.value, page: 1 })}
-                            className="w-full px-4 py-2.5 pl-10 pr-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0a9396] focus:border-transparent"
+                            className="w-full px-4 py-2.5 pl-10 pr-4 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-hover focus:border-transparent"
                         />
-                        <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                        <Search className="w-4 h-4 text-muted-foreground/70 absolute left-3 top-1/2 -translate-y-1/2" />
                     </div>
                 </div>
 
@@ -641,8 +641,8 @@ const FilterBar = ({
                         <button
                             onClick={() => setFilters({ ...filters, status: 'all', page: 1 })}
                             className={`px-4 py-2 rounded-lg font-medium transition-colors text-sm ${filters.status === 'all'
-                                ? 'bg-[#005f73] text-white'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-primary text-primary-foreground'
+                                : 'bg-muted text-foreground/80 hover:bg-border'
                                 }`}
                         >
                             Todos ({totalApplications})
@@ -655,14 +655,14 @@ const FilterBar = ({
                                         key={status}
                                         onClick={() => setFilters({ ...filters, status, page: 1 })}
                                         className={`px-4 py-2 rounded-lg font-medium transition-colors text-sm ${filters.status === status
-                                            ? status === 'pending' ? 'bg-yellow-500 text-white' :
-                                                status === 'approved' ? 'bg-green-500 text-white' :
-                                                    status === 'rejected' ? 'bg-red-500 text-white' :
-                                                        'bg-blue-500 text-white'
-                                            : status === 'pending' ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' :
-                                                status === 'approved' ? 'bg-green-100 text-green-800 hover:bg-green-200' :
-                                                    status === 'rejected' ? 'bg-red-100 text-red-800 hover:bg-red-200' :
-                                                        'bg-blue-100 text-blue-800 hover:bg-blue-200'
+                                            ? status === 'pending' ? 'bg-warning text-white' :
+                                                status === 'approved' ? 'bg-success text-white' :
+                                                    status === 'rejected' ? 'bg-destructive text-white' :
+                                                        'bg-primary text-primary-foreground'
+                                            : status === 'pending' ? 'bg-warning-soft text-warning hover:bg-warning-soft' :
+                                                status === 'approved' ? 'bg-success-soft text-success hover:bg-success-soft' :
+                                                    status === 'rejected' ? 'bg-destructive-soft text-destructive hover:bg-destructive-soft' :
+                                                        'bg-primary-soft text-primary hover:bg-primary-soft'
                                             }`}
                                     >
                                         {status === 'pending' ? 'Pendentes' :
@@ -679,7 +679,7 @@ const FilterBar = ({
                     <button
                         onClick={onRefresh}
                         disabled={loading}
-                        className="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium transition-colors flex items-center gap-2 flex-shrink-0"
+                        className="px-4 py-2.5 bg-muted text-foreground/80 rounded-lg hover:bg-border font-medium transition-colors flex items-center gap-2 flex-shrink-0"
                         title="Atualizar lista"
                     >
                         {loading ? (
@@ -694,7 +694,7 @@ const FilterBar = ({
 
             {/* Informações de paginação */}
             {pagination.totalApplications > 0 && (
-                <div className="mt-4 pt-4 border-t border-gray-200 flex items-center justify-between text-sm text-gray-600">
+                <div className="mt-4 pt-4 border-t border-border flex items-center justify-between text-sm text-muted-foreground">
                     <div>
                         Mostrando <span className="font-semibold">{((pagination.currentPage - 1) * pagination.pageSize) + 1}</span> a{' '}
                         <span className="font-semibold">{Math.min(pagination.currentPage * pagination.pageSize, pagination.totalApplications)}</span> de{' '}
@@ -753,7 +753,7 @@ const Pagination = ({
             <button
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1 || loading}
-                className="px-3 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                className="px-3 py-2 rounded-lg border border-input text-foreground/80 hover:bg-background disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
             >
                 <ChevronLeft className="w-4 h-4" />
                 Anterior
@@ -764,14 +764,14 @@ const Pagination = ({
                     <button
                         onClick={() => onPageChange(1)}
                         className={`px-3 py-2 rounded-lg ${1 === currentPage
-                            ? 'bg-[#005f73] text-white'
-                            : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                            ? 'bg-primary text-primary-foreground'
+                            : 'border border-input text-foreground/80 hover:bg-background'
                             }`}
                     >
                         1
                     </button>
                     {startPage > 2 && (
-                        <span className="px-2 text-gray-400">...</span>
+                        <span className="px-2 text-muted-foreground/70">...</span>
                     )}
                 </>
             )}
@@ -782,8 +782,8 @@ const Pagination = ({
                     onClick={() => onPageChange(page)}
                     disabled={loading}
                     className={`px-3 py-2 rounded-lg ${page === currentPage
-                        ? 'bg-[#005f73] text-white'
-                        : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'border border-input text-foreground/80 hover:bg-background'
                         }`}
                 >
                     {page}
@@ -793,13 +793,13 @@ const Pagination = ({
             {endPage < totalPages && (
                 <>
                     {endPage < totalPages - 1 && (
-                        <span className="px-2 text-gray-400">...</span>
+                        <span className="px-2 text-muted-foreground/70">...</span>
                     )}
                     <button
                         onClick={() => onPageChange(totalPages)}
                         className={`px-3 py-2 rounded-lg ${totalPages === currentPage
-                            ? 'bg-[#005f73] text-white'
-                            : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                            ? 'bg-primary text-primary-foreground'
+                            : 'border border-input text-foreground/80 hover:bg-background'
                             }`}
                     >
                         {totalPages}
@@ -810,7 +810,7 @@ const Pagination = ({
             <button
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages || loading}
-                className="px-3 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                className="px-3 py-2 rounded-lg border border-input text-foreground/80 hover:bg-background disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
             >
                 Próxima
                 <ChevronRight className="w-4 h-4" />
@@ -1044,16 +1044,16 @@ export default function MeusProcessos() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-zinc-100">
+            <div className="min-h-screen bg-muted">
                 <div className="container mx-auto px-4 py-16">
                     <div className="text-center">
                         <motion.div
-                            className="rounded-full h-16 w-16 border-b-2 border-[#005f73] mx-auto mb-4"
+                            className="rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"
                             animate={{ rotate: 360 }}
                             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                         />
-                        <h3 className="text-lg font-semibold text-gray-700 mb-2">Carregando suas candidaturas...</h3>
-                        <p className="text-gray-500">Isso pode levar alguns instantes</p>
+                        <h3 className="text-lg font-semibold text-foreground/80 mb-2">Carregando suas candidaturas...</h3>
+                        <p className="text-muted-foreground">Isso pode levar alguns instantes</p>
                     </div>
                 </div>
                 <Footer />
@@ -1063,7 +1063,7 @@ export default function MeusProcessos() {
 
     if (error && applications.length === 0) {
         return (
-            <div className="min-h-screen bg-zinc-100">
+            <div className="min-h-screen bg-muted">
                 <div className="container mx-auto px-4 py-8">
                     <Title
                         title="Minhas Candidaturas"
@@ -1073,19 +1073,19 @@ export default function MeusProcessos() {
                     />
 
                     <motion.div
-                        className="bg-red-50 border border-red-200 rounded-xl p-8 mb-8 text-center"
+                        className="bg-destructive-soft border border-destructive/30 rounded-xl p-8 mb-8 text-center"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                     >
-                        <div className="mx-auto w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-6">
-                            <AlertCircle className="w-10 h-10 text-red-600" />
+                        <div className="mx-auto w-20 h-20 bg-destructive-soft rounded-full flex items-center justify-center mb-6">
+                            <AlertCircle className="w-10 h-10 text-destructive" />
                         </div>
-                        <h3 className="text-xl font-semibold text-red-800 mb-3">Erro ao carregar candidaturas</h3>
-                        <p className="text-red-600 mb-6">{error}</p>
+                        <h3 className="text-xl font-semibold text-destructive mb-3">Erro ao carregar candidaturas</h3>
+                        <p className="text-destructive mb-6">{error}</p>
                         <div className="flex flex-col sm:flex-row gap-3 justify-center">
                             <button
                                 onClick={() => fetchApplications(filters.page)}
-                                className="px-6 py-3 bg-gradient-to-r from-[#005f73] to-[#0a9396] text-white rounded-lg hover:from-[#006d84] hover:to-[#0ba5a8] font-medium transition-colors"
+                                className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary font-medium transition-colors"
                             >
                                 <div className="flex items-center gap-2">
                                     <Loader2 className="w-4 h-4" />
@@ -1094,7 +1094,7 @@ export default function MeusProcessos() {
                             </button>
                             <Link
                                 href="/processos-seletivos"
-                                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors"
+                                className="px-6 py-3 border border-input text-foreground/80 rounded-lg hover:bg-background font-medium transition-colors"
                             >
                                 Ver Processos Abertos
                             </Link>
@@ -1108,7 +1108,7 @@ export default function MeusProcessos() {
 
     return (
         <motion.div
-            className="min-h-screen bg-zinc-100"
+            className="min-h-screen bg-muted"
             variants={pageVariants}
             initial="hidden"
             animate="visible"
@@ -1126,24 +1126,24 @@ export default function MeusProcessos() {
                 {/* Mensagem de erro (se houver) */}
                 {error && applications.length > 0 && (
                     <motion.div
-                        className="mb-6 bg-yellow-50 border border-yellow-200 rounded-xl p-4"
+                        className="mb-6 bg-warning-soft border border-warning/30 rounded-xl p-4"
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                     >
                         <div className="flex items-start gap-3">
-                            <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                            <AlertCircle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
                             <div className="flex-1">
-                                <p className="text-yellow-800">{error}</p>
+                                <p className="text-warning">{error}</p>
                                 <div className="flex gap-2 mt-2">
                                     <button
                                         onClick={() => setError(null)}
-                                        className="text-sm text-yellow-700 hover:text-yellow-800 underline"
+                                        className="text-sm text-warning hover:text-warning underline"
                                     >
                                         Fechar
                                     </button>
                                     <button
                                         onClick={() => fetchApplications(filters.page, false)}
-                                        className="text-sm text-yellow-700 hover:text-yellow-800 underline flex items-center gap-1"
+                                        className="text-sm text-warning hover:text-warning underline flex items-center gap-1"
                                     >
                                         <RefreshCw className="w-3 h-3" />
                                         Atualizar lista
@@ -1172,17 +1172,17 @@ export default function MeusProcessos() {
                 {/* Lista de Candidaturas */}
                 {filteredApplications.length === 0 ? (
                     <motion.div
-                        className="bg-white rounded-xl shadow-lg border border-gray-200 p-12 text-center"
+                        className="bg-card rounded-xl shadow-sm border border-border p-12 text-center"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                     >
-                        <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
-                            <FileText className="w-12 h-12 text-gray-400" />
+                        <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6">
+                            <FileText className="w-12 h-12 text-muted-foreground/70" />
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                        <h3 className="text-xl font-semibold text-foreground mb-2">
                             {filters.search || filters.status !== 'all' ? 'Nenhuma candidatura encontrada' : 'Nenhuma candidatura'}
                         </h3>
-                        <p className="text-gray-600 mb-6">
+                        <p className="text-muted-foreground mb-6">
                             {filters.search || filters.status !== 'all'
                                 ? 'Tente ajustar os filtros de busca'
                                 : 'Você ainda não se candidatou a nenhum processo seletivo'}
@@ -1190,7 +1190,7 @@ export default function MeusProcessos() {
                         <div className="flex flex-col sm:flex-row gap-3 justify-center">
                             <Link
                                 href="/processos-seletivos"
-                                className="px-6 py-3 bg-gradient-to-r from-[#005f73] to-[#0a9396] text-white rounded-lg hover:from-[#006d84] hover:to-[#0ba5a8] font-medium transition-colors inline-flex items-center gap-2"
+                                className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary font-medium transition-colors inline-flex items-center gap-2"
                             >
                                 <Eye className="w-4 h-4" />
                                 Ver Processos Abertos
@@ -1198,7 +1198,7 @@ export default function MeusProcessos() {
                             {(filters.search || filters.status !== 'all') && (
                                 <button
                                     onClick={() => setFilters({ search: '', status: 'all', page: 1 })}
-                                    className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors"
+                                    className="px-6 py-3 border border-input text-foreground/80 rounded-lg hover:bg-background font-medium transition-colors"
                                 >
                                     Limpar Filtros
                                 </button>
@@ -1239,21 +1239,21 @@ export default function MeusProcessos() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3 }}
                             >
-                                <div className="bg-white rounded-xl p-6 border border-gray-200">
-                                    <p className="text-sm text-gray-500 mb-1">Total de Candidaturas</p>
-                                    <p className="text-2xl font-bold text-gray-900">{pagination.totalApplications}</p>
+                                <div className="bg-card rounded-xl p-6 border border-border">
+                                    <p className="text-sm text-muted-foreground mb-1">Total de Candidaturas</p>
+                                    <p className="text-2xl font-bold text-foreground">{pagination.totalApplications}</p>
                                 </div>
-                                <div className="bg-white rounded-xl p-6 border border-gray-200">
-                                    <p className="text-sm text-gray-500 mb-1">Em Análise</p>
-                                    <p className="text-2xl font-bold text-blue-600">{statusCounts.under_review || 0}</p>
+                                <div className="bg-card rounded-xl p-6 border border-border">
+                                    <p className="text-sm text-muted-foreground mb-1">Em Análise</p>
+                                    <p className="text-2xl font-bold text-primary">{statusCounts.under_review || 0}</p>
                                 </div>
-                                <div className="bg-white rounded-xl p-6 border border-gray-200">
-                                    <p className="text-sm text-gray-500 mb-1">Aprovados</p>
-                                    <p className="text-2xl font-bold text-green-600">{statusCounts.approved || 0}</p>
+                                <div className="bg-card rounded-xl p-6 border border-border">
+                                    <p className="text-sm text-muted-foreground mb-1">Aprovados</p>
+                                    <p className="text-2xl font-bold text-success">{statusCounts.approved || 0}</p>
                                 </div>
-                                <div className="bg-white rounded-xl p-6 border border-gray-200">
-                                    <p className="text-sm text-gray-500 mb-1">Editáveis</p>
-                                    <p className="text-2xl font-bold text-[#0a9396]">{editableCount}</p>
+                                <div className="bg-card rounded-xl p-6 border border-border">
+                                    <p className="text-sm text-muted-foreground mb-1">Editáveis</p>
+                                    <p className="text-2xl font-bold text-primary-hover">{editableCount}</p>
                                 </div>
                             </motion.div>
                         )}

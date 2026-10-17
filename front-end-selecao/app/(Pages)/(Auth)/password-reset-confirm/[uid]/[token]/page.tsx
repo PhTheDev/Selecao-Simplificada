@@ -3,7 +3,6 @@ import BrandMark from "@/components/BrandMark";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
-import backgroundImage from "@/app/assets/images/imagem-fundo.jpg";
 
 export default function PasswordResetConfirmPage() {
   const params = useParams();
@@ -64,36 +63,25 @@ export default function PasswordResetConfirmPage() {
     }
   };
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-muted">
       {/* Seção da Imagem (Esquerda) */}
-      <div
-        className="relative flex-1 flex items-center justify-center p-8 min-h-[40vh] lg:min-h-screen"
-        style={{
-          backgroundImage: `url(${backgroundImage.src})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/40 to-black/20"></div>
-        <div className="absolute inset-0 bg-noise-pattern opacity-10"></div>
-        <div className="relative z-10 text-center">
-          <div className="animate-float">
-            <BrandMark className="text-white font-semibold tracking-tight" />
-          </div>
-        </div>
+      <div className="relative hidden flex-1 flex-col justify-between bg-primary-soft p-12 lg:flex lg:min-h-screen">
+        <BrandMark />
+        <p className="max-w-sm font-serif text-5xl leading-[1.05] text-foreground">
+          Um edital, <span className="italic">uma chance.</span>
+        </p>
+        <p className="text-sm text-muted-foreground">Inscrição, acompanhamento e resultado em um só lugar.</p>
       </div>
 
       {/* Seção do Formulário (Direita) */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 bg-gradient-to-br from-green-800 via-green-700 to-green-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-radial from-green-500/10 via-transparent to-transparent"></div>
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 bg-gradient-to-br from-success via-success to-success relative overflow-hidden">
 
-        <div className="relative z-10 w-full max-w-md space-y-6">
+        <div className="auth-card relative z-10 w-full max-w-md space-y-6">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-white mb-2">
+            <h1 className="text-2xl font-bold text-foreground mb-2">
               Redefinir Senha
             </h1>
-            <p className="text-green-200">Crie uma nova senha para sua conta</p>
+            <p className="text-success">Crie uma nova senha para sua conta</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -104,7 +92,7 @@ export default function PasswordResetConfirmPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Nova senha"
-                  className="w-full px-4 py-3 rounded-lg bg-green-50 border border-green-300 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-lg bg-success-soft border border-success/30 focus:ring-2 focus:ring-success focus:border-transparent"
                   required
                 />
               </div>
@@ -114,20 +102,20 @@ export default function PasswordResetConfirmPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirme a nova senha"
-                  className="w-full px-4 py-3 rounded-lg bg-green-50 border border-green-300 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-lg bg-success-soft border border-success/30 focus:ring-2 focus:ring-success focus:border-transparent"
                   required
                 />
               </div>
             </div>
 
             {error && (
-              <div className="text-red-300 text-sm text-center">{error}</div>
+              <div className="text-destructive text-sm text-center">{error}</div>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-all duration-200 ease-in-out transform hover:scale-[1.02] disabled:opacity-50"
+              className="w-full py-3 px-4 bg-success hover:bg-success text-white font-semibold rounded-lg transition-all duration-200 ease-in-out transform hover:scale-[1.02] disabled:opacity-50"
             >
               {loading ? "Processando..." : "Redefinir Senha"}
             </button>
@@ -136,7 +124,7 @@ export default function PasswordResetConfirmPage() {
           <div className="text-center">
             <Link
               href="/"
-              className="inline-flex items-center text-green-200 hover:text-white transition-colors group text-sm"
+              className="inline-flex items-center text-success hover:text-foreground transition-colors group text-sm"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +142,7 @@ export default function PasswordResetConfirmPage() {
               </svg>
               Voltar para o login
             </Link>
-            <p className="mt-6 text-xs text-green-200/70">
+            <p className="mt-6 text-xs text-success/70">
               &copy; {new Date().getFullYear()} Seleção Simplificada. Todos os direitos
               reservados.
             </p>

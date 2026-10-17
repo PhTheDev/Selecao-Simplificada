@@ -17,12 +17,12 @@ export function EmptyState({
     const hasFilters = searchTerm || roleFilter !== 'all' || statusFilter !== 'all';
 
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-12 text-center">
-            <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-gray-900 font-semibold text-xl mb-2">
+        <div className="bg-card rounded-2xl shadow-sm border border-border p-12 text-center">
+            <Users className="w-16 h-16 text-muted-foreground/70 mx-auto mb-4" />
+            <h3 className="text-foreground font-semibold text-xl mb-2">
                 Nenhum usuário encontrado
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-muted-foreground mb-6">
                 {hasFilters
                     ? 'Tente ajustar os filtros ou termos de busca.'
                     : 'Comece criando o primeiro usuário administrativo.'
@@ -31,7 +31,7 @@ export function EmptyState({
             {!hasFilters && (
                 <button
                     onClick={onCreateUser}
-                    className="inline-flex items-center gap-3 px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors"
+                    className="inline-flex items-center gap-3 px-6 py-3 bg-primary text-primary-foreground font-medium rounded-xl hover:bg-primary-hover transition-colors"
                 >
                     <UserPlus className="w-5 h-5" />
                     Criar Primeiro Usuário

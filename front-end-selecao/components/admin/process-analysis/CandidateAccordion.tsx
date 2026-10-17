@@ -50,13 +50,13 @@ export default function CandidateAccordion({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return 'bg-warning-soft text-warning border-warning/30';
       case 'approved':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'bg-success-soft text-success border-success/30';
       case 'rejected':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'bg-destructive-soft text-destructive border-destructive/30';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'bg-muted text-foreground border-border';
     }
   };
 
@@ -88,7 +88,7 @@ export default function CandidateAccordion({
       items.push({
         key: 's1',
         label: 'Etapa 1 avaliada',
-        className: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+        className: 'bg-success-soft text-success border-success/30',
         Icon: FileText,
         title: 'A avaliação da etapa 1 já foi registrada.',
       });
@@ -98,7 +98,7 @@ export default function CandidateAccordion({
       items.push({
         key: 's2',
         label: 'Etapa 2 avaliada',
-        className: 'bg-purple-50 text-purple-700 border-purple-200',
+        className: 'bg-primary-soft text-primary border-primary/30',
         Icon: Users,
         title: 'A avaliação da etapa 2 já foi registrada.',
       });
@@ -108,7 +108,7 @@ export default function CandidateAccordion({
       items.push({
         key: 'none',
         label: 'Sem avaliação',
-        className: 'bg-gray-50 text-gray-700 border-gray-200',
+        className: 'bg-background text-foreground/80 border-border',
         Icon: Clock,
         title: 'Nenhuma etapa foi avaliada ainda.',
       });
@@ -118,7 +118,7 @@ export default function CandidateAccordion({
       items.push({
         key: 'warn',
         label: 'Inconsistente',
-        className: 'bg-amber-50 text-amber-800 border-amber-200',
+        className: 'bg-warning-soft text-warning border-warning/30',
         Icon: AlertTriangle,
         title: 'Etapa 2 existe sem Etapa 1 (verifique dados no backend).',
       });
@@ -128,20 +128,20 @@ export default function CandidateAccordion({
   }, [stage1Done, stage2Done, inconsistent]);
 
   return (
-    <div className="border-b border-gray-200 last:border-0">
+    <div className="border-b border-border last:border-0">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full p-6 text-left hover:bg-gray-50 transition-colors"
+        className="w-full p-6 text-left hover:bg-background transition-colors"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold">
+            <div className="w-12 h-12 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold">
               {application.candidate.name.charAt(0)}
             </div>
 
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="font-bold text-gray-900">{application.candidate.name}</h3>
+                <h3 className="font-bold text-foreground">{application.candidate.name}</h3>
 
                 {/* ✅ Badges das etapas */}
                 <div className="flex items-center gap-2 flex-wrap">
@@ -158,7 +158,7 @@ export default function CandidateAccordion({
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 mt-1 text-sm text-gray-600 flex-wrap">
+              <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground flex-wrap">
                 <span className="flex items-center gap-1">
                   <Mail className="w-4 h-4" />
                   {application.candidate.email}
@@ -181,17 +181,17 @@ export default function CandidateAccordion({
 
           <div className="flex items-center gap-4">
             {finalGlobalScore !== null && (
-              <div className="flex items-center gap-1 bg-blue-50 px-3 py-1.5 rounded-lg">
-                <Star className="w-4 h-4 text-blue-600" />
-                <span className="text-blue-700 font-bold">{finalGlobalScore}</span>
+              <div className="flex items-center gap-1 bg-primary-soft px-3 py-1.5 rounded-lg">
+                <Star className="w-4 h-4 text-primary" />
+                <span className="text-primary font-bold">{finalGlobalScore}</span>
               </div>
             )}
 
             <ChevronDown
               className={`w-5 h-5 transition-all ${
                 isExpanded
-                  ? 'rotate-180 text-blue-600 scale-110'
-                  : 'text-gray-500 group-hover:text-blue-500'
+                  ? 'rotate-180 text-primary scale-110'
+                  : 'text-muted-foreground group-hover:text-primary'
               }`}
             />
           </div>

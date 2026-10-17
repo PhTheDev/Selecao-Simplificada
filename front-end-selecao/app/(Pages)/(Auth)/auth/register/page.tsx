@@ -1,7 +1,6 @@
 'use client';
 import BrandMark from "@/components/BrandMark";
 
-import backgroundImage from "@/app/assets/images/imagem-fundo.jpg";
 import { linkPoliticaPrivacidade } from "@/config/ConselhoConfig";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -193,58 +192,45 @@ export default function Register() {
     return (
         <div className="flex flex-col lg:flex-row min-h-screen">
             {/* Seção da Imagem */}
-            <div
-                className="relative flex-1 flex items-center justify-center p-8 min-h-[40vh] lg:min-h-screen"
-                style={{
-                    backgroundImage: `url(${backgroundImage.src})`,
-                    backgroundSize: "cover" as const,
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                }}
-            >
-                <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/40 to-black/20"></div>
-                <div className="absolute inset-0 bg-noise-pattern opacity-10"></div>
-                <div className="relative z-10 text-center">
-                    <div className="animate-float">
-                        <BrandMark className="text-white font-semibold tracking-tight" />
-                    </div>
-                </div>
-            </div>
+            <div className="relative hidden flex-1 flex-col justify-between bg-primary-soft p-12 lg:flex lg:min-h-screen">
+        <BrandMark />
+        <p className="max-w-sm font-serif text-5xl leading-[1.05] text-foreground">
+          Um edital, <span className="italic">uma chance.</span>
+        </p>
+        <p className="text-sm text-muted-foreground">Inscrição, acompanhamento e resultado em um só lugar.</p>
+      </div>
 
             {/* Seção do Formulário */}
-            <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 bg-gradient-to-br from-[#005f73] via-[#0a776e] to-[#0a9396] relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial from-[#94d2bd]/10 via-transparent to-transparent"></div>
-                <div className="absolute top-10 right-10 w-20 h-20 bg-[#e9d8a6]/10 rounded-full blur-xl"></div>
-                <div className="absolute bottom-10 left-10 w-16 h-16 bg-[#94d2bd]/10 rounded-full blur-lg"></div>
+            <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 bg-background">
 
                 <div className="relative z-10 w-full max-w-md">
                     {isSuccess ? (
                         // Tela de sucesso após registro
-                        <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20">
+                        <div className="auth-card bg-card rounded-3xl p-8 border">
                             <div className="text-center mb-8">
-                                <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div className="w-16 h-16 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg className="w-8 h-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
                                 </div>
-                                <h2 className="text-3xl font-bold text-white mb-2">
+                                <h2 className="text-3xl font-bold text-foreground mb-2">
                                     Cadastro realizado!
                                 </h2>
-                                <p className="text-white/80 mb-4">
+                                <p className="text-muted-foreground mb-4">
                                     Enviamos um email de verificação para:
                                 </p>
-                                <p className="text-xl font-semibold text-white mb-6">{registeredEmail}</p>
+                                <p className="text-xl font-semibold text-foreground mb-6">{registeredEmail}</p>
                             </div>
 
                             <div className="space-y-6">
-                                <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
-                                    <h3 className="text-white font-semibold mb-2 flex items-center">
+                                <div className="bg-primary/10 border border-primary/30 rounded-2xl p-4">
+                                    <h3 className="text-foreground font-semibold mb-2 flex items-center">
                                         <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                         Instruções importantes
                                     </h3>
-                                    <ul className="text-white/80 text-sm space-y-2">
+                                    <ul className="text-muted-foreground text-sm space-y-2">
                                         <li className="flex items-start">
                                             <span className="mr-2">•</span>
                                             Verifique sua caixa de entrada e spam
@@ -268,11 +254,11 @@ export default function Register() {
                                     <button
                                         onClick={handleResendVerification}
                                         disabled={isLoading}
-                                        className="w-full bg-gradient-to-r from-[#0a9396] to-[#005f73] hover:from-[#005f73] hover:to-[#0a9396] text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
+                                        className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-3 px-6 rounded-2xl transition-all duration-300 shadow-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                                     >
                                         {isLoading ? (
                                             <>
-                                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                                 </svg>
@@ -285,7 +271,7 @@ export default function Register() {
 
                                     <Link
                                         href="/auth/login-candidato"
-                                        className="block w-full bg-transparent border border-white/30 hover:bg-white/10 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 text-center"
+                                        className="block w-full bg-transparent border border-input hover:bg-background text-foreground font-bold py-3 px-6 rounded-2xl transition-all duration-300 text-center"
                                     >
                                         Ir para login
                                     </Link>
@@ -295,7 +281,7 @@ export default function Register() {
                                             setIsSuccess(false);
                                             setRegisteredEmail('');
                                         }}
-                                        className="block w-full text-white/70 hover:text-white text-sm font-medium transition-colors duration-300 text-center"
+                                        className="block w-full text-muted-foreground hover:text-foreground text-sm font-medium transition-colors duration-300 text-center"
                                     >
                                         Cadastrar outra conta
                                     </button>
@@ -304,18 +290,18 @@ export default function Register() {
                         </div>
                     ) : (
                         // Formulário de registro
-                        <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20">
+                        <div className="auth-card bg-card rounded-3xl p-8 border">
                             <div className="text-center mb-8">
-                                <h2 className="text-3xl font-bold text-white mb-2">
+                                <h2 className="text-3xl font-bold text-foreground mb-2">
                                     Criar Conta
                                 </h2>
-                                <p className="text-white/80 text-sm">
+                                <p className="text-muted-foreground text-sm">
                                     Preencha seus dados para se cadastrar
                                 </p>
                             </div>
 
                             {error && (
-                                <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-xl text-red-200 text-sm">
+                                <div className="mb-6 p-4 bg-destructive/20 border border-destructive/50 rounded-2xl text-destructive text-sm">
                                     <div className="flex items-center">
                                         <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -327,7 +313,7 @@ export default function Register() {
 
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
-                                    <label htmlFor="name" className="block text-white text-sm font-medium mb-2">
+                                    <label htmlFor="name" className="block text-foreground text-sm font-medium mb-2">
                                         Nome Completo
                                     </label>
                                     <input
@@ -336,7 +322,7 @@ export default function Register() {
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#94d2bd] focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                                        className="w-full px-4 py-3 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-300 disabled:opacity-50"
                                         placeholder="Seu nome completo"
                                         required
                                         disabled={isLoading}
@@ -345,7 +331,7 @@ export default function Register() {
                                 </div>
 
                                 <div>
-                                    <label htmlFor="email" className="block text-white text-sm font-medium mb-2">
+                                    <label htmlFor="email" className="block text-foreground text-sm font-medium mb-2">
                                         E-mail
                                     </label>
                                     <input
@@ -354,7 +340,7 @@ export default function Register() {
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#94d2bd] focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                                        className="w-full px-4 py-3 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-300 disabled:opacity-50"
                                         placeholder="seu@email.com"
                                         required
                                         disabled={isLoading}
@@ -362,7 +348,7 @@ export default function Register() {
                                 </div>
 
                                 <div>
-                                    <label htmlFor="password" className="block text-white text-sm font-medium mb-2">
+                                    <label htmlFor="password" className="block text-foreground text-sm font-medium mb-2">
                                         Senha
                                     </label>
                                     <input
@@ -371,19 +357,19 @@ export default function Register() {
                                         name="password"
                                         value={formData.password}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#94d2bd] focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                                        className="w-full px-4 py-3 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-300 disabled:opacity-50"
                                         placeholder="Mínimo 6 caracteres"
                                         minLength={6}
                                         required
                                         disabled={isLoading}
                                     />
-                                    <p className="text-white/50 text-xs mt-1">
+                                    <p className="text-muted-foreground text-xs mt-1">
                                         A senha deve ter pelo menos 6 caracteres
                                     </p>
                                 </div>
 
                                 <div>
-                                    <label htmlFor="password_confirm" className="block text-white text-sm font-medium mb-2">
+                                    <label htmlFor="password_confirm" className="block text-foreground text-sm font-medium mb-2">
                                         Confirmar Senha
                                     </label>
                                     <input
@@ -392,12 +378,12 @@ export default function Register() {
                                         name="password_confirm"
                                         value={formData.password_confirm}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#94d2bd] focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                                        className="w-full px-4 py-3 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-300 disabled:opacity-50"
                                         placeholder="Digite novamente sua senha"
                                         required
                                         disabled={isLoading}
                                     />
-                                    <p className="text-white/50 text-xs mt-1">
+                                    <p className="text-muted-foreground text-xs mt-1">
                                         A senha deve coincidir com a anterior
                                     </p>
                                 </div>
@@ -405,11 +391,11 @@ export default function Register() {
                                 <button
                                     type="submit"
                                     disabled={isLoading}
-                                    className="w-full bg-gradient-to-r from-[#005f73] to-[#0a9396] hover:from-[#0a9396] hover:to-[#005f73] text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none mt-4 flex items-center justify-center"
+                                    className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-4 px-6 rounded-2xl transition-all duration-300 shadow-none disabled:opacity-50 disabled:cursor-not-allowed mt-4 flex items-center justify-center"
                                 >
                                     {isLoading ? (
                                         <>
-                                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                             </svg>
@@ -422,11 +408,11 @@ export default function Register() {
                             </form>
 
                             <div className="mt-6 text-center">
-                                <p className="text-white/70 text-sm">
+                                <p className="text-muted-foreground text-sm">
                                     Já tem uma conta?{' '}
                                     <Link
                                         href="/auth/login-candidato"
-                                        className="text-[#94d2bd] hover:text-[#a8e6cf] font-medium transition-colors duration-300 hover:underline"
+                                        className="text-primary hover:text-primary font-medium transition-colors duration-300 hover:underline"
                                     >
                                         Fazer login
                                     </Link>
@@ -435,9 +421,9 @@ export default function Register() {
 
                             {/* Termos e condições */}
                             <div className="mt-4 text-center">
-                                <p className="text-white/50 text-xs">
+                                <p className="text-muted-foreground text-xs">
                                     Ao se cadastrar, você concorda com nossas{' '}
-                                    <Link href={linkPoliticaPrivacidade} className="text-[#94d2bd] hover:underline">
+                                    <Link href={linkPoliticaPrivacidade} className="text-primary hover:underline">
                                         Política de Privacidade
                                     </Link>
                                 </p>

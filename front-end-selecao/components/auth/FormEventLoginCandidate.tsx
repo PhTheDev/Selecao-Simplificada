@@ -276,18 +276,18 @@ export function FormEventLoginCandidate() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20">
+      <div className="auth-card bg-card rounded-3xl p-8 border">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-[#e9d8a6] mb-2">Acessar Conta</h2>
-          <p className="text-white/80 text-sm">Entre com suas credenciais</p>
+          <h2 className="text-3xl font-bold text-foreground mb-2">Acessar Conta</h2>
+          <p className="text-muted-foreground text-sm">Entre com suas credenciais</p>
         </div>
 
         {error && (
           <div
-            className={`mb-6 p-4 rounded-xl text-sm ${
+            className={`mb-6 p-4 rounded-2xl text-sm ${
               showResendOption
-                ? 'bg-yellow-500/20 border border-yellow-500/50 text-yellow-200'
-                : 'bg-red-500/20 border border-red-500/50 text-red-200'
+                ? 'bg-warning/20 border border-warning/50 text-warning'
+                : 'bg-destructive/20 border border-destructive/50 text-destructive'
             }`}
           >
             <div className="flex items-start">
@@ -309,12 +309,12 @@ export function FormEventLoginCandidate() {
                       type="button"
                       onClick={handleResendVerification}
                       disabled={isResending}
-                      className="bg-gradient-to-r from-[#d97706] to-[#f59e0b] hover:from-[#f59e0b] hover:to-[#d97706] text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 text-sm flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-gradient-to-r from-warning to-warning hover:from-warning hover:to-warning text-foreground font-medium py-2 px-4 rounded-lg transition-all duration-300 text-sm flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isResending ? (
                         <>
                           <svg
-                            className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                            className="animate-spin -ml-1 mr-2 h-4 w-4 text-current"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -343,7 +343,7 @@ export function FormEventLoginCandidate() {
                       )}
                     </button>
 
-                    <p className="text-xs text-yellow-300/70 mt-2">Verifique também sua pasta de spam/lixo eletrônico</p>
+                    <p className="text-xs text-warning/70 mt-2">Verifique também sua pasta de spam/lixo eletrônico</p>
                   </div>
                 )}
               </div>
@@ -352,7 +352,7 @@ export function FormEventLoginCandidate() {
         )}
 
         {resendMessage && !showResendOption && (
-          <div className="mb-6 p-4 bg-green-500/20 border border-green-500/50 rounded-xl text-green-200 text-sm">
+          <div className="mb-6 p-4 bg-success/20 border border-success/50 rounded-2xl text-success text-sm">
             <div className="flex items-center">
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -364,7 +364,7 @@ export function FormEventLoginCandidate() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-white text-sm font-medium mb-2">
+            <label htmlFor="email" className="block text-foreground text-sm font-medium mb-2">
               E-mail
             </label>
 
@@ -374,8 +374,8 @@ export function FormEventLoginCandidate() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full px-4 py-3 bg-white/10 border rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300 disabled:opacity-50 ${
-                fieldErrors.email ? 'border-red-400/70 focus:ring-red-400' : 'border-white/20 focus:ring-[#94d2bd]'
+              className={`w-full px-4 py-3 bg-background border rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300 disabled:opacity-50 ${
+                fieldErrors.email ? 'border-destructive/70 focus:ring-destructive' : 'border-input focus:ring-ring'
               }`}
               placeholder="seu@email.com"
               required
@@ -383,14 +383,14 @@ export function FormEventLoginCandidate() {
             />
 
             {fieldErrors.email && (
-              <p className="mt-2 text-xs text-red-200">
+              <p className="mt-2 text-xs text-destructive">
                 {fieldErrors.email}
               </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-white text-sm font-medium mb-2">
+            <label htmlFor="password" className="block text-foreground text-sm font-medium mb-2">
               Senha
             </label>
 
@@ -400,8 +400,8 @@ export function FormEventLoginCandidate() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={`w-full px-4 py-3 bg-white/10 border rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300 disabled:opacity-50 ${
-                fieldErrors.password ? 'border-red-400/70 focus:ring-red-400' : 'border-white/20 focus:ring-[#94d2bd]'
+              className={`w-full px-4 py-3 bg-background border rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-300 disabled:opacity-50 ${
+                fieldErrors.password ? 'border-destructive/70 focus:ring-destructive' : 'border-input focus:ring-ring'
               }`}
               placeholder="Sua senha"
               required
@@ -409,7 +409,7 @@ export function FormEventLoginCandidate() {
             />
 
             {fieldErrors.password && (
-              <p className="mt-2 text-xs text-red-200">
+              <p className="mt-2 text-xs text-destructive">
                 {fieldErrors.password}
               </p>
             )}
@@ -418,7 +418,7 @@ export function FormEventLoginCandidate() {
           <div className="flex justify-end">
             <Link
               href="/auth/recuperar-senha"
-              className="text-[#94d2bd] hover:text-[#a8e6cf] text-sm font-medium transition-colors duration-300"
+              className="text-primary hover:text-primary text-sm font-medium transition-colors duration-300"
             >
               Esqueceu sua senha?
             </Link>
@@ -427,11 +427,11 @@ export function FormEventLoginCandidate() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-[#005f73] to-[#0a9396] hover:from-[#0a9396] hover:to-[#005f73] text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
+            className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-4 px-6 rounded-2xl transition-all duration-300 shadow-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           >
             {isLoading ? (
               <>
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -444,11 +444,11 @@ export function FormEventLoginCandidate() {
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-white/70 text-sm">
+          <p className="text-muted-foreground text-sm">
             Não tem uma conta?{' '}
             <Link
               href="/auth/register"
-              className="text-[#94d2bd] hover:text-[#a8e6cf] font-medium transition-colors duration-300 hover:underline"
+              className="text-primary hover:text-primary font-medium transition-colors duration-300 hover:underline"
             >
               Cadastre-se
             </Link>

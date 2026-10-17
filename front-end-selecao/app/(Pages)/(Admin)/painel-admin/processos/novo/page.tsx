@@ -397,7 +397,7 @@ export default function NovoProcessoSeletivo() {
                 onDiscard={discardSavedData}
             />
 
-            <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+            <div className="min-h-screen bg-background p-4 md:p-6">
                 <Title
                     title="Novo Processo Seletivo"
                     icon={FileText}
@@ -411,7 +411,7 @@ export default function NovoProcessoSeletivo() {
                         <button
                             type="button"
                             onClick={clearDraft}
-                            className="flex items-center gap-2 px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors font-medium"
+                            className="flex items-center gap-2 px-4 py-2 text-muted-foreground bg-card border border-input rounded-xl hover:bg-background transition-colors font-medium"
                         >
                             <Trash2 className="w-4 h-4" />
                             Limpar Rascunho
@@ -434,9 +434,9 @@ export default function NovoProcessoSeletivo() {
                     />
 
                     {/* Informações Básicas */}
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-                        <h2 className="font-semibold text-xl text-gray-800 mb-6 flex items-center gap-2">
-                            <FileText className="w-6 h-6 text-gray-600" />
+                    <div className="bg-card rounded-2xl shadow-sm border border-border p-6">
+                        <h2 className="font-semibold text-xl text-foreground mb-6 flex items-center gap-2">
+                            <FileText className="w-6 h-6 text-muted-foreground" />
                             Informações Básicas
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -454,12 +454,12 @@ export default function NovoProcessoSeletivo() {
                                 />
                             </div>
                             <div className="md:col-span-2">
-                                <label htmlFor="subtitle" className="block text-sm font-semibold mb-1 text-gray-700">
+                                <label htmlFor="subtitle" className="block text-sm font-semibold mb-1 text-foreground/80">
                                     Texto Complementar
-                                    <span className="text-red-500 ml-1">*</span>
+                                    <span className="text-destructive ml-1">*</span>
                                 </label>
                                 <div className="relative">
-                                    <div className="absolute left-3 top-3 pointer-events-none text-gray-400">
+                                    <div className="absolute left-3 top-3 pointer-events-none text-muted-foreground/70">
                                         <Subtitles className="w-5 h-5" />
                                     </div>
                                     <textarea
@@ -471,10 +471,10 @@ export default function NovoProcessoSeletivo() {
                                         required
                                         rows={3}
                                         placeholder="Ex: Vagas abertas para processo ..."
-                                        className="w-full pl-11 pr-4 py-3 border rounded-lg text-gray-800 placeholder-gray-400 transition-all duration-200 ease-in-out border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 bg-white hover:border-gray-400"
+                                        className="w-full pl-11 pr-4 py-3 border rounded-lg text-foreground placeholder:text-muted-foreground/70 transition-all duration-200 ease-in-out border-input focus:border-primary focus:ring-2 focus:ring-ring/50 bg-card hover:border-input"
                                     />
                                 </div>
-                                <p className="mt-1 text-xs text-gray-500 text-right">
+                                <p className="mt-1 text-xs text-muted-foreground text-right">
                                     {formData.subtitle.length}/{MAX_SUBTITLE_LENGTH}
                                 </p>
                             </div>
@@ -603,8 +603,8 @@ export default function NovoProcessoSeletivo() {
 
                         {/* Turno */}
                         <div className="md:col-span-2 mt-6">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Turno <span className="text-red-500">*</span>
+                            <label className="block text-sm font-medium text-foreground/80 mb-2">
+                                Turno <span className="text-destructive">*</span>
                             </label>
                             <div className="relative">
                                 <select
@@ -613,7 +613,7 @@ export default function NovoProcessoSeletivo() {
                                     value={formData.bout}
                                     onChange={handleInputChange}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors appearance-none"
+                                    className="w-full px-4 py-3 border border-input rounded-xl bg-card focus:ring-2 focus:ring-ring focus:border-primary transition-colors appearance-none"
                                 >
                                     <option value="" disabled>
                                         Selecione o turno
@@ -623,18 +623,18 @@ export default function NovoProcessoSeletivo() {
                                     <option value="E">Escala</option>
                                 </select>
                                 <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-                                    <Clock className="w-5 h-5 text-gray-500" />
+                                    <Clock className="w-5 h-5 text-muted-foreground" />
                                 </div>
                             </div>
-                            <p className="text-xs text-gray-500 mt-2">
+                            <p className="text-xs text-muted-foreground mt-2">
                                 Defina o turno do estágio (Matutino, Vespertino ou Escala).
                             </p>
                         </div>
 
                         {/* Descrição */}
                         <div className="mt-6">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Descrição do Processo <span className="text-red-500">*</span>
+                            <label className="block text-sm font-medium text-foreground/80 mb-2">
+                                Descrição do Processo <span className="text-destructive">*</span>
                             </label>
                             <textarea
                                 id="description"
@@ -643,11 +643,11 @@ export default function NovoProcessoSeletivo() {
                                 onChange={handleInputChange}
                                 maxLength={MAX_DESCRIPTION_LENGTH}
                                 rows={6}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                className="w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                                 placeholder="Descreva detalhadamente o processo seletivo..."
                                 required
                             />
-                            <p className="mt-1 text-xs text-gray-500 text-right">
+                            <p className="mt-1 text-xs text-muted-foreground text-right">
                                 {formData.description.length}/{MAX_DESCRIPTION_LENGTH}
                             </p>
                         </div>
@@ -671,16 +671,16 @@ export default function NovoProcessoSeletivo() {
                     {/* ------------------------------- */}
                     {/*   CONFIGURAÇÕES DE AVALIAÇÃO    */}
                     {/* ------------------------------- */}
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                    <div className="bg-card rounded-2xl shadow-sm border border-border p-6">
                         <div className="flex items-center gap-3 mb-6">
-                            <Settings className="w-6 h-6 text-blue-600" />
-                            <h3 className="text-xl font-bold text-gray-900">Configurações de Avaliação</h3>
+                            <Settings className="w-6 h-6 text-primary" />
+                            <h3 className="text-xl font-bold text-foreground">Configurações de Avaliação</h3>
                         </div>
 
                         {/* Checkboxes – SEM o de entrevista (etapa 2 obrigatória) */}
                         <div className="space-y-4">
                             {/* Currículo */}
-                            <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                            <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-border hover:bg-background transition-colors">
                                 <input
                                     type="checkbox"
                                     checked={formData.include_curriculum_in_score}
@@ -688,21 +688,21 @@ export default function NovoProcessoSeletivo() {
                                         setFormData(prev => ({ ...prev, include_curriculum_in_score: e.target.checked }));
                                         setHasUnsavedChanges(true);
                                     }}
-                                    className="mt-1 text-blue-600 focus:ring-blue-500 w-5 h-5"
+                                    className="mt-1 text-primary focus:ring-ring w-5 h-5"
                                 />
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <FileText className="w-5 h-5 text-gray-600" />
-                                        <span className="text-gray-700 font-medium">Incluir currículo na nota da Etapa 1</span>
+                                        <FileText className="w-5 h-5 text-muted-foreground" />
+                                        <span className="text-foreground/80 font-medium">Incluir currículo na nota da Etapa 1</span>
                                     </div>
-                                    <p className="text-sm text-gray-500 ml-7">
+                                    <p className="text-sm text-muted-foreground ml-7">
                                         Se marcado, o currículo do candidato será considerado no cálculo da nota da etapa 1
                                     </p>
                                 </div>
                             </label>
 
                             {/* Portfólio */}
-                            <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                            <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-border hover:bg-background transition-colors">
                                 <input
                                     type="checkbox"
                                     checked={formData.include_portfolio_in_score}
@@ -710,21 +710,21 @@ export default function NovoProcessoSeletivo() {
                                         setFormData(prev => ({ ...prev, include_portfolio_in_score: e.target.checked }));
                                         setHasUnsavedChanges(true);
                                     }}
-                                    className="mt-1 text-blue-600 focus:ring-blue-500 w-5 h-5"
+                                    className="mt-1 text-primary focus:ring-ring w-5 h-5"
                                 />
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <FileText className="w-5 h-5 text-gray-600" />
-                                        <span className="text-gray-700 font-medium">Incluir portfólio na nota da Etapa 1</span>
+                                        <FileText className="w-5 h-5 text-muted-foreground" />
+                                        <span className="text-foreground/80 font-medium">Incluir portfólio na nota da Etapa 1</span>
                                     </div>
-                                    <p className="text-sm text-gray-500 ml-7">
+                                    <p className="text-sm text-muted-foreground ml-7">
                                         Se marcado, o portfólio do candidato será considerado no cálculo da nota da etapa 1
                                     </p>
                                 </div>
                             </label>
 
                             {/* Certificados */}
-                            <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                            <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-border hover:bg-background transition-colors">
                                 <input
                                     type="checkbox"
                                     checked={formData.include_certificates_in_score}
@@ -732,21 +732,21 @@ export default function NovoProcessoSeletivo() {
                                         setFormData(prev => ({ ...prev, include_certificates_in_score: e.target.checked }));
                                         setHasUnsavedChanges(true);
                                     }}
-                                    className="mt-1 text-blue-600 focus:ring-blue-500 w-5 h-5"
+                                    className="mt-1 text-primary focus:ring-ring w-5 h-5"
                                 />
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <FileText className="w-5 h-5 text-gray-600" />
-                                        <span className="text-gray-700 font-medium">Incluir certificados na nota da Etapa 1</span>
+                                        <FileText className="w-5 h-5 text-muted-foreground" />
+                                        <span className="text-foreground/80 font-medium">Incluir certificados na nota da Etapa 1</span>
                                     </div>
-                                    <p className="text-sm text-gray-500 ml-7">
+                                    <p className="text-sm text-muted-foreground ml-7">
                                         Se marcado, os certificados de cursos do candidato serão considerados no cálculo da nota da etapa 1
                                     </p>
                                 </div>
                             </label>
 
                             {/* Redação */}
-                            <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                            <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-border hover:bg-background transition-colors">
                                 <input
                                     type="checkbox"
                                     checked={formData.has_essay}
@@ -754,14 +754,14 @@ export default function NovoProcessoSeletivo() {
                                         setFormData(prev => ({ ...prev, has_essay: e.target.checked }));
                                         setHasUnsavedChanges(true);
                                     }}
-                                    className="mt-1 text-blue-600 focus:ring-blue-500 w-5 h-5"
+                                    className="mt-1 text-primary focus:ring-ring w-5 h-5"
                                 />
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <CheckSquare className="w-5 h-5 text-gray-600" />
-                                        <span className="text-gray-700 font-medium">Processo terá avaliação de redação</span>
+                                        <CheckSquare className="w-5 h-5 text-muted-foreground" />
+                                        <span className="text-foreground/80 font-medium">Processo terá avaliação de redação</span>
                                     </div>
-                                    <p className="text-sm text-gray-500 ml-7">
+                                    <p className="text-sm text-muted-foreground ml-7">
                                         Se marcado, a etapa 2 incluirá avaliação de redação além da entrevista (obrigatória).
                                     </p>
                                 </div>
@@ -769,19 +769,19 @@ export default function NovoProcessoSeletivo() {
                         </div>
 
                         {/* ---------- SEÇÃO: PESOS DA AVALIAÇÃO ---------- */}
-                        <div className="mt-8 pt-6 border-t border-gray-200">
-                            <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                <Settings className="w-5 h-5 text-gray-600" />
+                        <div className="mt-8 pt-6 border-t border-border">
+                            <h4 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                                <Settings className="w-5 h-5 text-muted-foreground" />
                                 Pesos da Avaliação (percentuais)
                             </h4>
-                            <p className="text-sm text-gray-500 mb-6">
+                            <p className="text-sm text-muted-foreground mb-6">
                                 Defina o peso global de cada métrica na nota final. A soma global dos pesos ativos deve ser exatamente 100%.
                             </p>
 
                             {/* ETAPA 1 */}
                             <div className="mb-8">
-                                <h5 className="font-medium text-gray-800 mb-3 flex items-center gap-2">
-                                    <FileText className="w-4 h-4 text-gray-500" />
+                                <h5 className="font-medium text-foreground mb-3 flex items-center gap-2">
+                                    <FileText className="w-4 h-4 text-muted-foreground" />
                                     Etapa 1 – Documentos
                                 </h5>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -842,12 +842,12 @@ export default function NovoProcessoSeletivo() {
                                     )}
                                 </div>
                                 {!isGlobalWeightValid && (
-                                    <p className="text-sm text-red-500 mt-2 flex items-center gap-1">
+                                    <p className="text-sm text-destructive mt-2 flex items-center gap-1">
                                         <span className="font-medium">Atenção:</span> A soma global dos pesos ativos deve ser 100% (atualmente {globalWeightSum}%).
                                     </p>
                                 )}
                                 {isGlobalWeightValid && (
-                                    <p className="text-sm text-green-600 mt-2 flex items-center gap-1">
+                                    <p className="text-sm text-success mt-2 flex items-center gap-1">
                                         ✓ Soma global dos pesos: {globalWeightSum}% (OK)
                                     </p>
                                 )}
@@ -855,8 +855,8 @@ export default function NovoProcessoSeletivo() {
 
                             {/* ETAPA 2 – sempre visível (obrigatória) */}
                             <div>
-                                <h5 className="font-medium text-gray-800 mb-3 flex items-center gap-2">
-                                    <FileText className="w-4 h-4 text-gray-500" />
+                                <h5 className="font-medium text-foreground mb-3 flex items-center gap-2">
+                                    <FileText className="w-4 h-4 text-muted-foreground" />
                                     Etapa 2 – Entrevista {formData.has_essay && 'e Redação'}
                                 </h5>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -888,7 +888,7 @@ export default function NovoProcessoSeletivo() {
                                         />
                                     )}
                                 </div>
-                                <p className="text-sm text-gray-600 mt-2">
+                                <p className="text-sm text-muted-foreground mt-2">
                                     O peso desta etapa participa da composição da nota final global.
                                 </p>
                             </div>
@@ -896,10 +896,10 @@ export default function NovoProcessoSeletivo() {
                     </div>
 
                     {/* Status e Botão de Envio */}
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                    <div className="bg-card rounded-2xl shadow-sm border border-border p-6">
                         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                             <div className="flex-1">
-                                <label className="block text-sm font-medium text-gray-700 mb-3">
+                                <label className="block text-sm font-medium text-foreground/80 mb-3">
                                     Status do Processo
                                 </label>
                                 <div className="flex gap-6">
@@ -912,11 +912,11 @@ export default function NovoProcessoSeletivo() {
                                                 setFormData(prev => ({ ...prev, is_active: true }));
                                                 setHasUnsavedChanges(true);
                                             }}
-                                            className="text-blue-600 focus:ring-blue-500 w-5 h-5"
+                                            className="text-primary focus:ring-ring w-5 h-5"
                                         />
                                         <div>
-                                            <span className="text-gray-700 font-medium">Ativo</span>
-                                            <p className="text-sm text-gray-500">O processo será visível publicamente</p>
+                                            <span className="text-foreground/80 font-medium">Ativo</span>
+                                            <p className="text-sm text-muted-foreground">O processo será visível publicamente</p>
                                         </div>
                                     </label>
                                     <label className="flex items-center gap-3 cursor-pointer">
@@ -928,11 +928,11 @@ export default function NovoProcessoSeletivo() {
                                                 setFormData(prev => ({ ...prev, is_active: false }));
                                                 setHasUnsavedChanges(true);
                                             }}
-                                            className="text-blue-600 focus:ring-blue-500 w-5 h-5"
+                                            className="text-primary focus:ring-ring w-5 h-5"
                                         />
                                         <div>
-                                            <span className="text-gray-700 font-medium">Inativo</span>
-                                            <p className="text-sm text-gray-500">O processo ficará oculto</p>
+                                            <span className="text-foreground/80 font-medium">Inativo</span>
+                                            <p className="text-sm text-muted-foreground">O processo ficará oculto</p>
                                         </div>
                                     </label>
                                 </div>
@@ -941,7 +941,7 @@ export default function NovoProcessoSeletivo() {
                             <button
                                 type="submit"
                                 disabled={createProcessMutation.isPending}
-                                className="w-full lg:w-auto flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg shadow-blue-500/30"
+                                className="w-full lg:w-auto flex items-center justify-center gap-3 px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary-hover transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-sm shadow-primary/30"
                             >
                                 {createProcessMutation.isPending ? (
                                     <>

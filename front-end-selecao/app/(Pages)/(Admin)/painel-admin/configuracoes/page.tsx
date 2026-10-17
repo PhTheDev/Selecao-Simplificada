@@ -371,7 +371,7 @@ export default function Configurações() {
   if (isLoading) return <LoadingState />;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-background p-6">
       <Title
         title="Configurações do Sistema"
         icon={UserCog}
@@ -401,7 +401,7 @@ export default function Configurações() {
       )}
 
       {error ? (
-        <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
+        <div className="bg-destructive-soft border border-destructive/30 rounded-2xl p-6 text-center">
           <Alert type="error" message={error} />
         </div>
       ) : !isSuperAdmin ? (

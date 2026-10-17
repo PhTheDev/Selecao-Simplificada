@@ -1,7 +1,6 @@
 'use client';
 import BrandMark from "@/components/BrandMark";
 
-import backgroundImage from "@/app/assets/images/imagem-fundo.jpg";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
@@ -92,21 +91,21 @@ function ResetPasswordForm() {
   return (
     <>
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-[#e9d8a6] mb-2">Redefinir senha</h2>
-        <p className="text-white/80 text-sm">
+        <h2 className="text-3xl font-bold text-foreground mb-2">Redefinir senha</h2>
+        <p className="text-muted-foreground text-sm">
           Crie uma nova senha para sua conta.
         </p>
       </div>
 
       {validating ? (
-        <div className="text-white/80 text-center py-6">Validando link...</div>
+        <div className="text-muted-foreground text-center py-6">Validando link...</div>
       ) : !isValidToken ? (
-        <div className="bg-red-500/20 border border-red-500/50 text-red-100 rounded-xl p-4 text-sm">
+        <div className="bg-destructive/20 border border-destructive/50 text-destructive rounded-2xl p-4 text-sm">
           Token inválido ou expirado. Solicite uma nova recuperação.
           <div className="mt-4 text-center">
             <Link
               href="/auth/recuperar-senha"
-              className="text-[#94d2bd] hover:text-[#a8e6cf] font-medium underline"
+              className="text-primary hover:text-primary font-medium underline"
             >
               Solicitar novo link
             </Link>
@@ -115,14 +114,14 @@ function ResetPasswordForm() {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-white text-sm font-medium mb-2">
+            <label className="block text-foreground text-sm font-medium mb-2">
               Nova senha
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#94d2bd] focus:border-transparent transition-all duration-300 disabled:opacity-50"
+              className="w-full px-4 py-3 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-300 disabled:opacity-50"
               placeholder="Nova senha"
               required
               disabled={loading}
@@ -130,14 +129,14 @@ function ResetPasswordForm() {
           </div>
 
           <div>
-            <label className="block text-white text-sm font-medium mb-2">
+            <label className="block text-foreground text-sm font-medium mb-2">
               Confirmar senha
             </label>
             <input
               type="password"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#94d2bd] focus:border-transparent transition-all duration-300 disabled:opacity-50"
+              className="w-full px-4 py-3 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-300 disabled:opacity-50"
               placeholder="Confirmar senha"
               required
               disabled={loading}
@@ -147,7 +146,7 @@ function ResetPasswordForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-[#005f73] to-[#0a9396] hover:from-[#0a9396] hover:to-[#005f73] text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-4 px-6 rounded-2xl transition-all duration-300 shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Salvando..." : "Redefinir senha"}
           </button>
@@ -155,7 +154,7 @@ function ResetPasswordForm() {
           <div className="mt-4 text-center">
             <Link
               href="/auth/login-candidato"
-              className="text-[#94d2bd] hover:text-[#a8e6cf] font-medium transition-colors duration-300 hover:underline"
+              className="text-primary hover:text-primary font-medium transition-colors duration-300 hover:underline"
             >
               Voltar para o login
             </Link>
@@ -171,35 +170,24 @@ export default function ResetPasswordPage() {
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
       {/* Imagem de fundo */}
-      <div
-        className="relative flex-1 flex items-center justify-center p-8 min-h-[40vh] lg:min-h-screen"
-        style={{
-          backgroundImage: `url(${backgroundImage.src})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/40 to-black/20"></div>
-        <div className="absolute inset-0 bg-noise-pattern opacity-10"></div>
-        <div className="relative z-10 text-center">
-          <div className="animate-float">
-            <BrandMark className="text-white font-semibold tracking-tight" />
-          </div>
-        </div>
+      <div className="relative hidden flex-1 flex-col justify-between bg-primary-soft p-12 lg:flex lg:min-h-screen">
+        <BrandMark />
+        <p className="max-w-sm font-serif text-5xl leading-[1.05] text-foreground">
+          Um edital, <span className="italic">uma chance.</span>
+        </p>
+        <p className="text-sm text-muted-foreground">Inscrição, acompanhamento e resultado em um só lugar.</p>
       </div>
 
       {/* Formulário */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 bg-gradient-to-br from-[#005f73] via-[#0a776e] to-[#0a9396] relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-radial from-[#94d2bd]/10 via-transparent to-transparent"></div>
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 bg-background">
 
         <div className="relative z-10 w-full max-w-md">
-          <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20">
-            <Suspense fallback={<div className="text-white/80 text-center py-6">Carregando...</div>}>
+          <div className="auth-card bg-card rounded-3xl p-8 border">
+            <Suspense fallback={<div className="text-muted-foreground text-center py-6">Carregando...</div>}>
               <ResetPasswordForm />
             </Suspense>
 
-            <p className="mt-6 text-xs text-white/60 text-center">
+            <p className="mt-6 text-xs text-muted-foreground text-center">
               &copy; {new Date().getFullYear()} Seleção Simplificada. Todos os direitos reservados.
             </p>
           </div>

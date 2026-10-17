@@ -423,14 +423,14 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                     <button
                         onClick={onClose}
                         disabled={isSaving}
-                        className="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-6 py-3 bg-muted text-foreground/80 font-medium rounded-xl hover:bg-border transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Cancelar
                     </button>
                     <button
                         onClick={handleSave}
                         disabled={isSaving}
-                        className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-medium rounded-xl hover:shadow-md hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isSaving ? (
                             <>
@@ -446,17 +446,17 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                     </button>
                 </>
             }
-            backdropClass="bg-black/30 backdrop-blur-sm"
+            backdropClass="bg-black/30"
         >
             <div className="p-6 space-y-8 max-h-[calc(100vh-200px)] overflow-y-auto">
                 {/* Upload do Banner */}
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-foreground/80 mb-3">
                         Banner do Processo
                     </label>
                     <div className="space-y-4">
                         {(bannerPreview || process.process_banner) && (
-                            <div className="relative rounded-xl overflow-hidden border border-gray-300">
+                            <div className="relative rounded-xl overflow-hidden border border-input">
                                 <img
                                     src={bannerPreview || process.process_banner}
                                     alt="Preview do banner"
@@ -464,13 +464,13 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                 />
                             </div>
                         )}
-                        <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-all duration-300">
+                        <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-input rounded-2xl cursor-pointer hover:border-primary hover:bg-primary-soft transition-all duration-300">
                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                <Upload className="w-10 h-10 text-gray-400 mb-3" />
-                                <p className="text-sm text-gray-600 font-medium">
-                                    <span className="text-blue-600">Clique para upload</span> ou arraste e solte
+                                <Upload className="w-10 h-10 text-muted-foreground/70 mb-3" />
+                                <p className="text-sm text-muted-foreground font-medium">
+                                    <span className="text-primary">Clique para upload</span> ou arraste e solte
                                 </p>
-                                <p className="text-xs text-gray-500 mt-1">
+                                <p className="text-xs text-muted-foreground mt-1">
                                     PNG, JPG, JPEG (Recomendado: 1920x1080px)
                                 </p>
                             </div>
@@ -486,9 +486,9 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
 
                 {/* Documentos do Edital - Múltiplos */}
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-foreground/80 mb-3">
                         Documentos do Edital
-                        <span className="text-xs text-gray-500 ml-2 font-normal">
+                        <span className="text-xs text-muted-foreground ml-2 font-normal">
                             (PDF ou Word, máx. 10MB cada)
                         </span>
                     </label>
@@ -497,20 +497,20 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                         {/* Documentos atuais */}
                         {currentDocuments.length > 0 && (
                             <div className="space-y-2">
-                                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                     Documentos atuais
                                 </p>
                                 {currentDocuments.map((doc) => (
                                     <div
                                         key={doc.id}
-                                        className="flex items-center gap-3 p-3 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200"
+                                        className="flex items-center gap-3 p-3 bg-primary-soft rounded-xl border border-primary/30"
                                     >
-                                        <FileText className="w-6 h-6 text-blue-600 flex-shrink-0" />
+                                        <FileText className="w-6 h-6 text-primary flex-shrink-0" />
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium text-gray-900 truncate">
+                                            <p className="text-sm font-medium text-foreground truncate">
                                                 {doc.name}
                                             </p>
-                                            <p className="text-xs text-gray-600">
+                                            <p className="text-xs text-muted-foreground">
                                                 {doc.file.split('/').pop()}
                                             </p>
                                         </div>
@@ -518,7 +518,7 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                             href={doc.file}
                                             target="_blank"
                                             download
-                                            className="p-2 text-blue-600 hover:bg-blue-200 rounded-lg transition-colors"
+                                            className="p-2 text-primary hover:bg-primary-soft rounded-lg transition-colors"
                                             title="Baixar"
                                         >
                                             <Download className="w-4 h-4" />
@@ -526,7 +526,7 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                         <button
                                             type="button"
                                             onClick={() => handleRemoveExistingDocument(doc)}
-                                            className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                                            className="p-2 text-destructive hover:bg-destructive-soft rounded-lg transition-colors"
                                             title="Remover"
                                         >
                                             <Trash2 className="w-4 h-4" />
@@ -539,27 +539,27 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                         {/* Novos arquivos selecionados */}
                         {noticeDocFiles.length > 0 && (
                             <div className="space-y-2">
-                                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                                     Novos documentos
                                 </p>
                                 {noticeDocFiles.map((file, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-center gap-3 p-3 bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-xl border border-emerald-200"
+                                        className="flex items-center gap-3 p-3 bg-success-soft rounded-xl border border-success/30"
                                     >
-                                        <FileText className="w-6 h-6 text-emerald-600 flex-shrink-0" />
+                                        <FileText className="w-6 h-6 text-success flex-shrink-0" />
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium text-gray-900 truncate">
+                                            <p className="text-sm font-medium text-foreground truncate">
                                                 {file.name}
                                             </p>
-                                            <p className="text-xs text-emerald-700">
+                                            <p className="text-xs text-success">
                                                 {(file.size / 1024).toFixed(1)} KB
                                             </p>
                                         </div>
                                         <button
                                             type="button"
                                             onClick={() => handleRemoveNewFile(index)}
-                                            className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                                            className="p-2 text-destructive hover:bg-destructive-soft rounded-lg transition-colors"
                                             title="Remover"
                                         >
                                             <X className="w-4 h-4" />
@@ -570,13 +570,13 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                         )}
 
                         {/* Input para novos documentos */}
-                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-all duration-300">
+                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-input rounded-2xl cursor-pointer hover:border-primary hover:bg-primary-soft transition-all duration-300">
                             <div className="flex flex-col items-center justify-center">
-                                <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                                <p className="text-sm text-gray-600">
+                                <Upload className="w-8 h-8 text-muted-foreground/70 mb-2" />
+                                <p className="text-sm text-muted-foreground">
                                     <span className="font-medium">Clique para adicionar</span> novos documentos
                                 </p>
-                                <p className="text-xs text-gray-500 mt-1">PDF, DOC, DOCX (múltiplos)</p>
+                                <p className="text-xs text-muted-foreground mt-1">PDF, DOC, DOCX (múltiplos)</p>
                             </div>
                             <input
                                 type="file"
@@ -594,7 +594,7 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                     {/* Coluna 1 */}
                     <div className="space-y-6">
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-foreground/80 mb-2">
                                 Título *
                             </label>
                             <input
@@ -602,12 +602,12 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                 name="title"
                                 value={formData.title}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className="w-full px-4 py-3.5 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200"
                                 placeholder="Ex: Processo Seletivo TI 2025"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-foreground/80 mb-2">
                                 Curso *
                             </label>
                             <input
@@ -615,12 +615,12 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                 name="course"
                                 value={formData.course}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className="w-full px-4 py-3.5 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200"
                                 placeholder="Ex: Análise e Desenvolvimento de Sistemas"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-foreground/80 mb-2">
                                 Data de Início *
                             </label>
                             <input
@@ -628,11 +628,11 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                 name="beginning_date"
                                 value={formData.beginning_date}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className="w-full px-4 py-3.5 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-foreground/80 mb-2">
                                 Bolsa *
                             </label>
                             <input
@@ -640,12 +640,12 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                 name="salary"
                                 value={formData.salary}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className="w-full px-4 py-3.5 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200"
                                 placeholder="Ex: 3.500,00"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-foreground/80 mb-2">
                                 Carga Horária *
                             </label>
                             <input
@@ -654,7 +654,7 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                 value={formData.weekly_workload}
                                 onChange={handleInputChange}
                                 maxLength={8}
-                                className="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className="w-full px-4 py-3.5 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200"
                                 placeholder="Ex: 30 horas"
                             />
                         </div>
@@ -663,7 +663,7 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                     {/* Coluna 2 */}
                     <div className="space-y-6">
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-foreground/80 mb-2">
                                 Subtítulo *
                             </label>
                             <textarea
@@ -672,15 +672,15 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                 onChange={handleInputChange}
                                 maxLength={MAX_SUBTITLE_LENGTH}
                                 rows={3}
-                                className="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className="w-full px-4 py-3.5 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200"
                                 placeholder="Ex: Vagas para Desenvolvedores Full Stack"
                             />
-                            <p className="mt-1 text-xs text-gray-500 text-right">
+                            <p className="mt-1 text-xs text-muted-foreground text-right">
                                 {formData.subtitle.length}/{MAX_SUBTITLE_LENGTH}
                             </p>
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-foreground/80 mb-2">
                                 Local *
                             </label>
                             <input
@@ -688,12 +688,12 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                 name="local"
                                 value={formData.local}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className="w-full px-4 py-3.5 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200"
                                 placeholder="Ex: Cidade - UF"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-foreground/80 mb-2">
                                 Data de Término *
                             </label>
                             <input
@@ -701,11 +701,11 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                 name="ending_date"
                                 value={formData.ending_date}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className="w-full px-4 py-3.5 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-foreground/80 mb-2">
                                 Número de Vagas *
                             </label>
                             <input
@@ -714,12 +714,12 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                 value={formData.number_vacancies}
                                 onChange={handleInputChange}
                                 min="1"
-                                className="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className="w-full px-4 py-3.5 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200"
                                 placeholder="Ex: 10"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-foreground/80 mb-2">
                                 Período Aceito *
                             </label>
                             <input
@@ -727,21 +727,21 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                 name="period_accepted"
                                 value={formData.period_accepted}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className="w-full px-4 py-3.5 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200"
                                 placeholder="Ex: 5º ao 8º período"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-foreground/80 mb-2">
                                 Turno *
                             </label>
                             <div className="relative">
-                                <ClockIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <ClockIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/70" />
                                 <select
                                     name="bout"
                                     value={formData.bout}
                                     onChange={handleInputChange}
-                                    className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                    className="w-full pl-12 pr-4 py-3.5 border border-input rounded-xl bg-card focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200"
                                     required
                                 >
                                     <option value="" disabled>
@@ -754,7 +754,7 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                     ))}
                                 </select>
                             </div>
-                            <p className="text-xs text-gray-500 mt-2">
+                            <p className="text-xs text-muted-foreground mt-2">
                                 Matutino, Vespertino ou Escala.
                             </p>
                         </div>
@@ -763,37 +763,37 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
 
                 {/* Slug */}
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-foreground/80 mb-2">
                         Slug *
-                        <span className="text-xs text-gray-500 ml-2 font-normal">
+                        <span className="text-xs text-muted-foreground ml-2 font-normal">
                             (Identificador único para URLs)
                         </span>
                     </label>
                     <div className="relative">
-                        <Link className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <Link className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/70" />
                         <input
                             type="text"
                             name="slug"
                             value={formData.slug}
                             onChange={handleInputChange}
-                            className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                            className="w-full pl-12 pr-4 py-3.5 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200"
                             placeholder="ex: processo-ti-2025"
                         />
                     </div>
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-xs text-muted-foreground mt-2">
                         Use apenas letras minúsculas, números e hífens.
                     </p>
                 </div>
 
                 {/* Configurações de Avaliação - Checkboxes */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <div className="bg-card rounded-2xl shadow-sm border border-border p-6">
                     <div className="flex items-center gap-3 mb-6">
-                        <Settings className="w-6 h-6 text-blue-600" />
-                        <h3 className="text-xl font-bold text-gray-900">Configurações de Avaliação</h3>
+                        <Settings className="w-6 h-6 text-primary" />
+                        <h3 className="text-xl font-bold text-foreground">Configurações de Avaliação</h3>
                     </div>
                     <div className="space-y-4">
                         {/* Currículo */}
-                        <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                        <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-border hover:bg-background transition-colors">
                             <input
                                 type="checkbox"
                                 checked={formData.include_curriculum_in_score}
@@ -803,23 +803,23 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                         include_curriculum_in_score: e.target.checked,
                                     }))
                                 }
-                                className="mt-1 text-blue-600 focus:ring-blue-500 w-5 h-5"
+                                className="mt-1 text-primary focus:ring-ring w-5 h-5"
                             />
                             <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <FileText className="w-5 h-5 text-gray-600" />
-                                    <span className="text-gray-700 font-medium">
+                                    <FileText className="w-5 h-5 text-muted-foreground" />
+                                    <span className="text-foreground/80 font-medium">
                                         Incluir currículo na nota da Etapa 1
                                     </span>
                                 </div>
-                                <p className="text-sm text-gray-500 ml-7">
+                                <p className="text-sm text-muted-foreground ml-7">
                                     Se marcado, o currículo do candidato será considerado no cálculo da nota da etapa 1
                                 </p>
                             </div>
                         </label>
 
                         {/* Portfólio */}
-                        <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                        <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-border hover:bg-background transition-colors">
                             <input
                                 type="checkbox"
                                 checked={formData.include_portfolio_in_score}
@@ -829,23 +829,23 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                         include_portfolio_in_score: e.target.checked,
                                     }))
                                 }
-                                className="mt-1 text-blue-600 focus:ring-blue-500 w-5 h-5"
+                                className="mt-1 text-primary focus:ring-ring w-5 h-5"
                             />
                             <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <FileText className="w-5 h-5 text-gray-600" />
-                                    <span className="text-gray-700 font-medium">
+                                    <FileText className="w-5 h-5 text-muted-foreground" />
+                                    <span className="text-foreground/80 font-medium">
                                         Incluir portfólio na nota da Etapa 1
                                     </span>
                                 </div>
-                                <p className="text-sm text-gray-500 ml-7">
+                                <p className="text-sm text-muted-foreground ml-7">
                                     Se marcado, o portfólio do candidato será considerado no cálculo da nota da etapa 1
                                 </p>
                             </div>
                         </label>
 
                         {/* Certificados */}
-                        <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                        <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-border hover:bg-background transition-colors">
                             <input
                                 type="checkbox"
                                 checked={formData.include_certificates_in_score}
@@ -855,39 +855,39 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                         include_certificates_in_score: e.target.checked,
                                     }))
                                 }
-                                className="mt-1 text-blue-600 focus:ring-blue-500 w-5 h-5"
+                                className="mt-1 text-primary focus:ring-ring w-5 h-5"
                             />
                             <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <FileText className="w-5 h-5 text-gray-600" />
-                                    <span className="text-gray-700 font-medium">
+                                    <FileText className="w-5 h-5 text-muted-foreground" />
+                                    <span className="text-foreground/80 font-medium">
                                         Incluir certificados na nota da Etapa 1
                                     </span>
                                 </div>
-                                <p className="text-sm text-gray-500 ml-7">
+                                <p className="text-sm text-muted-foreground ml-7">
                                     Se marcado, os certificados de cursos do candidato serão considerados no cálculo da nota da etapa 1
                                 </p>
                             </div>
                         </label>
 
                         {/* Redação */}
-                        <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                        <label className="flex items-start gap-3 cursor-pointer p-4 rounded-lg border border-border hover:bg-background transition-colors">
                             <input
                                 type="checkbox"
                                 checked={formData.has_essay}
                                 onChange={(e) =>
                                     setFormData((prev) => ({ ...prev, has_essay: e.target.checked }))
                                 }
-                                className="mt-1 text-blue-600 focus:ring-blue-500 w-5 h-5"
+                                className="mt-1 text-primary focus:ring-ring w-5 h-5"
                             />
                             <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <CheckSquare className="w-5 h-5 text-gray-600" />
-                                    <span className="text-gray-700 font-medium">
+                                    <CheckSquare className="w-5 h-5 text-muted-foreground" />
+                                    <span className="text-foreground/80 font-medium">
                                         Processo terá avaliação de redação
                                     </span>
                                 </div>
-                                <p className="text-sm text-gray-500 ml-7">
+                                <p className="text-sm text-muted-foreground ml-7">
                                     Se marcado, a etapa 2 incluirá avaliação de redação além da entrevista.
                                 </p>
                             </div>
@@ -896,25 +896,25 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                 </div>
 
                 {/* ---------- SEÇÃO: PESOS DA AVALIAÇÃO ---------- */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <div className="bg-card rounded-2xl shadow-sm border border-border p-6">
                     <div className="flex items-center gap-3 mb-6">
-                        <Settings className="w-6 h-6 text-blue-600" />
-                        <h3 className="text-xl font-bold text-gray-900">Pesos da Avaliação</h3>
+                        <Settings className="w-6 h-6 text-primary" />
+                        <h3 className="text-xl font-bold text-foreground">Pesos da Avaliação</h3>
                     </div>
-                    <p className="text-sm text-gray-500 mb-6">
+                    <p className="text-sm text-muted-foreground mb-6">
                         Defina o peso global de cada métrica na nota final. A soma global dos pesos ativos deve ser exatamente 100%.
                     </p>
 
                     {/* ETAPA 1 */}
                     <div className="mb-8">
-                        <h4 className="font-medium text-gray-800 mb-4 flex items-center gap-2">
-                            <FileText className="w-5 h-5 text-gray-500" />
+                        <h4 className="font-medium text-foreground mb-4 flex items-center gap-2">
+                            <FileText className="w-5 h-5 text-muted-foreground" />
                             Etapa 1 – Documentos
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {formData.include_curriculum_in_score && (
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label className="block text-sm font-medium text-foreground/80 mb-1">
                                         Currículo (%)
                                     </label>
                                     <input
@@ -923,15 +923,15 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                         onChange={(e) => handleWeightChange('weight_curriculum', e.target.value)}
                                         min={0}
                                         max={100}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent"
                                     />
-                                    <p className="text-xs text-gray-500 mt-1">Peso do currículo</p>
+                                    <p className="text-xs text-muted-foreground mt-1">Peso do currículo</p>
                                 </div>
                             )}
 
                             {/* Histórico Escolar */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-medium text-foreground/80 mb-1">
                                     Histórico Escolar (%)
                                 </label>
                                 <input
@@ -940,14 +940,14 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                     onChange={(e) => handleWeightChange('weight_school_records', e.target.value)}
                                     min={0}
                                     max={100}
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent"
                                 />
-                                <p className="text-xs text-gray-500 mt-1">Peso do histórico escolar</p>
+                                <p className="text-xs text-muted-foreground mt-1">Peso do histórico escolar</p>
                             </div>
 
                             {formData.include_certificates_in_score && (
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label className="block text-sm font-medium text-foreground/80 mb-1">
                                         Certificados (%)
                                     </label>
                                     <input
@@ -956,15 +956,15 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                         onChange={(e) => handleWeightChange('weight_certificates', e.target.value)}
                                         min={0}
                                         max={100}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent"
                                     />
-                                    <p className="text-xs text-gray-500 mt-1">Peso dos certificados</p>
+                                    <p className="text-xs text-muted-foreground mt-1">Peso dos certificados</p>
                                 </div>
                             )}
 
                             {formData.include_portfolio_in_score && (
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label className="block text-sm font-medium text-foreground/80 mb-1">
                                         Portfólio (%)
                                     </label>
                                     <input
@@ -973,19 +973,19 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                         onChange={(e) => handleWeightChange('weight_portfolio', e.target.value)}
                                         min={0}
                                         max={100}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent"
                                     />
-                                    <p className="text-xs text-gray-500 mt-1">Peso do portfólio</p>
+                                    <p className="text-xs text-muted-foreground mt-1">Peso do portfólio</p>
                                 </div>
                             )}
                         </div>
 
                         {!isGlobalWeightValid ? (
-                            <p className="text-sm text-red-500 mt-3 flex items-center gap-1">
+                            <p className="text-sm text-destructive mt-3 flex items-center gap-1">
                                 <span className="font-medium">Atenção:</span> A soma global dos pesos ativos deve ser 100% (atualmente {globalWeightSum}%).
                             </p>
                         ) : (
-                            <p className="text-sm text-green-600 mt-3 flex items-center gap-1">
+                            <p className="text-sm text-success mt-3 flex items-center gap-1">
                                 ✓ Soma global dos pesos: {globalWeightSum}% (OK)
                             </p>
                         )}
@@ -993,14 +993,14 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
 
                     {/* ETAPA 2 – sempre visível */}
                     <div>
-                        <h4 className="font-medium text-gray-800 mb-4 flex items-center gap-2">
-                            <FileText className="w-5 h-5 text-gray-500" />
+                        <h4 className="font-medium text-foreground mb-4 flex items-center gap-2">
+                            <FileText className="w-5 h-5 text-muted-foreground" />
                             Etapa 2 – Entrevista {formData.has_essay && 'e Redação'}
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {/* Entrevista */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-medium text-foreground/80 mb-1">
                                     Entrevista (%)
                                 </label>
                                 <input
@@ -1009,14 +1009,14 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                     onChange={(e) => handleWeightChange('weight_interview', e.target.value)}
                                     min={0}
                                     max={100}
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent"
                                 />
-                                <p className="text-xs text-gray-500 mt-1">Peso da entrevista</p>
+                                <p className="text-xs text-muted-foreground mt-1">Peso da entrevista</p>
                             </div>
 
                             {formData.has_essay && (
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label className="block text-sm font-medium text-foreground/80 mb-1">
                                         Redação (%)
                                     </label>
                                     <input
@@ -1025,26 +1025,26 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                         onChange={(e) => handleWeightChange('weight_essay', e.target.value)}
                                         min={0}
                                         max={100}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent"
                                     />
-                                    <p className="text-xs text-gray-500 mt-1">Peso da redação</p>
+                                    <p className="text-xs text-muted-foreground mt-1">Peso da redação</p>
                                 </div>
                             )}
                         </div>
 
-                        <p className="text-sm text-gray-600 mt-3">
+                        <p className="text-sm text-muted-foreground mt-3">
                             O peso desta etapa compõe a nota final global junto com as métricas da Etapa 1.
                         </p>
                     </div>
                 </div>
 
                 {/* Status Ativo/Inativo */}
-                <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6">
-                    <label className="block text-sm font-semibold text-gray-700 mb-4">
+                <div className="bg-background rounded-2xl p-6">
+                    <label className="block text-sm font-semibold text-foreground/80 mb-4">
                         Status do Processo
                     </label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-gray-200 hover:bg-white transition-all duration-200">
+                        <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-border hover:bg-card transition-all duration-200">
                             <div className="relative">
                                 <input
                                     type="radio"
@@ -1056,26 +1056,26 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                 />
                                 <div
                                     className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                                        formData.is_active ? 'border-blue-500' : 'border-gray-300'
+                                        formData.is_active ? 'border-primary' : 'border-input'
                                     }`}
                                 >
                                     {formData.is_active && (
-                                        <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                                        <div className="w-3 h-3 rounded-full bg-primary"></div>
                                     )}
                                 </div>
                             </div>
                             <div className="flex-1">
-                                <span className="font-medium text-gray-900">Ativo</span>
-                                <p className="text-xs text-gray-500">
+                                <span className="font-medium text-foreground">Ativo</span>
+                                <p className="text-xs text-muted-foreground">
                                     O processo está ativo e visível para candidatura
                                 </p>
                             </div>
-                            <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                                <CheckCircle className="w-5 h-5 text-blue-600" />
+                            <div className="w-10 h-10 rounded-lg bg-primary-soft flex items-center justify-center">
+                                <CheckCircle className="w-5 h-5 text-primary" />
                             </div>
                         </label>
 
-                        <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-gray-200 hover:bg-white transition-all duration-200">
+                        <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-border hover:bg-card transition-all duration-200">
                             <div className="relative">
                                 <input
                                     type="radio"
@@ -1087,20 +1087,20 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                 />
                                 <div
                                     className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                                        !formData.is_active ? 'border-red-500' : 'border-gray-300'
+                                        !formData.is_active ? 'border-destructive' : 'border-input'
                                     }`}
                                 >
                                     {!formData.is_active && (
-                                        <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                                        <div className="w-3 h-3 rounded-full bg-destructive"></div>
                                     )}
                                 </div>
                             </div>
                             <div className="flex-1">
-                                <span className="font-medium text-gray-900">Inativo</span>
-                                <p className="text-xs text-gray-500">O processo ficará oculto</p>
+                                <span className="font-medium text-foreground">Inativo</span>
+                                <p className="text-xs text-muted-foreground">O processo ficará oculto</p>
                             </div>
-                            <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center">
-                                <XCircle className="w-5 h-5 text-red-600" />
+                            <div className="w-10 h-10 rounded-lg bg-destructive-soft flex items-center justify-center">
+                                <XCircle className="w-5 h-5 text-destructive" />
                             </div>
                         </label>
                     </div>
@@ -1108,7 +1108,7 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
 
                 {/* Descrição */}
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-foreground/80 mb-2">
                         Descrição *
                     </label>
                     <textarea
@@ -1117,10 +1117,10 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                         onChange={handleInputChange}
                         maxLength={MAX_DESCRIPTION_LENGTH}
                         rows={5}
-                        className="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
+                        className="w-full px-4 py-3.5 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200 resize-none"
                         placeholder="Descreva detalhadamente o processo seletivo..."
                     />
-                    <p className="mt-1 text-xs text-gray-500 text-right">
+                    <p className="mt-1 text-xs text-muted-foreground text-right">
                         {formData.description.length}/{MAX_DESCRIPTION_LENGTH}
                     </p>
                 </div>
@@ -1128,21 +1128,21 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                 {/* Benefícios e Pré-requisitos lado a lado */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Benefícios */}
-                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-2xl border border-emerald-200 p-6">
+                    <div className="bg-success-soft rounded-2xl border border-success/30 p-6">
                         <div className="flex flex-col justify-between items-start mb-6 gap-4">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
-                                    <Award className="w-5 h-5 text-emerald-600" />
+                                <div className="w-10 h-10 rounded-xl bg-success-soft flex items-center justify-center">
+                                    <Award className="w-5 h-5 text-success" />
                                 </div>
                                 <div>
-                                    <h2 className="font-bold text-gray-900 text-lg">Benefícios</h2>
-                                    <p className="text-sm text-emerald-700">Adicione os benefícios oferecidos</p>
+                                    <h2 className="font-bold text-foreground text-lg">Benefícios</h2>
+                                    <p className="text-sm text-success">Adicione os benefícios oferecidos</p>
                                 </div>
                             </div>
                             <button
                                 type="button"
                                 onClick={addBenefit}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-200 font-medium text-sm"
+                                className="flex items-center gap-2 px-4 py-2.5 bg-success text-white rounded-xl hover:shadow-md hover:scale-[1.02] transition-all duration-200 font-medium text-sm"
                             >
                                 <Plus className="w-4 h-4" />
                                 Adicionar
@@ -1152,16 +1152,16 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                             {benefits.map((benefit, index) => (
                                 <div
                                     key={benefit.id}
-                                    className="bg-white rounded-xl border border-emerald-200 p-4 hover:shadow-sm transition-all duration-200"
+                                    className="bg-card rounded-xl border border-success/30 p-4 hover:shadow-sm transition-all duration-200"
                                 >
                                     <div className="flex justify-between items-center mb-3">
                                         <div className="flex items-center gap-2">
-                                            <div className="w-6 h-6 rounded-lg bg-emerald-50 flex items-center justify-center">
-                                                <span className="text-emerald-600 font-bold text-xs">
+                                            <div className="w-6 h-6 rounded-lg bg-success-soft flex items-center justify-center">
+                                                <span className="text-success font-bold text-xs">
                                                     {index + 1}
                                                 </span>
                                             </div>
-                                            <h3 className="font-medium text-gray-700 text-sm">
+                                            <h3 className="font-medium text-foreground/80 text-sm">
                                                 Benefício {index + 1}
                                             </h3>
                                         </div>
@@ -1169,7 +1169,7 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                             <button
                                                 type="button"
                                                 onClick={() => removeBenefit(benefit.id)}
-                                                className="p-1.5 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors"
+                                                className="p-1.5 bg-destructive-soft text-destructive rounded-lg hover:bg-destructive-soft transition-colors"
                                                 title="Remover benefício"
                                             >
                                                 <X className="w-3.5 h-3.5" />
@@ -1180,7 +1180,7 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                         type="text"
                                         value={benefit.value}
                                         onChange={(e) => updateBenefit(benefit.id, e.target.value)}
-                                        className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-sm"
+                                        className="w-full px-3 py-2.5 border border-input rounded-lg focus:ring-2 focus:ring-success focus:border-transparent transition-all duration-200 text-sm"
                                         placeholder="Ex: Vale alimentação, Plano de saúde..."
                                     />
                                 </div>
@@ -1189,21 +1189,21 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                     </div>
 
                     {/* Pré-requisitos */}
-                    <div className="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-2xl border border-amber-200 p-6">
+                    <div className="bg-warning-soft rounded-2xl border border-warning/30 p-6">
                         <div className="flex flex-col justify-between items-start mb-6 gap-4">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
-                                    <AlertTriangle className="w-5 h-5 text-amber-600" />
+                                <div className="w-10 h-10 rounded-xl bg-warning-soft flex items-center justify-center">
+                                    <AlertTriangle className="w-5 h-5 text-warning" />
                                 </div>
                                 <div>
-                                    <h2 className="font-bold text-gray-900 text-lg">Pré-requisitos</h2>
-                                    <p className="text-sm text-amber-700">Adicione os requisitos necessários</p>
+                                    <h2 className="font-bold text-foreground text-lg">Pré-requisitos</h2>
+                                    <p className="text-sm text-warning">Adicione os requisitos necessários</p>
                                 </div>
                             </div>
                             <button
                                 type="button"
                                 onClick={addPrerequisite}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-200 font-medium text-sm"
+                                className="flex items-center gap-2 px-4 py-2.5 bg-warning text-white rounded-xl hover:shadow-md hover:scale-[1.02] transition-all duration-200 font-medium text-sm"
                             >
                                 <Plus className="w-4 h-4" />
                                 Adicionar
@@ -1213,16 +1213,16 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                             {prerequisites.map((prerequisite, index) => (
                                 <div
                                     key={prerequisite.id}
-                                    className="bg-white rounded-xl border border-amber-200 p-4 hover:shadow-sm transition-all duration-200"
+                                    className="bg-card rounded-xl border border-warning/30 p-4 hover:shadow-sm transition-all duration-200"
                                 >
                                     <div className="flex justify-between items-center mb-3">
                                         <div className="flex items-center gap-2">
-                                            <div className="w-6 h-6 rounded-lg bg-amber-50 flex items-center justify-center">
-                                                <span className="text-amber-600 font-bold text-xs">
+                                            <div className="w-6 h-6 rounded-lg bg-warning-soft flex items-center justify-center">
+                                                <span className="text-warning font-bold text-xs">
                                                     {index + 1}
                                                 </span>
                                             </div>
-                                            <h3 className="font-medium text-gray-700 text-sm">
+                                            <h3 className="font-medium text-foreground/80 text-sm">
                                                 Pré-requisito {index + 1}
                                             </h3>
                                         </div>
@@ -1230,7 +1230,7 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                             <button
                                                 type="button"
                                                 onClick={() => removePrerequisite(prerequisite.id)}
-                                                className="p-1.5 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors"
+                                                className="p-1.5 bg-destructive-soft text-destructive rounded-lg hover:bg-destructive-soft transition-colors"
                                                 title="Remover pré-requisito"
                                             >
                                                 <X className="w-3.5 h-3.5" />
@@ -1241,7 +1241,7 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
                                         type="text"
                                         value={prerequisite.value}
                                         onChange={(e) => updatePrerequisite(prerequisite.id, e.target.value)}
-                                        className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200 text-sm"
+                                        className="w-full px-3 py-2.5 border border-input rounded-lg focus:ring-2 focus:ring-warning focus:border-transparent transition-all duration-200 text-sm"
                                         placeholder="Ex: Experiência com React..."
                                     />
                                 </div>
@@ -1252,21 +1252,21 @@ const EditProcessModal: React.FC<EditProcessModalProps> = ({
 
                 {/* Feedback */}
                 {saveError && (
-                    <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-xl">
-                        <XCircle className="w-5 h-5 text-red-600 mt-0.5" />
+                    <div className="flex items-start gap-3 p-4 bg-destructive-soft border border-destructive/30 rounded-xl">
+                        <XCircle className="w-5 h-5 text-destructive mt-0.5" />
                         <div>
-                            <p className="text-sm font-semibold text-red-700">Erro</p>
-                            <p className="text-sm text-red-700">{saveError}</p>
+                            <p className="text-sm font-semibold text-destructive">Erro</p>
+                            <p className="text-sm text-destructive">{saveError}</p>
                         </div>
                     </div>
                 )}
 
                 {saveSuccess && (
-                    <div className="flex items-start gap-3 p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
-                        <CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5" />
+                    <div className="flex items-start gap-3 p-4 bg-success-soft border border-success/30 rounded-xl">
+                        <CheckCircle className="w-5 h-5 text-success mt-0.5" />
                         <div>
-                            <p className="text-sm font-semibold text-emerald-700">Sucesso</p>
-                            <p className="text-sm text-emerald-700">{saveSuccess}</p>
+                            <p className="text-sm font-semibold text-success">Sucesso</p>
+                            <p className="text-sm text-success">{saveSuccess}</p>
                         </div>
                     </div>
                 )}

@@ -108,7 +108,7 @@ function getStatusBadgeInfo(processo: SelectionProcess) {
     return {
       status: 'inactive',
       label: 'Inativo',
-      color: 'bg-gradient-to-r from-red-500 to-rose-600',
+      color: 'bg-destructive',
       icon: XCircle,
       textColor: 'text-white',
     };
@@ -118,7 +118,7 @@ function getStatusBadgeInfo(processo: SelectionProcess) {
     return {
       status: 'finished',
       label: 'Finalizado',
-      color: 'bg-gradient-to-r from-gray-600 to-slate-700',
+      color: 'bg-muted-foreground',
       icon: Flag,
       textColor: 'text-white',
     };
@@ -130,7 +130,7 @@ function getStatusBadgeInfo(processo: SelectionProcess) {
     return {
       status: 'created',
       label: 'Criado',
-      color: 'bg-gradient-to-r from-blue-500 to-indigo-600',
+      color: 'bg-primary',
       icon: Calendar,
       textColor: 'text-white',
     };
@@ -142,7 +142,7 @@ function getStatusBadgeInfo(processo: SelectionProcess) {
       return {
         status: 'expiring',
         label: 'Expirando',
-        color: 'bg-gradient-to-r from-amber-500 to-orange-600',
+        color: 'bg-warning',
         icon: AlertTriangle,
         textColor: 'text-white',
       };
@@ -151,7 +151,7 @@ function getStatusBadgeInfo(processo: SelectionProcess) {
     return {
       status: 'in_application',
       label: 'Em Inscrição',
-      color: 'bg-gradient-to-r from-emerald-500 to-green-600',
+      color: 'bg-success',
       icon: CheckCircle,
       textColor: 'text-white',
     };
@@ -160,7 +160,7 @@ function getStatusBadgeInfo(processo: SelectionProcess) {
   return {
     status: 'in_analysis',
     label: 'Em Análise',
-    color: 'bg-gradient-to-r from-orange-500 to-amber-600',
+    color: 'bg-warning',
     icon: ListChecks,
     textColor: 'text-white',
   };
@@ -305,19 +305,19 @@ export default function PainelAdmin() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background">
         <div className="relative">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent" />
-          <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-4 border-blue-600/30" />
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent" />
+          <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-4 border-primary/30" />
         </div>
-        <p className="mt-6 text-gray-600 font-medium text-lg">Carregando dashboard...</p>
-        <p className="text-gray-400 text-sm mt-2">Isso pode levar alguns instantes</p>
+        <p className="mt-6 text-muted-foreground font-medium text-lg">Carregando dashboard...</p>
+        <p className="text-muted-foreground/70 text-sm mt-2">Isso pode levar alguns instantes</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
+    <div className="min-h-screen bg-background p-6">
       <Title
         title="Painel do Administrador"
         icon={Users}
@@ -325,15 +325,15 @@ export default function PainelAdmin() {
 
       {/* Erro */}
       {error && (
-        <div className="bg-gradient-to-r from-red-50 to-rose-50 border border-red-200 rounded-2xl p-8 text-center shadow-sm mb-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-4">
-            <AlertTriangle className="w-8 h-8 text-red-600" />
+        <div className="bg-destructive-soft border border-destructive/30 rounded-2xl p-8 text-center shadow-sm mb-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-destructive-soft rounded-full mb-4">
+            <AlertTriangle className="w-8 h-8 text-destructive" />
           </div>
-          <h3 className="text-red-800 font-semibold text-lg mb-2">Erro ao carregar</h3>
-          <p className="text-red-700 mb-4">{error}</p>
+          <h3 className="text-destructive font-semibold text-lg mb-2">Erro ao carregar</h3>
+          <p className="text-destructive mb-4">{error}</p>
           <button
             onClick={fetchAllFirstPage}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-destructive text-white font-medium rounded-xl hover:bg-destructive transition-colors"
           >
             <Loader2 className="w-4 h-4 animate-spin" />
             Tentar Novamente
@@ -382,18 +382,18 @@ export default function PainelAdmin() {
       </div>
 
       {/* Últimos processos (mini cards) */}
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+      <div className="bg-card rounded-2xl shadow-sm border border-border p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg font-bold text-gray-900">Visão rápida</h2>
-            <p className="text-sm text-gray-600">
+            <h2 className="text-lg font-bold text-foreground">Visão rápida</h2>
+            <p className="text-sm text-muted-foreground">
               Mostrando {filteredProcessos.length} de {processos.length} processos (na página atual).
             </p>
           </div>
 
           <button
             onClick={goToNewProcess}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-medium bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-lg hover:scale-[1.02] transition-all"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-medium bg-primary text-primary-foreground hover:shadow-md hover:scale-[1.02] transition-all"
           >
             <Plus className="w-5 h-5" />
             Criar processo
@@ -401,15 +401,15 @@ export default function PainelAdmin() {
         </div>
 
         {filteredProcessos.length === 0 ? (
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-10 text-center">
-            <h3 className="text-gray-900 font-semibold text-lg mb-2">Nenhum processo encontrado</h3>
-            <p className="text-gray-600 mb-4">Tente ajustar a busca/filtros.</p>
+          <div className="bg-background border border-border rounded-xl p-10 text-center">
+            <h3 className="text-foreground font-semibold text-lg mb-2">Nenhum processo encontrado</h3>
+            <p className="text-muted-foreground mb-4">Tente ajustar a busca/filtros.</p>
             <button
               onClick={() => {
                 setSearchTerm('');
                 setStatusFilter('all');
               }}
-              className="px-6 py-3 rounded-xl bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:shadow transition-all"
+              className="px-6 py-3 rounded-xl bg-card border border-border text-foreground/80 hover:bg-background hover:shadow transition-all"
             >
               Limpar filtros
             </button>
@@ -423,11 +423,11 @@ export default function PainelAdmin() {
               const PrimaryIcon = analyzeState.primary.icon;
 
               return (
-                <div key={p.id} className="border border-gray-200 rounded-2xl p-5 hover:shadow-md transition-all bg-white">
+                <div key={p.id} className="border border-border rounded-2xl p-5 hover:shadow-md transition-all bg-card">
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <div>
-                      <h3 className="font-bold text-gray-900 line-clamp-2">{p.title}</h3>
-                      <p className="text-sm text-gray-600 line-clamp-1">{p.course}</p>
+                      <h3 className="font-bold text-foreground line-clamp-2">{p.title}</h3>
+                      <p className="text-sm text-muted-foreground line-clamp-1">{p.course}</p>
                     </div>
 
                     <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold ${statusInfo.color} ${statusInfo.textColor}`}>
@@ -436,15 +436,15 @@ export default function PainelAdmin() {
                     </span>
                   </div>
 
-                  <div className="text-sm text-gray-600 space-y-1">
+                  <div className="text-sm text-muted-foreground space-y-1">
                     <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-gray-400" />
+                      <Calendar className="w-4 h-4 text-muted-foreground/70" />
                       <span>
                         {formatDate(p.beginning_date)} → {formatDate(p.ending_date)}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4 text-gray-400" />
+                      <Users className="w-4 h-4 text-muted-foreground/70" />
                       <span>{p.number_vacancies} vaga(s)</span>
                     </div>
                   </div>
@@ -452,7 +452,7 @@ export default function PainelAdmin() {
                   <div className="mt-4 flex gap-2">
                     <button
                       onClick={() => window.location.href = `/painel-admin/processos`}
-                      className="flex-1 px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:shadow transition-all"
+                      className="flex-1 px-4 py-2 rounded-xl bg-card border border-border text-foreground/80 hover:bg-background hover:shadow transition-all"
                     >
                       Ver lista
                     </button>
@@ -465,8 +465,8 @@ export default function PainelAdmin() {
                       disabled={!analyzeState.primary.enabled && !analyzeState.secondary?.enabled}
                       className={`flex-1 px-4 py-2 rounded-xl font-medium transition-all ${
                         analyzeState.secondary?.enabled || analyzeState.primary.enabled
-                          ? 'bg-gradient-to-r from-purple-600 to-violet-700 text-white hover:shadow hover:scale-[1.01]'
-                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          ? 'bg-primary text-primary-foreground hover:shadow hover:scale-[1.01]'
+                          : 'bg-muted text-muted-foreground/70 cursor-not-allowed'
                       }`}
                     >
                       <span className="inline-flex items-center justify-center gap-2">
@@ -484,7 +484,7 @@ export default function PainelAdmin() {
         <div className="mt-6 flex justify-end">
           <button
             onClick={goToProcessList}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-medium bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:shadow transition-all"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-medium bg-card border border-border text-foreground/80 hover:bg-background hover:shadow transition-all"
           >
             Ver todos os processos
             <ArrowRight className="w-4 h-4" />
@@ -509,22 +509,22 @@ function KpiCard({
   tone: 'blue' | 'green' | 'emerald' | 'amber' | 'orange' | 'gray';
 }) {
   const toneMap: Record<string, { bg: string; iconBg: string; icon: string }> = {
-    blue: { bg: 'from-blue-50 to-indigo-50', iconBg: 'bg-blue-100', icon: 'text-blue-700' },
-    green: { bg: 'from-emerald-50 to-green-50', iconBg: 'bg-emerald-100', icon: 'text-emerald-700' },
-    emerald: { bg: 'from-emerald-50 to-teal-50', iconBg: 'bg-emerald-100', icon: 'text-emerald-700' },
-    amber: { bg: 'from-amber-50 to-orange-50', iconBg: 'bg-amber-100', icon: 'text-amber-700' },
-    orange: { bg: 'from-orange-50 to-amber-50', iconBg: 'bg-orange-100', icon: 'text-orange-700' },
-    gray: { bg: 'from-gray-50 to-slate-50', iconBg: 'bg-gray-100', icon: 'text-gray-700' },
+    blue: { bg: 'from-primary-soft to-primary-soft', iconBg: 'bg-primary-soft', icon: 'text-primary' },
+    green: { bg: 'from-success-soft to-success-soft', iconBg: 'bg-success-soft', icon: 'text-success' },
+    emerald: { bg: 'from-success-soft to-primary-soft', iconBg: 'bg-success-soft', icon: 'text-success' },
+    amber: { bg: 'from-warning-soft to-warning-soft', iconBg: 'bg-warning-soft', icon: 'text-warning' },
+    orange: { bg: 'from-warning-soft to-warning-soft', iconBg: 'bg-warning-soft', icon: 'text-warning' },
+    gray: { bg: 'from-background to-background', iconBg: 'bg-muted', icon: 'text-foreground/80' },
   };
 
   const t = toneMap[tone];
 
   return (
-    <div className={`bg-gradient-to-br ${t.bg} rounded-2xl border border-gray-200 shadow-sm p-5`}>
+    <div className={`bg-gradient-to-br ${t.bg} rounded-2xl border border-border shadow-sm p-5`}>
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-sm text-gray-600 font-medium">{label}</div>
-          <div className="text-3xl font-bold text-gray-900 mt-1">{value}</div>
+          <div className="text-sm text-muted-foreground font-medium">{label}</div>
+          <div className="text-3xl font-bold text-foreground mt-1">{value}</div>
         </div>
         <div className={`w-12 h-12 rounded-2xl ${t.iconBg} flex items-center justify-center`}>
           <Icon className={`w-6 h-6 ${t.icon}`} />
@@ -550,14 +550,14 @@ function QuickList({
   onAction: (p: SelectionProcess) => void;
 }) {
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+    <div className="bg-card rounded-2xl shadow-sm border border-border p-6">
       <div className="mb-4">
-        <h3 className="text-lg font-bold text-gray-900">{title}</h3>
-        <p className="text-sm text-gray-600">{subtitle}</p>
+        <h3 className="text-lg font-bold text-foreground">{title}</h3>
+        <p className="text-sm text-muted-foreground">{subtitle}</p>
       </div>
 
       {items.length === 0 ? (
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-sm text-gray-600 text-center">
+        <div className="bg-background border border-border rounded-xl p-6 text-sm text-muted-foreground text-center">
           {emptyText}
         </div>
       ) : (
@@ -567,12 +567,12 @@ function QuickList({
             const StatusIcon = statusInfo.icon;
 
             return (
-              <div key={p.id} className="border border-gray-200 rounded-xl p-4 hover:shadow-sm transition-all">
+              <div key={p.id} className="border border-border rounded-xl p-4 hover:shadow-sm transition-all">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <div className="font-bold text-gray-900 line-clamp-1">{p.title}</div>
-                    <div className="text-sm text-gray-600 line-clamp-1">{p.course}</div>
-                    <div className="text-xs text-gray-500 mt-1">Até {formatDate(p.ending_date)}</div>
+                    <div className="font-bold text-foreground line-clamp-1">{p.title}</div>
+                    <div className="text-sm text-muted-foreground line-clamp-1">{p.course}</div>
+                    <div className="text-xs text-muted-foreground mt-1">Até {formatDate(p.ending_date)}</div>
                   </div>
 
                   <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold ${statusInfo.color} ${statusInfo.textColor}`}>
@@ -584,7 +584,7 @@ function QuickList({
                 <div className="mt-3 flex justify-end">
                   <button
                     onClick={() => onAction(p)}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:shadow transition-all"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-card border border-border text-foreground/80 hover:bg-background hover:shadow transition-all"
                   >
                     {actionLabel}
                     <ArrowRight className="w-4 h-4" />

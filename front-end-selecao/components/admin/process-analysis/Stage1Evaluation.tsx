@@ -629,26 +629,26 @@ export default function Stage1EvaluationComponent({
   const ValidationStep = useMemo(
     () => (
       <div className="space-y-6">
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+        <div className="bg-primary-soft rounded-xl p-6 border border-primary/30">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-lg font-bold text-gray-900">Etapa 1 - Avaliação de Documentos</h3>
-              <p className="text-gray-600 mt-1">Revise cada documento e escolha "Aceitar" ou "Rejeitar"</p>
+              <h3 className="text-lg font-bold text-foreground">Etapa 1 - Avaliação de Documentos</h3>
+              <p className="text-muted-foreground mt-1">Revise cada documento e escolha "Aceitar" ou "Rejeitar"</p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">Step 1 de 2</span>
+              <span className="px-3 py-1 bg-primary-soft text-primary rounded-full text-sm font-medium">Step 1 de 2</span>
             </div>
           </div>
 
           {readOnly && !isRejected && (
-            <div className="flex items-center gap-2 text-gray-700 bg-gray-50 border border-gray-200 p-3 rounded-lg">
-              <Lock className="w-5 h-5 text-gray-500" />
+            <div className="flex items-center gap-2 text-foreground/80 bg-background border border-border p-3 rounded-lg">
+              <Lock className="w-5 h-5 text-muted-foreground" />
               <span>Etapa 1 bloqueada — somente leitura</span>
             </div>
           )}
 
           {isRejected && (
-            <div className="flex items-center gap-2 text-white bg-red-600 border border-red-700 p-3 rounded-lg">
+            <div className="flex items-center gap-2 text-white bg-destructive border border-destructive p-3 rounded-lg">
               <Lock className="w-5 h-5 shrink-0" />
               <span className="font-medium">
                 Candidato reprovado. A edição está bloqueada, mas você pode consultar a etapa de Notas
@@ -658,8 +658,8 @@ export default function Stage1EvaluationComponent({
           )}
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h4 className="font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <div className="bg-card rounded-xl border border-border p-6">
+          <h4 className="font-bold text-foreground mb-6 flex items-center gap-2">
             <FileText className="w-5 h-5" />
             Avaliação de Documentos
           </h4>
@@ -674,10 +674,10 @@ export default function Stage1EvaluationComponent({
                   key={doc.key}
                   className={`p-5 rounded-lg border ${
                     status === 'accepted'
-                      ? 'border-green-200 bg-green-50'
+                      ? 'border-success/30 bg-success-soft'
                       : status === 'rejected'
-                        ? 'border-red-200 bg-red-50'
-                        : 'border-gray-200 bg-white'
+                        ? 'border-destructive/30 bg-destructive-soft'
+                        : 'border-border bg-card'
                   }`}
                 >
                   <div className="flex items-start justify-between">
@@ -686,10 +686,10 @@ export default function Stage1EvaluationComponent({
                         <div
                           className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                             status === 'accepted'
-                              ? 'bg-green-100 text-green-600'
+                              ? 'bg-success-soft text-success'
                               : status === 'rejected'
-                                ? 'bg-red-100 text-red-600'
-                                : 'bg-gray-100 text-gray-400'
+                                ? 'bg-destructive-soft text-destructive'
+                                : 'bg-muted text-muted-foreground/70'
                           }`}
                         >
                           {status === 'accepted' ? (
@@ -703,30 +703,30 @@ export default function Stage1EvaluationComponent({
 
                         <div className="flex-1">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <h5 className="font-medium text-gray-900">{doc.label}</h5>
+                            <h5 className="font-medium text-foreground">{doc.label}</h5>
                             {doc.requiredForScore && (
-                              <span className="text-xs px-2 py-1 bg-amber-100 text-amber-800 rounded-full">
+                              <span className="text-xs px-2 py-1 bg-warning-soft text-warning rounded-full">
                                 Obrigatório para nota
                               </span>
                             )}
                             {doc.required && !doc.requiredForScore && (
-                              <span className="text-xs px-2 py-1 bg-red-100 text-red-700 rounded-full">Obrigatório</span>
+                              <span className="text-xs px-2 py-1 bg-destructive-soft text-destructive rounded-full">Obrigatório</span>
                             )}
                             {!doc.required && !doc.requiredForScore && (
-                              <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">Opcional</span>
+                              <span className="text-xs px-2 py-1 bg-primary-soft text-primary rounded-full">Opcional</span>
                             )}
                             {status === 'accepted' && (
-                              <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">Aceito</span>
+                              <span className="text-xs px-2 py-1 bg-success-soft text-success rounded-full">Aceito</span>
                             )}
                             {status === 'rejected' && (
-                              <span className="text-xs px-2 py-1 bg-red-100 text-red-700 rounded-full">Rejeitado</span>
+                              <span className="text-xs px-2 py-1 bg-destructive-soft text-destructive rounded-full">Rejeitado</span>
                             )}
                           </div>
 
-                          <p className="text-sm text-gray-600 mt-1">{doc.description}</p>
+                          <p className="text-sm text-muted-foreground mt-1">{doc.description}</p>
 
                           {doc.missing && (
-                            <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mt-2">
+                            <p className="text-sm text-warning bg-warning-soft border border-warning/30 rounded-lg px-3 py-2 mt-2">
                               Documento não enviado pelo candidato. Rejeite para registrar a ausência.
                             </p>
                           )}
@@ -738,9 +738,9 @@ export default function Stage1EvaluationComponent({
                               disabled={isLocked || doc.missing}
                               className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
                                 status === 'accepted'
-                                  ? 'bg-green-600 text-white'
-                                  : 'bg-green-50 text-green-700 hover:bg-green-100'
-                              } ${isLocked || doc.missing ? 'opacity-50 cursor-not-allowed hover:bg-green-50' : ''}`}
+                                  ? 'bg-success text-white'
+                                  : 'bg-success-soft text-success hover:bg-success-soft'
+                              } ${isLocked || doc.missing ? 'opacity-50 cursor-not-allowed hover:bg-success-soft' : ''}`}
                             >
                               <CheckCircle className="w-4 h-4" />
                               Aceitar
@@ -752,9 +752,9 @@ export default function Stage1EvaluationComponent({
                               disabled={isLocked}
                               className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
                                 status === 'rejected'
-                                  ? 'bg-red-600 text-white'
-                                  : 'bg-red-50 text-red-700 hover:bg-red-100'
-                              } ${isLocked ? 'opacity-50 cursor-not-allowed hover:bg-red-50' : ''}`}
+                                  ? 'bg-destructive text-white'
+                                  : 'bg-destructive-soft text-destructive hover:bg-destructive-soft'
+                              } ${isLocked ? 'opacity-50 cursor-not-allowed hover:bg-destructive-soft' : ''}`}
                             >
                               <XCircle className="w-4 h-4" />
                               Rejeitar
@@ -765,8 +765,8 @@ export default function Stage1EvaluationComponent({
                                 type="button"
                                 onClick={() => handleResetDocument(doc.key)}
                                 disabled={isLocked}
-                                className={`px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 ${
-                                  isLocked ? 'opacity-50 cursor-not-allowed hover:bg-gray-100' : ''
+                                className={`px-4 py-2 rounded-lg bg-muted text-foreground/80 hover:bg-border ${
+                                  isLocked ? 'opacity-50 cursor-not-allowed hover:bg-muted' : ''
                                 }`}
                               >
                                 Resetar
@@ -778,22 +778,22 @@ export default function Stage1EvaluationComponent({
 
                       {status === 'rejected' && (
                         <div className="ml-14 mt-3">
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block text-sm font-medium text-foreground/80 mb-1">
                             Motivo da rejeição (obrigatório):
                           </label>
                           <textarea
                             value={rejectionReason ?? ''}
                             onChange={(e) => handleRejectionReasonChange(doc.key, e.target.value)}
                             placeholder="Descreva detalhadamente o motivo pelo qual o documento foi rejeitado..."
-                            className={`w-full h-24 px-3 py-2 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm ${
-                              isLocked ? 'bg-gray-100 cursor-not-allowed focus:ring-0' : ''
+                            className={`w-full h-24 px-3 py-2 border border-destructive/30 rounded-lg focus:ring-2 focus:ring-destructive focus:border-transparent text-sm ${
+                              isLocked ? 'bg-muted cursor-not-allowed focus:ring-0' : ''
                             }`}
                             rows={3}
                             readOnly={isLocked}
                             required={!isLocked}
                           />
                           {!isLocked && (
-                            <p className="text-xs text-red-600 mt-1">
+                            <p className="text-xs text-destructive mt-1">
                               Este campo é obrigatório para documentos rejeitados
                             </p>
                           )}
@@ -810,7 +810,7 @@ export default function Stage1EvaluationComponent({
                             doc.isExternal ? 'external' : 'authenticated-file'
                           )
                         }
-                        className="ml-4 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors flex items-center gap-2 shrink-0"
+                        className="ml-4 px-4 py-2 bg-primary-soft text-primary rounded-lg hover:bg-primary-soft transition-colors flex items-center gap-2 shrink-0"
                       >
                         {doc.isExternal ? (
                           <>
@@ -831,18 +831,18 @@ export default function Stage1EvaluationComponent({
             })}
           </div>
 
-          <div className="mt-8 pt-6 border-t border-gray-200 flex justify-between items-center">
-            <div className="text-sm text-gray-600">
+          <div className="mt-8 pt-6 border-t border-border flex justify-between items-center">
+            <div className="text-sm text-muted-foreground">
               {!allRequiredEvaluated ? (
-                <span className="text-amber-600">⚠ Avalie todos os documentos obrigatórios</span>
+                <span className="text-warning">⚠ Avalie todos os documentos obrigatórios</span>
               ) : !allListEvaluated ? (
-                <span className="text-amber-600">
+                <span className="text-warning">
                   ⚠ Avalie todos os documentos listados (incluindo itens obrigatórios para nota não enviados)
                 </span>
               ) : hasRejectedRequired ? (
-                <span className="text-red-600">⚠ Documento(s) obrigatório(s) rejeitado(s) - candidato reprovado</span>
+                <span className="text-destructive">⚠ Documento(s) obrigatório(s) rejeitado(s) - candidato reprovado</span>
               ) : (
-                <span className="text-green-600">✓ Todos os documentos listados foram avaliados</span>
+                <span className="text-success">✓ Todos os documentos listados foram avaliados</span>
               )}
             </div>
 
@@ -855,8 +855,8 @@ export default function Stage1EvaluationComponent({
                 }
                 className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
                   allListEvaluated && allRejectionReasonsFilled && !isLocked
-                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-lg hover:scale-[1.02]'
-                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    ? 'bg-primary text-primary-foreground hover:shadow-md hover:scale-[1.02]'
+                    : 'bg-muted text-muted-foreground/70 cursor-not-allowed'
                 }`}
               >
                 {isSubmitting ? (
@@ -896,32 +896,32 @@ export default function Stage1EvaluationComponent({
   const ScoringStep = useMemo(
     () => (
       <div className="space-y-6">
-        <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-6 border border-emerald-200">
+        <div className="bg-success-soft rounded-xl p-6 border border-success/30">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-lg font-bold text-gray-900">Etapa 1 - Atribuição de Notas</h3>
-              <p className="text-gray-600 mt-1">Atribua notas decimais (ex: 6.7, 8.5) para os componentes avaliáveis</p>
+              <h3 className="text-lg font-bold text-foreground">Etapa 1 - Atribuição de Notas</h3>
+              <p className="text-muted-foreground mt-1">Atribua notas decimais (ex: 6.7, 8.5) para os componentes avaliáveis</p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">Step 2 de 2</span>
+              <span className="px-3 py-1 bg-success-soft text-success rounded-full text-sm font-medium">Step 2 de 2</span>
               <div className="text-right">
-                <div className="text-2xl font-bold text-emerald-700">{totalScore.toFixed(2)}</div>
-                <div className="text-sm text-gray-500">Pontuação Total</div>
+                <div className="text-2xl font-bold text-success">{totalScore.toFixed(2)}</div>
+                <div className="text-sm text-muted-foreground">Pontuação Total</div>
               </div>
             </div>
           </div>
 
           {isLocked && (
-            <div className="flex items-center gap-2 text-gray-700 bg-gray-50 border border-gray-200 p-3 rounded-lg">
-              <Lock className="w-5 h-5 text-gray-500" />
+            <div className="flex items-center gap-2 text-foreground/80 bg-background border border-border p-3 rounded-lg">
+              <Lock className="w-5 h-5 text-muted-foreground" />
               <span>Avaliação bloqueada — somente leitura</span>
             </div>
           )}
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h4 className="font-bold text-gray-900 mb-2">Pontuações da Etapa 1</h4>
-          <p className="text-sm text-blue-800 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2 mb-4">
+        <div className="bg-card rounded-xl border border-border p-6">
+          <h4 className="font-bold text-foreground mb-2">Pontuações da Etapa 1</h4>
+          <p className="text-sm text-primary bg-primary-soft border border-primary/30 rounded-lg px-3 py-2 mb-4">
             <strong>Avaliação em equipe:</strong> salve cada nota com &quot;Salvar nota&quot; (só esse campo é
             gravado). No outro computador, use <strong>Atualizar lista</strong>. Use{' '}
             <strong>Concluir avaliação</strong> apenas quando todas as notas estiverem preenchidas.
@@ -932,7 +932,7 @@ export default function Stage1EvaluationComponent({
             {processConfig?.include_curriculum_in_score !== false && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between gap-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-foreground/80">
                     Currículo (0-10)
                   </label>
                   {application.vitae_curriculum && (
@@ -944,7 +944,7 @@ export default function Stage1EvaluationComponent({
                           'authenticated-file'
                         )
                       }
-                      className="shrink-0 inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-blue-700 bg-blue-50 rounded-lg hover:bg-blue-100"
+                      className="shrink-0 inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-primary bg-primary-soft rounded-lg hover:bg-primary-soft"
                     >
                       <Eye className="w-3.5 h-3.5" />
                       Ver documento
@@ -959,8 +959,8 @@ export default function Stage1EvaluationComponent({
                   onBlur={(e) => handleScoreBlur("curriculum", e.target.value)}
                   placeholder="0.0"
                   disabled={isLocked}
-                  className={`w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    isLocked ? "bg-gray-100 cursor-not-allowed focus:ring-0" : ""
+                  className={`w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent ${
+                    isLocked ? "bg-muted cursor-not-allowed focus:ring-0" : ""
                   }`}
                 />
                 {!isLocked && (
@@ -968,7 +968,7 @@ export default function Stage1EvaluationComponent({
                     type="button"
                     onClick={() => saveSingleScore('curriculum')}
                     disabled={isSubmitting}
-                    className="text-sm font-medium text-emerald-700 hover:text-emerald-900 disabled:opacity-50"
+                    className="text-sm font-medium text-success hover:text-success disabled:opacity-50"
                   >
                     Salvar nota (currículo)
                   </button>
@@ -979,7 +979,7 @@ export default function Stage1EvaluationComponent({
             {/* Histórico Escolar */}
             <div className="space-y-2">
               <div className="flex items-center justify-between gap-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-foreground/80">
                   Histórico Escolar (0-10)
                 </label>
                 {application.school_records && (
@@ -991,7 +991,7 @@ export default function Stage1EvaluationComponent({
                         'authenticated-file'
                       )
                     }
-                    className="shrink-0 inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-blue-700 bg-blue-50 rounded-lg hover:bg-blue-100"
+                    className="shrink-0 inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-primary bg-primary-soft rounded-lg hover:bg-primary-soft"
                   >
                     <Eye className="w-3.5 h-3.5" />
                     Ver documento
@@ -1006,8 +1006,8 @@ export default function Stage1EvaluationComponent({
                 onBlur={(e) => handleScoreBlur("school_records", e.target.value)}
                 placeholder="0.0"
                 disabled={isLocked}
-                className={`w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  isLocked ? "bg-gray-100 cursor-not-allowed focus:ring-0" : ""
+                className={`w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent ${
+                  isLocked ? "bg-muted cursor-not-allowed focus:ring-0" : ""
                 }`}
               />
               {!isLocked && (
@@ -1015,7 +1015,7 @@ export default function Stage1EvaluationComponent({
                   type="button"
                   onClick={() => saveSingleScore('school_records')}
                   disabled={isSubmitting}
-                  className="text-sm font-medium text-emerald-700 hover:text-emerald-900 disabled:opacity-50"
+                  className="text-sm font-medium text-success hover:text-success disabled:opacity-50"
                 >
                   Salvar nota (histórico)
                 </button>
@@ -1027,7 +1027,7 @@ export default function Stage1EvaluationComponent({
               !!application.course_certificates && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-foreground/80">
                       Certificados de Cursos (0-10)
                     </label>
                     {application.course_certificates && (
@@ -1039,7 +1039,7 @@ export default function Stage1EvaluationComponent({
                             'authenticated-file'
                           )
                         }
-                        className="shrink-0 inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-blue-700 bg-blue-50 rounded-lg hover:bg-blue-100"
+                        className="shrink-0 inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-primary bg-primary-soft rounded-lg hover:bg-primary-soft"
                       >
                         <Eye className="w-3.5 h-3.5" />
                         Ver documento
@@ -1058,8 +1058,8 @@ export default function Stage1EvaluationComponent({
                     }
                     placeholder="0.0"
                     disabled={isLocked}
-                    className={`w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      isLocked ? "bg-gray-100 cursor-not-allowed focus:ring-0" : ""
+                    className={`w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent ${
+                      isLocked ? "bg-muted cursor-not-allowed focus:ring-0" : ""
                     }`}
                   />
                   {!isLocked && (
@@ -1067,7 +1067,7 @@ export default function Stage1EvaluationComponent({
                       type="button"
                       onClick={() => saveSingleScore('course_certificates')}
                       disabled={isSubmitting}
-                      className="text-sm font-medium text-emerald-700 hover:text-emerald-900 disabled:opacity-50"
+                      className="text-sm font-medium text-success hover:text-success disabled:opacity-50"
                     >
                       Salvar nota (certificados)
                     </button>
@@ -1080,7 +1080,7 @@ export default function Stage1EvaluationComponent({
               !!application.portfolio_link && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-foreground/80">
                       Portfólio (0-10)
                     </label>
                     {application.portfolio_link && (
@@ -1092,7 +1092,7 @@ export default function Stage1EvaluationComponent({
                             'external'
                           )
                         }
-                        className="shrink-0 inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-emerald-700 bg-emerald-50 rounded-lg hover:bg-emerald-100"
+                        className="shrink-0 inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-success bg-success-soft rounded-lg hover:bg-success-soft"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
                         Ver portfólio
@@ -1107,8 +1107,8 @@ export default function Stage1EvaluationComponent({
                     onBlur={(e) => handleScoreBlur("portfolio", e.target.value)}
                     placeholder="0.0"
                     disabled={isLocked}
-                    className={`w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      isLocked ? "bg-gray-100 cursor-not-allowed focus:ring-0" : ""
+                    className={`w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent ${
+                      isLocked ? "bg-muted cursor-not-allowed focus:ring-0" : ""
                     }`}
                   />
                   {!isLocked && (
@@ -1116,7 +1116,7 @@ export default function Stage1EvaluationComponent({
                       type="button"
                       onClick={() => saveSingleScore('portfolio')}
                       disabled={isSubmitting}
-                      className="text-sm font-medium text-emerald-700 hover:text-emerald-900 disabled:opacity-50"
+                      className="text-sm font-medium text-success hover:text-success disabled:opacity-50"
                     >
                       Salvar nota (portfólio)
                     </button>
@@ -1126,8 +1126,8 @@ export default function Stage1EvaluationComponent({
           </div>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h4 className="font-bold text-gray-900 mb-4">Observações Gerais</h4>
+        <div className="bg-card rounded-xl border border-border p-6">
+          <h4 className="font-bold text-foreground mb-4">Observações Gerais</h4>
           <textarea
             value={notes}
             onChange={(e) => {
@@ -1135,11 +1135,11 @@ export default function Stage1EvaluationComponent({
             }}
             placeholder="Adicione observações sobre a avaliação (opcional)..."
             readOnly={isLocked}
-            className={`w-full h-32 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-              isLocked ? 'bg-gray-100 cursor-not-allowed focus:ring-0' : ''
+            className={`w-full h-32 px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent ${
+              isLocked ? 'bg-muted cursor-not-allowed focus:ring-0' : ''
             }`}
           />
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-muted-foreground mt-2">
             Use este espaço para adicionar comentários adicionais sobre a avaliação.
           </p>
         </div>
@@ -1149,13 +1149,13 @@ export default function Stage1EvaluationComponent({
             <button
               type="button"
               onClick={() => setCurrentStep('validation')}
-              className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2 px-6 py-3 border border-input text-foreground/80 rounded-xl hover:bg-background transition-colors"
             >
               ← Voltar para Validação
             </button>
             <div className="text-right">
-              <div className="text-sm text-gray-500 mb-1">Pontuação Final</div>
-              <div className="text-3xl font-bold text-emerald-700">{totalScore.toFixed(2)}</div>
+              <div className="text-sm text-muted-foreground mb-1">Pontuação Final</div>
+              <div className="text-3xl font-bold text-success">{totalScore.toFixed(2)}</div>
             </div>
           </div>
         ) : (
@@ -1163,22 +1163,22 @@ export default function Stage1EvaluationComponent({
             <button
               type="button"
               onClick={() => setCurrentStep('validation')}
-              className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2 px-6 py-3 border border-input text-foreground/80 rounded-xl hover:bg-background transition-colors"
             >
               ← Voltar para Validação
             </button>
 
             <div className="flex flex-wrap items-center justify-end gap-3">
               <div className="text-right">
-                <div className="text-sm text-gray-500 mb-1">Pontuação Final</div>
-                <div className="text-3xl font-bold text-emerald-700">{totalScore.toFixed(2)}</div>
+                <div className="text-sm text-muted-foreground mb-1">Pontuação Final</div>
+                <div className="text-3xl font-bold text-success">{totalScore.toFixed(2)}</div>
               </div>
 
               <button
                 type="button"
                 onClick={() => persist('draft_scores')}
                 disabled={isSubmitting || isLocked}
-                className="px-5 py-3 rounded-xl border border-emerald-300 text-emerald-800 bg-emerald-50 hover:bg-emerald-100 font-medium disabled:opacity-50"
+                className="px-5 py-3 rounded-xl border border-success/30 text-success bg-success-soft hover:bg-success-soft font-medium disabled:opacity-50"
               >
                 Salvar rascunho
               </button>
@@ -1189,8 +1189,8 @@ export default function Stage1EvaluationComponent({
                 disabled={isSubmitting || isLocked}
                 className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
                   isSubmitting || isLocked
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-emerald-600 to-green-600 text-white hover:shadow-lg hover:scale-[1.02]'
+                    ? 'bg-muted text-muted-foreground/70 cursor-not-allowed'
+                    : 'bg-success text-white hover:shadow-md hover:scale-[1.02]'
                 }`}
               >
                 {isSubmitting ? (
@@ -1252,16 +1252,16 @@ export default function Stage1EvaluationComponent({
             type="button"
             onClick={() => handleStepChange('validation')}
             className={`flex flex-col items-center ${
-              currentStep === 'validation' ? 'text-blue-600' : isLocked ? 'text-emerald-600' : 'text-gray-500'
+              currentStep === 'validation' ? 'text-primary' : isLocked ? 'text-success' : 'text-muted-foreground'
             } ${isLocked ? 'cursor-pointer hover:opacity-80' : 'cursor-pointer'}`}
           >
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center ${
                 currentStep === 'validation'
-                  ? 'bg-blue-100 border-2 border-blue-600'
+                  ? 'bg-primary-soft border-2 border-primary'
                   : isLocked
-                    ? 'bg-emerald-100 border-2 border-emerald-600'
-                    : 'bg-gray-100 border-2 border-gray-300'
+                    ? 'bg-success-soft border-2 border-success'
+                    : 'bg-muted border-2 border-input'
               }`}
             >
               1
@@ -1269,21 +1269,21 @@ export default function Stage1EvaluationComponent({
             <span className="mt-2 text-sm font-medium">Validação</span>
           </button>
 
-          <div className="w-24 h-1 bg-gray-200 mx-2"></div>
+          <div className="w-24 h-1 bg-border mx-2"></div>
 
           <button
             type="button"
             onClick={() => handleStepChange('scoring')}
             disabled={!isLocked && !canGoToScoring}
             className={`flex flex-col items-center ${
-              currentStep === 'scoring' ? 'text-emerald-600' : 'text-gray-400'
+              currentStep === 'scoring' ? 'text-success' : 'text-muted-foreground/70'
             } ${isLocked || canGoToScoring ? 'cursor-pointer hover:opacity-80' : 'cursor-not-allowed opacity-60'}`}
           >
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center ${
                 currentStep === 'scoring'
-                  ? 'bg-emerald-100 border-2 border-emerald-600'
-                  : 'bg-gray-100 border-2 border-gray-300'
+                  ? 'bg-success-soft border-2 border-success'
+                  : 'bg-muted border-2 border-input'
               }`}
             >
               2

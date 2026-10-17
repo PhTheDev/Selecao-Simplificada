@@ -25,17 +25,17 @@ export function DashboardHero({
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, type: 'spring', stiffness: 120, damping: 14 }}
-            className="relative overflow-hidden rounded-3xl border border-white/30 bg-white/50 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+            className="relative overflow-hidden rounded-3xl border border-border bg-white/50 shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
         >
-            <div className="absolute inset-0 bg-gradient-to-r from-[#005f73]/15 via-[#0a9396]/10 to-cyan-300/10" />
-            <div className="absolute -top-28 -right-28 w-72 h-72 rounded-full bg-cyan-300/30 blur-3xl" />
-            <div className="absolute -bottom-28 -left-28 w-72 h-72 rounded-full bg-teal-300/30 blur-3xl" />
+            <div className="absolute inset-0 bg-primary/15" />
+            <div className="absolute -top-28 -right-28 w-72 h-72 rounded-full bg-primary/30 blur-3xl" />
+            <div className="absolute -bottom-28 -left-28 w-72 h-72 rounded-full bg-primary/30 blur-3xl" />
 
             <div className="relative p-6 md:p-8 flex flex-col md:flex-row gap-6 md:items-center">
                 <div className="flex items-center gap-4 min-w-0">
                     <motion.div
                         whileHover={{ rotate: 1, scale: 1.02 }}
-                        className="w-16 h-16 rounded-2xl overflow-hidden border border-white/60 bg-white/60 flex items-center justify-center font-bold text-xl text-gray-800 shadow-sm"
+                        className="w-16 h-16 rounded-2xl overflow-hidden border border-white/60 bg-card flex items-center justify-center font-bold text-xl text-foreground shadow-sm"
                     >
                         {avatarUrl ? (
                             // eslint-disable-next-line @next/next/no-img-element
@@ -46,22 +46,22 @@ export function DashboardHero({
                     </motion.div>
 
                     <div className="min-w-0">
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <Sparkles className="w-4 h-4" />
                             <span className="truncate">Área do candidato • {email}</span>
                         </div>
 
-                        <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">
+                        <h1 className="text-2xl md:text-3xl font-extrabold text-foreground mt-1">
                             Olá, {firstName} 👋
                         </h1>
 
                         <div className="flex flex-wrap gap-2 mt-3">
-                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white/70 border border-white/70 text-gray-700">
+                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-card border border-border text-foreground/80">
                                 <CalendarDays className="w-4 h-4" />
                                 {today}
                             </span>
 
-                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white/70 border border-white/70 text-gray-700">
+                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-card border border-border text-foreground/80">
                                 <ShieldCheck className="w-4 h-4" />
                                 {isActive ? 'Conta ativa' : 'Conta inativa'}
                             </span>
@@ -74,7 +74,7 @@ export function DashboardHero({
                         href="/processos-seletivos"
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.98 }}
-                        className="px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-[#005f73] to-[#0a9396] text-white shadow-sm"
+                        className="px-4 py-2 rounded-xl text-sm font-semibold bg-primary text-primary-foreground shadow-sm"
                     >
                         Ver processos abertos
                     </motion.a>
@@ -83,7 +83,7 @@ export function DashboardHero({
                         href="/candidato/perfil"
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.98 }}
-                        className="px-4 py-2 rounded-xl text-sm font-semibold bg-white/70 border border-white/70 text-gray-800"
+                        className="px-4 py-2 rounded-xl text-sm font-semibold bg-card border border-border text-foreground"
                     >
                         Completar meu perfil
                     </motion.a>

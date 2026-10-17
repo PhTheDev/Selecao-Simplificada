@@ -31,14 +31,14 @@ export const Step2Documents = ({
             key="step-2"
         >
             <motion.div
-                className="bg-[#e6f7f9] border border-[#0a9396] rounded-lg p-4"
+                className="bg-primary-soft border border-primary-hover rounded-lg p-4"
                 variants={cardVariants}
             >
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                    <Upload className="w-5 h-5 text-[#005f73]" />
+                <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+                    <Upload className="w-5 h-5 text-primary" />
                     Documentos Necessários
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                     Envie os documentos obrigatórios para sua candidatura. Formatos aceitos: PDF,
                     JPG, PNG, DOC, DOCX, WEBP (Máximo: 5MB cada)
                 </p>

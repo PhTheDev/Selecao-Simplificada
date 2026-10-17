@@ -3,7 +3,6 @@ import BrandMark from "@/components/BrandMark";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import backgroundImage from "@/app/assets/images/imagem-fundo.jpg";
 
 export default function PasswordReset() {
   const router = useRouter();
@@ -54,49 +53,39 @@ export default function PasswordReset() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-muted">
       {/* Seção da Imagem (Esquerda) */}
-      <div
-        className="relative flex-1 flex items-center justify-center p-8 min-h-[40vh] lg:min-h-screen"
-        style={{
-          backgroundImage: `url(${backgroundImage.src})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/40 to-black/20"></div>
-        <div className="absolute inset-0 bg-noise-pattern opacity-10"></div>
-        <div className="relative z-10 text-center">
-          <div className="animate-float">
-            <BrandMark className="text-white font-semibold tracking-tight" />
-          </div>
-        </div>
+      <div className="relative hidden flex-1 flex-col justify-between bg-primary-soft p-12 lg:flex lg:min-h-screen">
+        <BrandMark />
+        <p className="max-w-sm font-serif text-5xl leading-[1.05] text-foreground">
+          Um edital, <span className="italic">uma chance.</span>
+        </p>
+        <p className="text-sm text-muted-foreground">Inscrição, acompanhamento e resultado em um só lugar.</p>
       </div>
 
       {/* Seção do Formulário (Direita) */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 bg-gradient-to-br from-green-800 via-green-700 to-green-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-radial from-green-500/10 via-transparent to-transparent"></div>
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 bg-gradient-to-br from-success via-success to-success relative overflow-hidden">
 
-        <div className="relative z-10 w-full max-w-md">
+        <div className="auth-card relative z-10 w-full max-w-md">
           {/* Cabeçalho */}
           <div className="text-center mb-10">
-            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-green-100 mb-4">
+            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-success to-success-soft mb-4">
               Redefinir Senha
             </h1>
-            <p className="text-green-200/90 text-lg">
+            <p className="text-success/90 text-lg">
               Digite seu e-mail para redefinir a senha
             </p>
           </div>
 
           {/* Mensagens de status */}
           {successMessage && (
-            <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+            <div className="mb-6 p-4 bg-success-soft border border-success text-success rounded-lg">
               {successMessage}
             </div>
           )}
 
           {errorMessage && (
-            <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+            <div className="mb-6 p-4 bg-destructive-soft border border-destructive text-destructive rounded-lg">
               {errorMessage}
             </div>
           )}
@@ -111,20 +100,20 @@ export default function PasswordReset() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Endereço de E-mail"
                 required
-                className="w-full px-4 py-3 bg-white/95 backdrop-blur-xl rounded-lg border-2 border-green-300/20 focus:ring-4 focus:ring-green-400/30 focus:border-green-400 focus:outline-none transition-all duration-300 shadow-lg"
+                className="w-full px-4 py-3 bg-white/95 backdrop-blur-xl rounded-lg border-2 border-success/20 focus:ring-4 focus:ring-success/30 focus:border-success focus:outline-none transition-all duration-300 shadow-lg"
                 disabled={isLoading}
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-success to-success hover:from-success hover:to-success text-foreground font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               {isLoading ? (
                 <div className="flex items-center justify-center gap-2">
                   <svg
-                    className="animate-spin h-5 w-5 text-white"
+                    className="animate-spin h-5 w-5 text-current"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -154,7 +143,7 @@ export default function PasswordReset() {
             <div className="text-center mt-6">
               <Link
                 href="/"
-                className="text-green-200 hover:text-green-100 transition-colors text-sm inline-flex items-center"
+                className="text-success hover:text-success transition-colors text-sm inline-flex items-center"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +165,7 @@ export default function PasswordReset() {
           </form>
 
           {/* Rodapé */}
-          <p className="text-center text-green-200/70 text-xs mt-10">
+          <p className="text-center text-success/70 text-xs mt-10">
             &copy; {new Date().getFullYear()} Seleção Simplificada. Todos os direitos
             reservados.
           </p>

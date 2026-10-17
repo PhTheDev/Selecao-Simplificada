@@ -23,16 +23,16 @@ function KpiCard({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay, type: 'spring', stiffness: 120, damping: 14 }}
             whileHover={{ y: -3 }}
-            className="rounded-2xl border border-white/30 bg-white/60 backdrop-blur-xl shadow-sm p-4"
+            className="rounded-2xl border border-border bg-card shadow-sm p-4"
         >
             <div className="flex items-center justify-between">
                 <div>
-                    <p className="text-xs text-gray-600">{title}</p>
-                    <p className="text-2xl font-extrabold text-gray-900 mt-1">{value}</p>
-                    <p className="text-xs text-gray-500 mt-1">{hint}</p>
+                    <p className="text-xs text-muted-foreground">{title}</p>
+                    <p className="text-2xl font-extrabold text-foreground mt-1">{value}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{hint}</p>
                 </div>
-                <div className="w-11 h-11 rounded-xl bg-white/70 border border-white/70 flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-gray-700" />
+                <div className="w-11 h-11 rounded-xl bg-card border border-border flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-foreground/80" />
                 </div>
             </div>
         </motion.div>

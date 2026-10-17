@@ -1,7 +1,9 @@
 'use client';
 
 import Footer from '@/components/Footer';
-import ProcessosHeader from '@/components/processos-seletivos/ProcessosHeader';
+import { useI18n } from '@/components/i18n/LanguageProvider';
+import Header from '@/components/main-page/Header';
+import SplitWords from '@/components/motion/SplitWords';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, ChevronDown, HelpCircle, Mail, MapPin, Search, Users } from 'lucide-react';
 import { JSX, useMemo, useState } from 'react';
@@ -130,26 +132,26 @@ interface ContactInfo {
 
 const contactInfo: ContactInfo[] = [
   {
-    icon: <MapPin className="text-[#005f73]" size={20} />,
+    icon: <MapPin className="text-primary" size={20} />,
     title: 'Endereço',
     content: 'Seleção Simplificada',
     subtitle: 'Endereço da instituição',
   },
   {
-    icon: <Calendar className="text-[#005f73]" size={20} />,
+    icon: <Calendar className="text-primary" size={20} />,
     title: 'Horário de Atendimento',
     content: 'Segunda a Sexta-feira',
     subtitle: '9h às 12h e 14h às 17h',
   },
   {
-    icon: <Mail className="text-[#005f73]" size={20} />,
+    icon: <Mail className="text-primary" size={20} />,
     title: 'Email de Contato',
     content: 'contato@example.com',
     subtitle: 'Respondemos em até 48h úteis',
     link: 'mailto:contato@example.com',
   },
   {
-    icon: <Users className="text-[#005f73]" size={20} />,
+    icon: <Users className="text-primary" size={20} />,
     title: 'Telefone',
     content: '(00) 0000-0000',
     subtitle: 'Segunda a Sexta-feira, 9h às 17h',
@@ -219,70 +221,28 @@ const filterFaqData = (
 // ------------------------------------------------------------
 
 // Hero da página
-const FAQHero = ({ totalQuestions, totalCategories }: { totalQuestions: number; totalCategories: number }) => (
-  <motion.div
-    className="relative overflow-hidden bg-gradient-to-br from-[#005f73] to-[#0a9396] text-white pt-32 pb-20"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 0.6 }}
-  >
-    <div className="pointer-events-none absolute inset-0 opacity-25">
-      <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-white blur-3xl" />
-      <div className="absolute -bottom-28 -right-24 h-72 w-72 rounded-full bg-white blur-3xl" />
-    </div>
-
-    <div className="container mx-auto px-4">
-      <div className="mx-auto max-w-4xl text-center">
-        <motion.div
-          className="relative rounded-3xl bg-white/10 p-8 md:p-10 backdrop-blur-md border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.20)]"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-        >
-          <motion.div
-            className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-white shadow-lg"
-            whileHover={{ scale: 1.06, rotate: 4 }}
-            transition={{ type: 'spring', stiffness: 320 }}
-          >
-            <HelpCircle size={32} className="text-[#005f73]" />
-          </motion.div>
-
-          <motion.h1
-            className="mb-4 text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-[#e9d8a6]"
-            initial={{ y: -10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.55, delay: 0.25 }}
-          >
-            Central de Ajuda
-          </motion.h1>
-
-          <motion.p
-            className="mx-auto mb-6 max-w-2xl text-base md:text-lg lg:text-xl text-white/90 leading-relaxed"
-            initial={{ y: -6, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.55, delay: 0.32 }}
-          >
-            Encontre respostas para as dúvidas mais frequentes sobre nossos processos seletivos.
-          </motion.p>
-
-          <motion.div
-            className="flex flex-wrap justify-center gap-3 text-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.55, delay: 0.4 }}
-          >
-            <div className="rounded-full bg-white/15 px-4 py-2 ring-1 ring-white/15">
-              <span className="font-semibold">{totalQuestions}</span> perguntas
-            </div>
-            <div className="rounded-full bg-white/15 px-4 py-2 ring-1 ring-white/15">
-              <span className="font-semibold">{totalCategories}</span> categorias
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
-    </div>
-  </motion.div>
-);
+const FAQHero = ({ totalQuestions, totalCategories }: { totalQuestions: number; totalCategories: number }) => {
+  const { t } = useI18n();
+  return (
+  <section className="px-5 pb-10 pt-16 text-center md:px-8 md:pb-14 md:pt-24">
+    <p className="mx-auto inline-flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-sm text-muted-foreground">
+      <span className="h-2 w-2 rounded-full bg-highlight ring-2 ring-primary/30" />
+      <span className="tabular">{totalQuestions}</span> perguntas · <span className="tabular">{totalCategories}</span> categorias
+    </p>
+    <h1 className="mx-auto mt-6 max-w-3xl text-[clamp(2.25rem,5.5vw,4.25rem)] font-medium leading-[1]">
+      <SplitWords text={t('Central de')} /><SplitWords text={t('ajuda')} className="font-serif font-normal italic" delay={0.15} />
+    </h1>
+    <motion.p
+      className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground"
+      initial={{ y: 12, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, delay: 0.4 }}
+    >
+      {t('Encontre respostas para as dúvidas mais frequentes sobre nossos processos seletivos.')}
+    </motion.p>
+  </section>
+  );
+};
 
 // Barra de pesquisa
 const FAQSearch = ({
@@ -304,15 +264,15 @@ const FAQSearch = ({
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6, delay: 0.45 }}
   >
-    <div className="mx-auto max-w-4xl rounded-3xl bg-white/90 backdrop-blur-md shadow-[0_18px_50px_rgba(0,0,0,0.12)] ring-1 ring-black/5 p-5 md:p-6">
+    <div className="mx-auto max-w-4xl rounded-3xl bg-card shadow-sm ring-1 border p-5 md:p-6">
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/70" size={20} />
         <input
           type="text"
           placeholder="Buscar por palavras-chave, perguntas, respostas ou tags..."
-          className="w-full rounded-2xl border border-gray-200 bg-gray-50/70 py-4 pl-12 pr-12 text-gray-900 placeholder:text-gray-400 outline-none transition
-                     focus:border-[#005f73] focus:ring-4 focus:ring-[#005f73]/15
-                     hover:bg-gray-50"
+          className="w-full rounded-2xl border border-border bg-background/70 py-4 pl-12 pr-12 text-foreground placeholder:text-muted-foreground/70 outline-none transition
+                     focus:border-primary focus:ring-4 focus:ring-primary/15
+                     hover:bg-background"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -320,7 +280,7 @@ const FAQSearch = ({
           <motion.button
             type="button"
             aria-label="Limpar busca"
-            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl px-3 py-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground/80 hover:bg-muted transition"
             onClick={() => setSearchTerm('')}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
@@ -331,15 +291,15 @@ const FAQSearch = ({
       </div>
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-muted-foreground">
           {searchTerm || activeCategory ? (
             <>
-              <span className="font-semibold text-gray-900">{visibleCount}</span> resultado(s)
+              <span className="font-semibold text-foreground">{visibleCount}</span> resultado(s)
               {searchTerm && (
-                <> para "<span className="font-semibold text-gray-900">{searchTerm}</span>"</>
+                <> para "<span className="font-semibold text-foreground">{searchTerm}</span>"</>
               )}
               {activeCategory && (
-                <> em <span className="font-semibold text-gray-900">"{activeCategory}"</span></>
+                <> em <span className="font-semibold text-foreground">"{activeCategory}"</span></>
               )}
             </>
           ) : (
@@ -351,7 +311,7 @@ const FAQSearch = ({
           <motion.button
             type="button"
             onClick={clearFilters}
-            className="text-sm font-semibold text-[#005f73] hover:text-[#0a9396] underline-offset-4 hover:underline transition"
+            className="text-sm font-semibold text-primary hover:text-primary-hover underline-offset-4 hover:underline transition"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -381,14 +341,14 @@ const FAQSidebar = ({
     animate={{ opacity: 1, x: 0 }}
     transition={{ duration: 0.6, delay: 0.55 }}
   >
-    <div className="sticky top-28 rounded-3xl bg-white/90 backdrop-blur-md shadow-[0_18px_50px_rgba(0,0,0,0.10)] ring-1 ring-black/5 p-6">
+    <div className="sticky top-28 rounded-3xl bg-card shadow-sm ring-1 border p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-black text-gray-900">Categorias</h3>
+        <h3 className="text-lg font-semibold text-foreground">Categorias</h3>
         {activeCategory && (
           <button
             type="button"
             onClick={onClearCategory}
-            className="text-xs font-semibold text-[#005f73] hover:text-[#0a9396] transition"
+            className="text-xs font-semibold text-primary hover:text-primary-hover transition"
           >
             Limpar
           </button>
@@ -406,8 +366,8 @@ const FAQSidebar = ({
               className={[
                 'w-full rounded-2xl px-4 py-3 text-left transition ring-1',
                 active
-                  ? 'bg-[#005f73] text-white ring-white/20 shadow-[0_10px_25px_rgba(0,95,115,0.28)]'
-                  : 'bg-gray-50 text-gray-700 ring-gray-200 hover:bg-gray-100 hover:ring-gray-300',
+                  ? 'bg-primary text-primary-foreground ring-white/20 shadow-sm'
+                  : 'bg-background text-foreground/80 ring-ring hover:bg-muted hover:ring-ring',
               ].join(' ')}
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
@@ -418,7 +378,7 @@ const FAQSidebar = ({
               <div className="flex items-center gap-3">
                 <span className="text-lg">{category.icon}</span>
                 <span className="font-semibold">{category.category}</span>
-                <span className={`ml-auto text-sm ${active ? 'text-white/80' : 'text-gray-500'}`}>
+                <span className={`ml-auto text-sm ${active ? 'text-white/80' : 'text-muted-foreground'}`}>
                   ({category.questions.length})
                 </span>
               </div>
@@ -428,12 +388,12 @@ const FAQSidebar = ({
       </div>
 
       {/* Call to Action */}
-      <div className="mt-8 border-t border-gray-200 pt-6">
-        <h4 className="mb-4 text-sm font-black text-gray-900">Não encontrou o que procura?</h4>
+      <div className="mt-8 border-t border-border pt-6">
+        <h4 className="mb-4 text-sm font-semibold text-foreground">Não encontrou o que procura?</h4>
         <motion.button
           type="button"
           onClick={() => (window.location.href = '#contato')}
-          className="w-full rounded-2xl bg-gradient-to-r from-[#005f73] to-[#0a9396] py-3 font-black text-white shadow-[0_14px_30px_rgba(0,0,0,0.15)] hover:brightness-[1.03] transition"
+          className="w-full rounded-2xl bg-primary py-3 font-semibold text-primary-foreground shadow-sm hover:brightness-[1.03] transition"
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
         >
@@ -467,7 +427,7 @@ const FAQQuestion = ({
       animate={{ opacity: 1 }}
       transition={{ duration: 0.28 }}
     >
-      <div className="w-full p-6 text-left transition hover:bg-gray-50/70">
+      <div className="w-full p-6 text-left transition hover:bg-background/70">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1">
             <div className="flex items-start justify-between">
@@ -479,7 +439,7 @@ const FAQQuestion = ({
                   aria-controls={`faq-${item.id}`}
                   className="w-full text-left"
                 >
-                  <h3 className="mb-3 text-lg font-black text-gray-900 group-hover:text-[#005f73] transition">
+                  <h3 className="mb-3 text-lg font-semibold text-foreground group-hover:text-primary transition">
                     {item.question}
                   </h3>
                 </button>
@@ -487,7 +447,7 @@ const FAQQuestion = ({
                   <motion.span
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="rounded-full bg-[#e9d8a6] px-2 py-1 text-xs font-semibold text-[#005f73] whitespace-nowrap"
+                    className="rounded-full bg-white px-2 py-1 text-xs font-semibold text-primary whitespace-nowrap"
                   >
                     Encontrado pela tag
                   </motion.span>
@@ -502,8 +462,8 @@ const FAQQuestion = ({
                   key={tagIndex}
                   className={`rounded-full px-2.5 py-1 text-xs font-semibold ring-1 transition-all ${
                     isMatch && searchTerm
-                      ? 'bg-[#e9d8a6] text-[#005f73] ring-[#e9d8a6] shadow-sm'
-                      : 'bg-blue-50 text-blue-700 ring-blue-100'
+                      ? 'bg-white text-primary ring-white shadow-sm'
+                      : 'bg-primary-soft text-primary ring-ring'
                   }`}
                 >
                   #{tag}
@@ -522,8 +482,8 @@ const FAQQuestion = ({
                   transition={{ duration: 0.28 }}
                   className="overflow-hidden"
                 >
-                  <div className="mt-3 rounded-2xl bg-white p-5 ring-1 ring-gray-200">
-                    <p className="text-gray-700 leading-relaxed">{item.answer}</p>
+                  <div className="mt-3 rounded-2xl bg-card p-5 ring-1 ring-ring">
+                    <p className="text-foreground/80 leading-relaxed">{item.answer}</p>
                   </div>
                 </motion.div>
               )}
@@ -535,7 +495,7 @@ const FAQQuestion = ({
             onClick={() => onToggle(item.id)}
             aria-expanded={isOpen}
             aria-controls={`faq-${item.id}`}
-            className="mt-1 flex-shrink-0 rounded-xl p-2 text-gray-400 ring-1 ring-transparent group-hover:text-[#005f73] group-hover:bg-white group-hover:ring-gray-200 transition"
+            className="mt-1 flex-shrink-0 rounded-xl p-2 text-muted-foreground/70 ring-1 ring-transparent group-hover:text-primary group-hover:bg-card group-hover:ring-ring transition"
           >
             <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.25 }}>
               <ChevronDown size={20} />
@@ -560,20 +520,20 @@ const FAQCategorySection = ({
   searchTerm: string;
 }) => (
   <motion.section
-    className="overflow-hidden rounded-3xl bg-white/90 backdrop-blur-md shadow-[0_18px_50px_rgba(0,0,0,0.10)] ring-1 ring-black/5"
+    className="overflow-hidden rounded-3xl bg-card shadow-sm ring-1 border"
     initial={{ opacity: 0, y: 16 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.45 }}
   >
     {/* Cabeçalho da categoria */}
-    <div className="border-b border-gray-200 bg-gradient-to-r from-gray-50 to-blue-50 p-6">
+    <div className="border-b border-border bg-gradient-to-r from-background to-primary-soft p-6">
       <div className="flex items-center gap-4">
-        <div className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-black/5">
+        <div className="rounded-2xl bg-card p-3 shadow-sm ring-1 border">
           <span className="text-2xl">{category.icon}</span>
         </div>
         <div>
-          <h2 className="text-2xl font-black text-gray-900">{category.category}</h2>
-          <p className="text-sm text-gray-600">
+          <h2 className="text-2xl font-semibold text-foreground">{category.category}</h2>
+          <p className="text-sm text-muted-foreground">
             {category.questions.length} pergunta
             {category.questions.length !== 1 ? 's' : ''} disponível
             {category.questions.length !== 1 ? 's' : ''}
@@ -583,7 +543,7 @@ const FAQCategorySection = ({
     </div>
 
     {/* Lista de perguntas */}
-    <div className="divide-y divide-gray-100">
+    <div className="divide-y divide-border">
       {category.questions.map((item, idx) => (
         <FAQQuestion
           key={item.id}
@@ -600,20 +560,20 @@ const FAQCategorySection = ({
 // Estado vazio (nenhum resultado)
 const FAQEmpty = ({ clearFilters }: { clearFilters: () => void }) => (
   <motion.div
-    className="mt-6 rounded-3xl bg-white/90 backdrop-blur-md p-12 text-center shadow-[0_18px_50px_rgba(0,0,0,0.10)] ring-1 ring-black/5"
+    className="mt-6 rounded-3xl bg-card p-12 text-center shadow-sm ring-1 border"
     initial={{ opacity: 0, y: 16 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: -12 }}
   >
-    <HelpCircle size={64} className="mx-auto mb-4 text-gray-400" />
-    <h3 className="mb-2 text-2xl font-black text-gray-700">Nenhum resultado encontrado</h3>
-    <p className="mx-auto mb-6 max-w-md text-gray-500">
+    <HelpCircle size={64} className="mx-auto mb-4 text-muted-foreground/70" />
+    <h3 className="mb-2 text-2xl font-semibold text-foreground/80">Nenhum resultado encontrado</h3>
+    <p className="mx-auto mb-6 max-w-md text-muted-foreground">
       Não encontramos perguntas correspondentes à sua busca. Tente outros termos ou tags.
     </p>
     <motion.button
       type="button"
       onClick={clearFilters}
-      className="rounded-2xl bg-[#005f73] px-6 py-3 font-black text-white shadow hover:bg-[#0a9396] transition"
+      className="rounded-2xl bg-primary px-6 py-3 font-semibold text-primary-foreground shadow hover:bg-primary-hover transition"
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
     >
@@ -626,14 +586,14 @@ const FAQEmpty = ({ clearFilters }: { clearFilters: () => void }) => (
 const FAQContact = () => (
   <motion.section
     id="contato"
-    className="mt-12 overflow-hidden rounded-3xl bg-gradient-to-br from-[#005f73] to-[#0a9396] shadow-[0_24px_70px_rgba(0,0,0,0.18)]"
+    className="mt-12 overflow-hidden rounded-3xl bg-primary shadow-sm"
     initial={{ opacity: 0, y: 16 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.55, delay: 0.85 }}
   >
     <div className="p-8 md:p-10 text-white">
       <div className="mb-10 text-center">
-        <h2 className="mb-4 text-3xl md:text-4xl font-black text-[#e9d8a6]">
+        <h2 className="mb-4 text-3xl md:text-4xl font-semibold text-primary-foreground/80">
           Ainda precisa de ajuda?
         </h2>
         <p className="mx-auto max-w-2xl text-white/80 text-base md:text-lg leading-relaxed">
@@ -645,7 +605,7 @@ const FAQContact = () => (
         {contactInfo.map((contact, index) => (
           <motion.div
             key={index}
-            className="group relative rounded-2xl bg-white/10 p-6 backdrop-blur-md ring-1 ring-white/15 hover:bg-white/15 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.25)] min-h-[200px] flex flex-col"
+            className="group relative rounded-2xl bg-white/10 p-6 ring-1 ring-white/15 hover:bg-white/15 transition-all duration-300 hover:shadow-sm min-h-[200px] flex flex-col"
             whileHover={{ scale: 1.02, y: -4 }}
             transition={{ type: 'spring', stiffness: 300 }}
             initial={{ opacity: 0, y: 14 }}
@@ -655,17 +615,17 @@ const FAQContact = () => (
 
             <div className="relative z-10 flex flex-col h-full">
               <div className="flex items-start gap-4 mb-4">
-                <div className="flex-shrink-0 flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-lg">
+                <div className="flex-shrink-0 flex h-12 w-12 items-center justify-center rounded-2xl bg-card shadow-sm">
                   {contact.icon}
                 </div>
 
                 <div className="flex-1">
-                  <h4 className="mb-2 font-black text-white text-lg">{contact.title}</h4>
+                  <h4 className="mb-2 font-semibold text-white text-lg">{contact.title}</h4>
                   <div className="space-y-1">
                     {contact.link ? (
                       <a
                         href={contact.link}
-                        className="block font-semibold text-white hover:text-[#e9d8a6] transition-colors duration-300 break-words"
+                        className="block font-semibold text-white hover:text-primary-foreground/80 transition-colors duration-300 break-words"
                         target={contact.link.startsWith('http') ? '_blank' : '_self'}
                         rel={contact.link.startsWith('http') ? 'noopener noreferrer' : ''}
                       >
@@ -752,8 +712,8 @@ export default function FAQ() {
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,rgba(0,95,115,0.10),transparent_55%),radial-gradient(ellipse_at_bottom,rgba(10,147,150,0.10),transparent_55%)] bg-gray-50">
-      <ProcessosHeader />
+    <div className="min-h-screen bg-background">
+      <Header />
 
       <FAQHero totalQuestions={totalQuestions} totalCategories={totalCategories} />
 

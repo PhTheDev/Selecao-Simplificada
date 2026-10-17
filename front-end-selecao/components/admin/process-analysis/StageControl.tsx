@@ -32,55 +32,55 @@ export function StageControl({
 
     const getStageClassName = (stage: string, activeColor: string) => {
         const isActive = getStageStatus(stage);
-        return `flex items-center gap-2 ${isActive ? activeColor : 'text-gray-400'}`;
+        return `flex items-center gap-2 ${isActive ? activeColor : 'text-muted-foreground/70'}`;
     };
 
     const getStageIndicatorClassName = (stage: string, activeBg: string, activeBorder: string) => {
         const isActive = getStageStatus(stage);
         return `w-8 h-8 rounded-full flex items-center justify-center ${
-            isActive ? `${activeBg} border-2 ${activeBorder}` : 'bg-gray-100 border-2 border-gray-300'
+            isActive ? `${activeBg} border-2 ${activeBorder}` : 'bg-muted border-2 border-input'
         }`;
     };
 
     return (
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 mb-6">
+        <div className="bg-card rounded-2xl shadow-sm border border-border p-6 mb-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div className="flex-1">
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">Controle de Etapas do Processo</h3>
+                    <h3 className="text-lg font-bold text-foreground mb-2">Controle de Etapas do Processo</h3>
                     <div className="flex flex-col md:flex-row md:items-center gap-4">
                         <div className="flex items-center gap-4">
                             {/* Etapa 1 */}
-                            <div className={getStageClassName(PROCESS_STAGES.STAGE1_DOCUMENTS, 'text-blue-600')}>
+                            <div className={getStageClassName(PROCESS_STAGES.STAGE1_DOCUMENTS, 'text-primary')}>
                                 <div className={getStageIndicatorClassName(
                                     PROCESS_STAGES.STAGE1_DOCUMENTS,
-                                    'bg-blue-100',
-                                    'border-blue-600'
+                                    'bg-primary-soft',
+                                    'border-primary'
                                 )}>
                                     1
                                 </div>
                                 <span className="font-medium">{STAGE_LABELS[PROCESS_STAGES.STAGE1_DOCUMENTS]}</span>
                             </div>
-                            <div className="w-8 h-0.5 bg-gray-300"></div>
+                            <div className="w-8 h-0.5 bg-input"></div>
                             
                             {/* Etapa 2 */}
-                            <div className={getStageClassName(PROCESS_STAGES.STAGE2_INTERVIEW, 'text-purple-600')}>
+                            <div className={getStageClassName(PROCESS_STAGES.STAGE2_INTERVIEW, 'text-primary')}>
                                 <div className={getStageIndicatorClassName(
                                     PROCESS_STAGES.STAGE2_INTERVIEW,
-                                    'bg-purple-100',
-                                    'border-purple-600'
+                                    'bg-primary-soft',
+                                    'border-primary'
                                 )}>
                                     2
                                 </div>
                                 <span className="font-medium">{STAGE_LABELS[PROCESS_STAGES.STAGE2_INTERVIEW]}</span>
                             </div>
-                            <div className="w-8 h-0.5 bg-gray-300"></div>
+                            <div className="w-8 h-0.5 bg-input"></div>
                             
                             {/* Análise Concluída */}
-                            <div className={getStageClassName(PROCESS_STAGES.ANALYSIS_COMPLETED, 'text-green-600')}>
+                            <div className={getStageClassName(PROCESS_STAGES.ANALYSIS_COMPLETED, 'text-success')}>
                                 <div className={getStageIndicatorClassName(
                                     PROCESS_STAGES.ANALYSIS_COMPLETED,
-                                    'bg-green-100',
-                                    'border-green-600'
+                                    'bg-success-soft',
+                                    'border-success'
                                 )}>
                                     <CheckCircle className="w-4 h-4" />
                                 </div>
@@ -98,8 +98,8 @@ export function StageControl({
                             disabled={!allCompletedStage1 || isLoading}
                             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all ${
                                 allCompletedStage1 && !isLoading
-                                    ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:shadow-lg'
-                                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                    ? 'bg-primary text-primary-foreground hover:shadow-md'
+                                    : 'bg-muted text-muted-foreground/70 cursor-not-allowed'
                             }`}
                         >
                             {allCompletedStage1 ? (
@@ -122,8 +122,8 @@ export function StageControl({
                             disabled={!allCompletedStage2 || isLoading}
                             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all ${
                                 allCompletedStage2 && !isLoading
-                                    ? 'bg-gradient-to-r from-emerald-600 to-green-600 text-white hover:shadow-lg'
-                                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                    ? 'bg-success text-white hover:shadow-md'
+                                    : 'bg-muted text-muted-foreground/70 cursor-not-allowed'
                             }`}
                         >
                             {allCompletedStage2 ? (
@@ -145,7 +145,7 @@ export function StageControl({
                         <button
                             onClick={onFinishProcess}
                             disabled={isLoading}
-                            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex items-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-xl hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <CheckCircle className="w-4 h-4" />
                             Finalizar Processo
@@ -155,9 +155,9 @@ export function StageControl({
             </div>
 
             {/* Status da Etapa Atual */}
-            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+            <div className="mt-4 p-3 bg-background rounded-lg">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                         {selectionProcess.analysis_stage === PROCESS_STAGES.STAGE1_DOCUMENTS && (
                             <span>
                                 Etapa 1 em andamento - {stage1Progress.completed} de {stage1Progress.total} candidatos avaliados
@@ -170,15 +170,15 @@ export function StageControl({
                         )}
                         {selectionProcess.analysis_stage === PROCESS_STAGES.ANALYSIS_COMPLETED && 
                          selectionProcess.status !== 'finished' && (
-                            <span className="text-green-600 font-medium">
+                            <span className="text-success font-medium">
                                 Análise concluída - Pronto para finalizar o processo
                             </span>
                         )}
                         {selectionProcess.status === 'finished' && (
-                            <span className="text-blue-600 font-medium">Processo finalizado</span>
+                            <span className="text-primary font-medium">Processo finalizado</span>
                         )}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-muted-foreground">
                         Total de candidatos: {applications.length}
                     </div>
                 </div>

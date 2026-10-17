@@ -24,7 +24,7 @@ export default function Modal({
     children,
     size = 'md',
     footer,
-    backdropClass = 'bg-black/20 backdrop-blur-sm'
+    backdropClass = 'bg-black/20'
 }: ModalProps) {
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) {
@@ -53,23 +53,23 @@ export default function Modal({
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.9, opacity: 0 }}
-                        className={`bg-white rounded-2xl shadow-xl w-full max-h-[90vh] overflow-hidden flex flex-col ${sizeClasses[size]}`}
+                        className={`bg-card rounded-2xl w-full max-h-[90vh] overflow-hidden flex flex-col ${sizeClasses[size]}`}
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
+                        <div className="flex items-center justify-between p-6 border-b border-border flex-shrink-0">
                             <div>
-                                <h2 className="text-2xl font-bold text-gray-900">
+                                <h2 className="text-2xl font-bold text-foreground">
                                     {title}
                                 </h2>
                                 {subtitle && (
-                                    <p className="text-gray-600 mt-1">
+                                    <p className="text-muted-foreground mt-1">
                                         {subtitle}
                                     </p>
                                 )}
                             </div>
                             <button
                                 onClick={onClose}
-                                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                className="p-2 hover:bg-muted rounded-lg transition-colors"
                             >
                                 <X className="w-6 h-6" />
                             </button>
@@ -82,7 +82,7 @@ export default function Modal({
 
                         {/* Footer - Optional */}
                         {footer && (
-                            <div className="flex justify-end gap-3 p-6 border-t border-gray-200 flex-shrink-0">
+                            <div className="flex justify-end gap-3 p-6 border-t border-border flex-shrink-0">
                                 {footer}
                             </div>
                         )}

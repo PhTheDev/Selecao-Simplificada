@@ -21,17 +21,17 @@ export function PrerequisitesSection({
     onUpdate,
 }: PrerequisitesSectionProps) {
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-card rounded-2xl shadow-sm border border-border p-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                <h2 className="font-semibold text-xl text-gray-800 flex items-center gap-2">
-                    <AlertTriangle className="w-6 h-6 text-amber-600" />
+                <h2 className="font-semibold text-xl text-foreground flex items-center gap-2">
+                    <AlertTriangle className="w-6 h-6 text-warning" />
                     Pré-requisitos
                 </h2>
 
                 <button
                     type="button"
                     onClick={onAdd}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium text-sm"
+                    className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-xl hover:bg-primary-hover transition-colors font-medium text-sm"
                 >
                     <Plus className="w-4 h-4" />
                     Adicionar Pré-requisito
@@ -42,17 +42,17 @@ export function PrerequisitesSection({
                 {prerequisites.map((prerequisite, index) => (
                     <div
                         key={prerequisite.id}
-                        className="p-4 border border-gray-200 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+                        className="p-4 border border-border rounded-xl bg-background hover:bg-muted transition-colors"
                     >
                         <div className="flex justify-between items-center mb-3">
-                            <h3 className="font-medium text-gray-700">
+                            <h3 className="font-medium text-foreground/80">
                                 Pré-requisito {index + 1}
                             </h3>
                             <div className="flex gap-2">
                                 <button
                                     type="button"
                                     onClick={onAdd}
-                                    className="p-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+                                    className="p-1 bg-primary-soft text-primary rounded-lg hover:bg-primary-soft transition-colors"
                                     title="Adicionar pré-requisito"
                                 >
                                     <Plus className="w-4 h-4" />
@@ -61,7 +61,7 @@ export function PrerequisitesSection({
                                     <button
                                         type="button"
                                         onClick={() => onRemove(prerequisite.id)}
-                                        className="p-1 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors"
+                                        className="p-1 bg-destructive-soft text-destructive rounded-lg hover:bg-destructive-soft transition-colors"
                                         title="Remover pré-requisito"
                                     >
                                         <X className="w-4 h-4" />

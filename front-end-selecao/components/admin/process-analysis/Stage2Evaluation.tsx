@@ -100,34 +100,34 @@ export default function Stage2EvaluationComponent({
 
     return (
         <div className="space-y-6">
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200">
+            <div className="bg-primary-soft rounded-xl p-6 border border-primary/30">
                 <div className="flex items-center justify-between mb-4">
                     <div>
-                        <h3 className="text-lg font-bold text-gray-900">
+                        <h3 className="text-lg font-bold text-foreground">
                             Etapa 2 -{' '}
                             {processConfig?.has_essay !== false ? 'Entrevista & Redação' : 'Entrevista'}
                         </h3>
-                        <p className="text-gray-600 mt-1">
+                        <p className="text-muted-foreground mt-1">
                             {processConfig?.has_essay !== false
                                 ? 'Avalie a entrevista e redação do candidato'
                                 : 'Avalie a entrevista do candidato'}
                         </p>
                     </div>
                     <div className="text-right">
-                        <div className="text-2xl font-bold text-purple-700">
+                        <div className="text-2xl font-bold text-primary">
                             {totalScore.toFixed(2)}
                         </div>
-                        <div className="text-sm text-gray-500">Pontuação Total</div>
+                        <div className="text-sm text-muted-foreground">Pontuação Total</div>
                     </div>
                 </div>
 
                 {locked ? (
-                    <div className="flex items-center gap-2 text-gray-700 bg-gray-50 border border-gray-200 p-3 rounded-lg">
-                        <Lock className="w-5 h-5 text-gray-500" />
+                    <div className="flex items-center gap-2 text-foreground/80 bg-background border border-border p-3 rounded-lg">
+                        <Lock className="w-5 h-5 text-muted-foreground" />
                         <span>Etapa 2 finalizada — somente leitura</span>
                     </div>
                 ) : (
-                    <div className="flex items-center gap-2 text-purple-600 bg-purple-50 p-3 rounded-lg">
+                    <div className="flex items-center gap-2 text-primary bg-primary-soft p-3 rounded-lg">
                         <AlertCircle className="w-5 h-5" />
                         <span>Esta etapa só fica disponível após conclusão da Etapa 1</span>
                     </div>
@@ -140,15 +140,15 @@ export default function Stage2EvaluationComponent({
                 } gap-6`}
             >
                 {/* Entrevista */}
-                <div className="bg-white rounded-xl border border-gray-200 p-6">
-                    <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <div className="bg-card rounded-xl border border-border p-6">
+                    <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                         <Mic className="w-5 h-5" />
                         Entrevista
                     </h4>
 
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-sm font-medium text-foreground/80 mb-2">
                                 Pontuação da Entrevista (0-10)
                             </label>
 
@@ -170,14 +170,14 @@ export default function Stage2EvaluationComponent({
                                     }));
                                 }}
                                 disabled={locked}
-                                className={`w-full h-2 bg-gray-200 rounded-lg appearance-none ${
+                                className={`w-full h-2 bg-border rounded-lg appearance-none ${
                                     locked ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
                                 }`}
                             />
 
-                            <div className="flex justify-between text-sm text-gray-600 mt-2">
+                            <div className="flex justify-between text-sm text-muted-foreground mt-2">
                                 <span>0</span>
-                                <span className="font-bold text-purple-600">
+                                <span className="font-bold text-primary">
                                     {(
                                         (typeof scores.interview_score === 'number'
                                             ? scores.interview_score
@@ -189,7 +189,7 @@ export default function Stage2EvaluationComponent({
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-sm font-medium text-foreground/80 mb-2">
                                 Observações da Entrevista
                             </label>
 
@@ -201,8 +201,8 @@ export default function Stage2EvaluationComponent({
                                 }}
                                 readOnly={locked}
                                 placeholder="Anotações sobre a entrevista..."
-                                className={`w-full h-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
-                                    locked ? 'bg-gray-100 cursor-not-allowed focus:ring-0' : ''
+                                className={`w-full h-24 px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent ${
+                                    locked ? 'bg-muted cursor-not-allowed focus:ring-0' : ''
                                 }`}
                             />
                         </div>
@@ -211,15 +211,15 @@ export default function Stage2EvaluationComponent({
 
                 {/* Redação - opcional, só aparece se has_essay for true */}
                 {processConfig?.has_essay !== false && (
-                    <div className="bg-white rounded-xl border border-gray-200 p-6">
-                        <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <div className="bg-card rounded-xl border border-border p-6">
+                        <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
                             <FileText className="w-5 h-5" />
                             Redação
                         </h4>
 
                         <div className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     Pontuação da Redação (0-10)
                                 </label>
 
@@ -241,14 +241,14 @@ export default function Stage2EvaluationComponent({
                                         }));
                                     }}
                                     disabled={locked}
-                                    className={`w-full h-2 bg-gray-200 rounded-lg appearance-none ${
+                                    className={`w-full h-2 bg-border rounded-lg appearance-none ${
                                         locked ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
                                     }`}
                                 />
 
-                                <div className="flex justify-between text-sm text-gray-600 mt-2">
+                                <div className="flex justify-between text-sm text-muted-foreground mt-2">
                                     <span>0</span>
-                                    <span className="font-bold text-purple-600">
+                                    <span className="font-bold text-primary">
                                         {(
                                             (typeof scores.essay_score === 'number'
                                                 ? scores.essay_score
@@ -260,7 +260,7 @@ export default function Stage2EvaluationComponent({
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     Observações da Redação
                                 </label>
 
@@ -272,8 +272,8 @@ export default function Stage2EvaluationComponent({
                                     }}
                                     readOnly={locked}
                                     placeholder="Anotações sobre a redação..."
-                                    className={`w-full h-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
-                                        locked ? 'bg-gray-100 cursor-not-allowed focus:ring-0' : ''
+                                    className={`w-full h-24 px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent ${
+                                        locked ? 'bg-muted cursor-not-allowed focus:ring-0' : ''
                                     }`}
                                 />
                             </div>
@@ -288,8 +288,8 @@ export default function Stage2EvaluationComponent({
                     disabled={isSubmitting || locked}
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
                         isSubmitting || locked
-                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:shadow-lg hover:scale-[1.02]'
+                            ? 'bg-muted text-muted-foreground/70 cursor-not-allowed'
+                            : 'bg-primary text-primary-foreground hover:shadow-md hover:scale-[1.02]'
                     }`}
                 >
                     {isSubmitting ? (
@@ -314,21 +314,21 @@ export default function Stage2EvaluationComponent({
                         <button
                             onClick={() => setIsConfirmOpen(false)}
                             disabled={isSubmitting}
-                            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-4 py-2 rounded-lg border border-input text-foreground/80 hover:bg-background disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Cancelar
                         </button>
                         <button
                             onClick={handleConfirmSubmit}
                             disabled={isSubmitting}
-                            className="px-4 py-2 rounded-lg bg-purple-700 text-white hover:bg-purple-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-4 py-2 rounded-lg bg-primary-hover text-primary-foreground hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isSubmitting ? 'Finalizando...' : 'Sim, finalizar'}
                         </button>
                     </>
                 }
             >
-                <div className="p-6 text-sm text-gray-700">
+                <div className="p-6 text-sm text-foreground/80">
                     Deseja realmente finalizar a avaliação desta pessoa na Etapa 2? Esta ação é definitiva.
                 </div>
             </Modal>

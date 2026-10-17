@@ -32,8 +32,8 @@ export const InputField = ({
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
     >
-        <label className="block text-sm font-medium text-gray-700">
-            {label} {required && <span className="text-red-500">*</span>}
+        <label className="block text-sm font-medium text-foreground/80">
+            {label} {required && <span className="text-destructive">*</span>}
         </label>
         {children || (
             <motion.input
@@ -44,15 +44,15 @@ export const InputField = ({
                 placeholder={placeholder}
                 className={`w-full px-4 py-2.5 border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:border-transparent ${
                     error
-                        ? 'border-red-300 focus:ring-red-500 bg-red-50'
-                        : 'border-gray-300 focus:ring-[#0a9396] focus:border-[#0a9396] hover:border-gray-400'
+                        ? 'border-destructive/30 focus:ring-destructive bg-destructive-soft'
+                        : 'border-input focus:ring-primary-hover focus:border-primary-hover hover:border-input'
                 }`}
                 whileFocus={{ scale: 1.01 }}
             />
         )}
         {error && (
             <motion.p
-                className="text-sm text-red-600 flex items-center gap-1"
+                className="text-sm text-destructive flex items-center gap-1"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
             >
@@ -87,8 +87,8 @@ export const SelectField = ({
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
     >
-        <label className="block text-sm font-medium text-gray-700">
-            {label} {required && <span className="text-red-500">*</span>}
+        <label className="block text-sm font-medium text-foreground/80">
+            {label} {required && <span className="text-destructive">*</span>}
         </label>
         <select
             name={name}
@@ -96,8 +96,8 @@ export const SelectField = ({
             onChange={onChange}
             className={`w-full px-4 py-2.5 border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:border-transparent ${
                 error
-                    ? 'border-red-300 focus:ring-red-500 bg-red-50'
-                    : 'border-gray-300 focus:ring-[#0a9396] focus:border-[#0a9396] hover:border-gray-400'
+                    ? 'border-destructive/30 focus:ring-destructive bg-destructive-soft'
+                    : 'border-input focus:ring-primary-hover focus:border-primary-hover hover:border-input'
             }`}
         >
             <option value="">Selecione...</option>
@@ -109,7 +109,7 @@ export const SelectField = ({
         </select>
         {error && (
             <motion.p
-                className="text-sm text-red-600 flex items-center gap-1"
+                className="text-sm text-destructive flex items-center gap-1"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
             >
@@ -150,17 +150,17 @@ export const FileUploadField = ({
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
     >
-        <label className="block text-sm font-medium text-gray-700">
-            {label} {required && <span className="text-red-500">*</span>}
+        <label className="block text-sm font-medium text-foreground/80">
+            {label} {required && <span className="text-destructive">*</span>}
         </label>
-        <p className="text-sm text-gray-500">{description}</p>
+        <p className="text-sm text-muted-foreground">{description}</p>
         <motion.div
             className={`border-2 border-dashed rounded-lg p-4 transition-all duration-200 ${
                 error
-                    ? 'border-red-300 bg-red-50'
+                    ? 'border-destructive/30 bg-destructive-soft'
                     : file
-                      ? 'border-[#0a9396] bg-[#e6f7f9]'
-                      : 'border-gray-300 hover:border-gray-400'
+                      ? 'border-primary-hover bg-primary-soft'
+                      : 'border-input hover:border-input'
             }`}
             whileHover={{ scale: 1.005 }}
         >
@@ -175,7 +175,7 @@ export const FileUploadField = ({
                     />
                     <motion.label
                         htmlFor={`file-${name}`}
-                        className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                        className="flex items-center justify-center gap-2 px-4 py-2.5 bg-card border border-input rounded-lg hover:bg-background cursor-pointer transition-colors"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                     >
@@ -200,16 +200,16 @@ export const FileUploadField = ({
                     animate={{ opacity: 1, y: 0 }}
                 >
                     <div className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-[#0a9396]" />
-                        <span className="text-sm font-medium text-gray-700">{file.name}</span>
-                        <span className="text-xs text-gray-500">
+                        <CheckCircle className="w-4 h-4 text-primary-hover" />
+                        <span className="text-sm font-medium text-foreground/80">{file.name}</span>
+                        <span className="text-xs text-muted-foreground">
                             ({(file.size / 1024 / 1024).toFixed(2)} MB)
                         </span>
                     </div>
                     <motion.button
                         type="button"
                         onClick={onRemove}
-                        className="text-red-500 hover:text-red-700"
+                        className="text-destructive hover:text-destructive"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                     >
@@ -220,7 +220,7 @@ export const FileUploadField = ({
         </motion.div>
         {error && (
             <motion.p
-                className="text-sm text-red-600 flex items-center gap-1"
+                className="text-sm text-destructive flex items-center gap-1"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
             >

@@ -19,18 +19,18 @@ export function AdminFilters({
     onStatusFilterChange,
 }: AdminFiltersProps) {
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="bg-card rounded-2xl shadow-sm border border-border p-6 mb-6">
             <div className="flex flex-col md:flex-row gap-4">
                 {/* Search */}
                 <div className="flex-1">
                     <div className="relative">
-                        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/70" />
                         <input
                             type="text"
                             placeholder="Buscar por nome, email ou departamento..."
                             value={searchTerm}
                             onChange={(e) => onSearchChange(e.target.value)}
-                            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            className="w-full pl-12 pr-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                         />
                     </div>
                 </div>
@@ -40,7 +40,7 @@ export function AdminFilters({
                     <select
                         value={roleFilter}
                         onChange={(e) => onRoleFilterChange(e.target.value)}
-                        className="px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                     >
                         <option value="all">Todos</option>
                         <option value="super_admin">Super Admin</option>
@@ -53,8 +53,8 @@ export function AdminFilters({
                         onClick={() => onStatusFilterChange('all')}
                         className={`px-4 py-3 rounded-xl font-medium transition-colors ${
                             statusFilter === 'all'
-                                ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-primary-soft text-primary border border-primary/30'
+                                : 'bg-muted text-foreground/80 hover:bg-border'
                         }`}
                     >
                         Todos
@@ -63,8 +63,8 @@ export function AdminFilters({
                         onClick={() => onStatusFilterChange('active')}
                         className={`px-4 py-3 rounded-xl font-medium transition-colors ${
                             statusFilter === 'active'
-                                ? 'bg-green-100 text-green-700 border border-green-200'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-success-soft text-success border border-success/30'
+                                : 'bg-muted text-foreground/80 hover:bg-border'
                         }`}
                     >
                         Ativos
@@ -73,8 +73,8 @@ export function AdminFilters({
                         onClick={() => onStatusFilterChange('inactive')}
                         className={`px-4 py-3 rounded-xl font-medium transition-colors ${
                             statusFilter === 'inactive'
-                                ? 'bg-red-100 text-red-700 border border-red-200'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-destructive-soft text-destructive border border-destructive/30'
+                                : 'bg-muted text-foreground/80 hover:bg-border'
                         }`}
                     >
                         Inativos

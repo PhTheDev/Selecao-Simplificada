@@ -123,7 +123,7 @@ export function PasswordResetConfirmForm() {
 
   if (checking) {
     return (
-      <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20 text-white">
+      <div className="auth-card bg-card rounded-3xl p-8 border text-foreground">
         Validando link...
       </div>
     );
@@ -131,13 +131,13 @@ export function PasswordResetConfirmForm() {
 
   if (!valid) {
     return (
-      <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20">
-        <h2 className="text-2xl font-bold text-[#e9d8a6] mb-2">Link inválido</h2>
-        <p className="text-white/80 text-sm mb-6">{checkError || "Token inválido ou expirado."}</p>
+      <div className="auth-card bg-card rounded-3xl p-8 border">
+        <h2 className="text-2xl font-bold text-primary mb-2">Link inválido</h2>
+        <p className="text-muted-foreground text-sm mb-6">{checkError || "Token inválido ou expirado."}</p>
 
         <a
           href="/auth/recuperar-senha"
-          className="inline-flex w-full justify-center bg-gradient-to-r from-[#005f73] to-[#0a9396] text-white font-bold py-4 px-6 rounded-xl"
+          className="inline-flex w-full justify-center bg-gradient-to-r from-primary to-primary-hover text-primary-foreground font-bold py-4 px-6 rounded-2xl"
         >
           Solicitar novo link
         </a>
@@ -147,20 +147,20 @@ export function PasswordResetConfirmForm() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20">
+      <div className="auth-card bg-card rounded-3xl p-8 border">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-[#e9d8a6] mb-2">Nova senha</h2>
-          <p className="text-white/80 text-sm">Crie uma nova senha para sua conta.</p>
+          <h2 className="text-3xl font-bold text-foreground mb-2">Nova senha</h2>
+          <p className="text-muted-foreground text-sm">Crie uma nova senha para sua conta.</p>
         </div>
 
         <form onSubmit={onSubmit} className="space-y-6">
           <div>
-            <label className="block text-white text-sm font-medium mb-2">Senha</label>
+            <label className="block text-foreground text-sm font-medium mb-2">Senha</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#94d2bd]"
+              className="w-full px-4 py-3 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Nova senha"
               required
               disabled={loading}
@@ -168,12 +168,12 @@ export function PasswordResetConfirmForm() {
           </div>
 
           <div>
-            <label className="block text-white text-sm font-medium mb-2">Confirmar senha</label>
+            <label className="block text-foreground text-sm font-medium mb-2">Confirmar senha</label>
             <input
               type="password"
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}
-              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#94d2bd]"
+              className="w-full px-4 py-3 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Repita a senha"
               required
               disabled={loading}
@@ -183,7 +183,7 @@ export function PasswordResetConfirmForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-[#005f73] to-[#0a9396] hover:from-[#0a9396] hover:to-[#005f73] text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Salvando..." : "Salvar nova senha"}
           </button>

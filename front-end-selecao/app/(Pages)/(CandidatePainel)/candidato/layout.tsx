@@ -94,24 +94,23 @@ export default function CandidateLayout({ children }: { children: React.ReactNod
 
   if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f3fbfb]">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-24 w-24 border-b-2 border-[#066578] mx-auto mb-4" />
-          <p className="text-gray-700 font-medium">Verificando autenticação...</p>
+          <div className="animate-spin rounded-full h-24 w-24 border-b-2 border-primary mx-auto mb-4" />
+          <p className="text-foreground/80 font-medium">Verificando autenticação...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f3fbfb]">
+    <div className="min-h-screen bg-background">
       <HeaderCandidate sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       <main
         className="
             min-h-screen transition-[padding] duration-300 ease-in-out
-            bg-[radial-gradient(ellipse_at_top,rgba(6,101,120,0.22),transparent_55%),radial-gradient(ellipse_at_bottom,rgba(10,147,150,0.18),transparent_60%)]
-            bg-[#f3fbfb]
+            bg-background
         "
         style={{ paddingLeft: leftOffset }}
         >

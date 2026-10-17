@@ -4,10 +4,13 @@ import { useCandidateAuth } from '@/api/hooks/useCandidateAuth';
 import { useSelectionProcesses } from '@/api/hooks/useSelectionProcess';
 import { SelectionProcess } from '@/api/types/selection';
 import Footer from '@/components/Footer';
-import ProcessosHeader from '@/components/processos-seletivos/ProcessosHeader';
+import { useI18n } from '@/components/i18n/LanguageProvider';
+import Header from '@/components/main-page/Header';
+import SplitWords from '@/components/motion/SplitWords';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Calendar, ChevronDown, Clock, Filter, MapPin, Users } from 'lucide-react';
+import { Calendar, ChevronDown, Clock, MapPin, Users } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
     formatShortWeekdayDatePtBr,
@@ -18,29 +21,19 @@ import {
 
 type ProcessStatus = 'active' | 'upcoming' | 'finished';
 
-// ✅ Componente de Loading
 const LoadingSkeleton = () => (
-  <div className="space-y-8">
+  <div className="space-y-6">
     {[1, 2, 3].map((item) => (
-      <div key={item} className="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse">
-        <div className="flex flex-col lg:flex-row">
-          <div className="lg:w-2/5">
-            <div className="aspect-video bg-gray-300"></div>
-            <div className="p-4 space-y-3">
-              <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-              <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-            </div>
-          </div>
-          <div className="lg:w-3/5 p-6">
-            <div className="h-6 bg-gray-300 rounded w-3/4 mb-4"></div>
-            <div className="h-4 bg-gray-300 rounded w-1/2 mb-4"></div>
-            <div className="space-y-2 mb-4">
-              <div className="h-4 bg-gray-300 rounded w-full"></div>
-              <div className="h-4 bg-gray-300 rounded w-5/6"></div>
-            </div>
-            <div className="flex gap-4 mt-6">
-              <div className="h-10 bg-gray-300 rounded-xl flex-1"></div>
-              <div className="h-10 bg-gray-300 rounded-xl w-32"></div>
+      <div key={item} className="animate-pulse overflow-hidden rounded-3xl border bg-card p-3">
+        <div className="flex flex-col gap-6 lg:flex-row">
+          <div className="aspect-video rounded-2xl bg-secondary lg:w-2/5" />
+          <div className="flex-1 space-y-4 p-4">
+            <div className="h-7 w-3/4 rounded-full bg-secondary" />
+            <div className="h-4 w-1/2 rounded-full bg-secondary" />
+            <div className="h-20 rounded-2xl bg-secondary" />
+            <div className="flex gap-3">
+              <div className="h-12 flex-1 rounded-full bg-secondary" />
+              <div className="h-12 w-36 rounded-full bg-secondary" />
             </div>
           </div>
         </div>
@@ -97,9 +90,11 @@ const boutLabelMap: Record<string, string> = {
 };
 
 export default function ProcessosSeletivos() {
+  const { t } = useI18n();
   const [selectedStatus, setSelectedStatus] = useState<ProcessStatus | 'all'>('all');
   const [expandedProcess, setExpandedProcess] = useState<number | null>(null);
   const [failedBannerIds, setFailedBannerIds] = useState<number[]>([]);
+  const router = useRouter();
   const { isAuthenticated, isLoading: authLoading } = useCandidateAuth();
   const { data: processesData, isLoading: processesLoading, error } = useSelectionProcesses();
 
@@ -107,18 +102,14 @@ export default function ProcessosSeletivos() {
     if (process.status !== 'active') return;
     if (authLoading) return;
 
-    if (isAuthenticated) {
-      window.location.href = `/aplicar/${process.slug}`;
-    } else {
-      window.location.href = '/auth/login-candidato';
-    }
+    router.push(isAuthenticated ? `/aplicar/${process.slug}` : '/auth/login-candidato');
   };
 
   const statusFilters = [
-    { value: 'all', label: 'Todos os Processos', color: 'bg-gray-500' },
-    { value: 'active', label: 'Inscrições Abertas', color: 'bg-green-500' },
-    { value: 'upcoming', label: 'Em Breve', color: 'bg-blue-500' },
-    { value: 'finished', label: 'Finalizados', color: 'bg-gray-400' },
+    { value: 'all', label: t('Todos') },
+    { value: 'active', label: t('Abertos') },
+    { value: 'upcoming', label: t('Em breve') },
+    { value: 'finished', label: t('Finalizados') },
   ];
 
   // Mapeamento dos processos com campos formatados
@@ -177,17 +168,17 @@ export default function ProcessosSeletivos() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <ProcessosHeader />
-        <div className="container mx-auto px-4 py-20 pt-32 text-center">
-          <div className="bg-white rounded-2xl p-8 shadow-lg">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Erro ao carregar processos seletivos</h2>
-            <p className="text-gray-600 mb-6">Tente recarregar a página ou entre em contato com o suporte.</p>
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="mx-auto max-w-xl px-5 py-24 text-center">
+          <div className="rounded-3xl border bg-card p-10">
+            <h2 className="text-2xl font-semibold">{t('Erro ao carregar processos seletivos')}</h2>
+            <p className="mt-3 text-muted-foreground">{t('Tente recarregar a página ou entre em contato com o suporte.')}</p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-[#005f73] text-white px-6 py-3 rounded-xl font-bold hover:bg-[#0a9396] transition-colors"
+              className="mt-6 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground hover:bg-primary-hover"
             >
-              Recarregar Página
+              {t('Recarregar página')}
             </button>
           </div>
         </div>
@@ -195,122 +186,87 @@ export default function ProcessosSeletivos() {
     );
   }
 
+  const openCount = processes.filter((p) => p.status === 'active').length;
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <ProcessosHeader />
+    <div className="min-h-screen bg-background">
+      <Header />
 
       {/* Hero */}
-      <motion.div
-        className="bg-gradient-to-br from-[#005f73] to-[#0a9396] text-white py-20 pt-32"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <motion.h1
-              className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-[#e9d8a6] mb-6 leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              Processos Seletivos
-            </motion.h1>
-            <motion.p
-              className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
-              initial={{ y: -10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              Confira todos os processos seletivos para estágio na Seleção Simplificada, incluindo oportunidades ativas, futuras e já
-              finalizadas.
-            </motion.p>
-          </div>
-        </div>
-      </motion.div>
+      <section className="px-5 pb-10 pt-16 text-center md:px-8 md:pb-14 md:pt-24">
+        <p className="mx-auto inline-flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-sm text-muted-foreground">
+          <span className="h-2 w-2 rounded-full bg-highlight ring-2 ring-primary/30" />
+          {processesLoading ? t('Carregando processos') : t('{n} com inscrição aberta', { n: openCount })}
+        </p>
+        <h1 className="mx-auto mt-6 max-w-3xl text-[clamp(2.5rem,6vw,4.5rem)] font-medium leading-[1]">
+          <SplitWords text={t('Processos')} /><SplitWords text={t('seletivos')} className="font-serif font-normal italic" delay={0.15} />
+        </h1>
+        <motion.p
+          className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground"
+          initial={{ y: 12, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          {t('Oportunidades de estágio abertas, futuras e já finalizadas, com todos os detalhes de cada edital.')}
+        </motion.p>
+      </section>
 
       {/* Filtros */}
-      <motion.div
-        className="bg-white border-b border-gray-200 sticky top-20 z-40"
-        initial={{ y: -10, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
-      >
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <Filter size={20} className="text-gray-600" />
-              <span className="font-semibold text-gray-700">Filtrar por:</span>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              {statusFilters.map((filter, index) => (
-                <motion.button
+      <div className="sticky top-[4.5rem] z-40 px-5 pb-6 md:px-8">
+        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 sm:flex-row">
+          <div
+            className="flex w-full gap-1 overflow-x-auto rounded-full border bg-card/90 p-1 backdrop-blur sm:w-auto"
+            role="tablist"
+            aria-label="Filtrar por status"
+          >
+            {statusFilters.map((filter) => {
+              const on = selectedStatus === filter.value;
+              return (
+                <button
                   key={filter.value}
+                  role="tab"
+                  aria-selected={on}
                   onClick={() => setSelectedStatus(filter.value as any)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                    selectedStatus === filter.value
-                      ? 'bg-[#005f73] text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  className={`relative whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                    on ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
                   }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.7 + index * 0.1 }}
                 >
-                  {filter.label}
-                </motion.button>
-              ))}
-            </div>
-
-            <motion.div
-              className="text-sm text-gray-600"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1 }}
-            >
-              {processesLoading ? 'Carregando...' : `${filteredProcesses.length} processo(s) encontrado(s)`}
-            </motion.div>
+                  {on && (
+                    <motion.span
+                      layoutId="status-filter"
+                      className="absolute inset-0 rounded-full bg-primary"
+                      transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                    />
+                  )}
+                  <span className="relative">{filter.label}</span>
+                </button>
+              );
+            })}
           </div>
+          <p className="tabular text-sm text-muted-foreground">
+            {processesLoading ? t('Carregando…') : t('{n} processo(s)', { n: filteredProcesses.length })}
+          </p>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Estilos globais para a scrollbar */}
       <style jsx global>{`
-        /* Firefox */
-        .styled-scroll {
-          scrollbar-width: thin;
-          scrollbar-color: rgba(10, 147, 150, 0.55) rgba(226, 232, 240, 0.8);
-        }
-        /* Chrome/Edge/Safari */
-        .styled-scroll::-webkit-scrollbar {
-          width: 10px;
-        }
-        .styled-scroll::-webkit-scrollbar-track {
-          background: rgba(226, 232, 240, 0.8);
-          border-radius: 999px;
-        }
-        .styled-scroll::-webkit-scrollbar-thumb {
-          background: rgba(10, 147, 150, 0.55);
-          border-radius: 999px;
-          border: 2px solid rgba(226, 232, 240, 0.8);
-        }
-        .styled-scroll::-webkit-scrollbar-thumb:hover {
-          background: rgba(0, 95, 115, 0.75);
-        }
+        .styled-scroll { scrollbar-width: thin; scrollbar-color: rgba(85, 118, 28, 0.45) transparent; }
+        .styled-scroll::-webkit-scrollbar { width: 8px; }
+        .styled-scroll::-webkit-scrollbar-track { background: transparent; }
+        .styled-scroll::-webkit-scrollbar-thumb { background: rgba(85, 118, 28, 0.45); border-radius: 999px; }
+        .styled-scroll::-webkit-scrollbar-thumb:hover { background: rgba(85, 118, 28, 0.7); }
       `}</style>
 
-      {/* Lista de Processos */}
-      <div className="container mx-auto px-4 py-8">
+      {/* Lista */}
+      <div className="mx-auto max-w-5xl px-5 pb-24 md:px-8">
         {processesLoading ? (
           <LoadingSkeleton />
         ) : (
-          <div className="grid gap-8">
+          <div className="grid gap-6">
             {filteredProcesses.map((process, index) => (
-              <motion.div
+              <motion.article
                 key={process.id}
-                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+                className="overflow-hidden rounded-3xl border bg-card transition-shadow hover:shadow-md"
                 id={
                   process.status === 'active'
                     ? 'processos-ativos'
@@ -318,276 +274,201 @@ export default function ProcessosSeletivos() {
                       ? 'processos-futuros'
                       : undefined
                 }
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -2 }}
+                transition={{ duration: 0.6, delay: Math.min(index, 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="flex flex-col lg:flex-row">
+                <div className="flex flex-col gap-6 p-3 lg:flex-row">
                   {/* Imagem */}
                   <div className="lg:w-2/5">
-                    <motion.div
-                      className="relative aspect-video overflow-hidden"
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ duration: 0.3 }}
-                    >
+                    <div className="group relative aspect-video overflow-hidden rounded-2xl bg-secondary">
                       <Image
                         src={failedBannerIds.includes(process.id) ? getDefaultImage(process.course) : process.image.src}
                         alt={process.image.alt}
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
                         priority={process.status === 'active'}
                         sizes="(max-width: 1024px) 100vw, 40vw"
                         onError={() =>
-                          setFailedBannerIds((prev) =>
-                            prev.includes(process.id) ? prev : [...prev, process.id]
-                          )
+                          setFailedBannerIds((prev) => (prev.includes(process.id) ? prev : [...prev, process.id]))
                         }
                       />
-                      <div className="absolute inset-0 bg-black/10"></div>
-                    </motion.div>
-
-                    <div className="p-4 flex flex-col items-center gap-5 mt-4">
-                      <div className="flex flex-wrap gap-2">
-                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
-                          <Users size={12} />
-                          {process.vacancies} vaga{process.vacancies > 1 ? 's' : ''}
+                      {process.status === 'active' && (
+                        <span className="absolute left-3 top-3 inline-flex items-center gap-2 rounded-full bg-card/95 px-3 py-1 text-xs font-medium text-success">
+                          <span className="h-2 w-2 animate-pulse rounded-full bg-success" />
+                          {t('Inscrições abertas')}
                         </span>
-
-                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
-                          <Clock size={12} />
-                          {process.boutLabel}
-                        </span>
-
-                        {process.status === 'active' && (
-                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200">
-                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                            Inscrições abertas
-                          </span>
-                        )}
-                      </div>
+                      )}
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-xs font-medium text-accent-foreground">
+                        <Users size={12} strokeWidth={1.5} />
+                        {t(process.vacancies > 1 ? '{n} vagas' : '{n} vaga', { n: process.vacancies })}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground">
+                        <Clock size={12} strokeWidth={1.5} />
+                        {process.boutLabel}
+                      </span>
                     </div>
                   </div>
 
                   {/* Conteúdo */}
-                  <div className="lg:w-3/5 p-6">
-                    <div className="flex flex-col h-full">
-                      <div className="flex-1">
-                        <div className="flex flex-col gap-4 mb-4">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-2">
-                              <h3 className="text-2xl font-black text-gray-900">{process.title}</h3>
-                            </div>
+                  <div className="flex flex-1 flex-col p-2 lg:p-4">
+                    <h3 className="text-2xl font-medium">{process.title}</h3>
+                    <p className="mt-1 text-muted-foreground">{process.subtitle}</p>
 
-                            <p className="text-gray-600 font-medium mb-4">{process.subtitle}</p>
+                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
+                      <span className="flex items-center gap-2">
+                        <MapPin size={16} strokeWidth={1.5} className="text-primary" />
+                        {process.location}
+                      </span>
+                      <span className="tabular flex items-center gap-2">
+                        <Calendar size={16} strokeWidth={1.5} className="text-primary" />
+                        {process.startDateFormatted} {process.startTimeFormatted} — {process.endDateFormatted}{' '}
+                        {process.endTimeFormatted}
+                      </span>
+                    </div>
 
-                            <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
-                              <div className="flex items-center gap-2">
-                                <MapPin size={16} className="text-[#005f73]" />
-                                <span>{process.location}</span>
-                              </div>
+                    <div className="styled-scroll mt-4 max-h-[132px] overflow-y-auto rounded-2xl bg-secondary p-4">
+                      <p className="whitespace-pre-line leading-relaxed text-foreground/80">{process.description}</p>
+                    </div>
 
-                              {/* ✅ Período completo de inscrições */}
-                              <div className="flex items-center gap-2">
-                                <Calendar size={16} className="text-[#005f73]" />
-                                <span>
-                                  {process.startDateFormatted} {process.startTimeFormatted} —{' '}
-                                  {process.endDateFormatted} {process.endTimeFormatted}
-                                </span>
-                              </div>
+                    <div className="mt-auto flex flex-col gap-3 pt-5 sm:flex-row">
+                      <button
+                        className={`flex-1 rounded-full px-6 py-3 font-medium transition-colors ${
+                          process.status === 'active'
+                            ? 'bg-primary text-primary-foreground hover:bg-primary-hover'
+                            : 'cursor-not-allowed bg-secondary text-muted-foreground'
+                        }`}
+                        disabled={process.status !== 'active' || authLoading}
+                        onClick={() => handleCandidatarClick(process)}
+                      >
+                        {authLoading ? (
+                          <span className="flex items-center justify-center gap-2">
+                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                            {t('Verificando...')}
+                          </span>
+                        ) : process.status === 'active' ? (
+                          t('Realizar inscrição')
+                        ) : process.status === 'upcoming' ? (
+                          t('Inscrições em breve')
+                        ) : (
+                          t('Processo finalizado')
+                        )}
+                      </button>
 
-                              <div className="flex items-center gap-2">
-                                <Clock size={16} className="text-[#005f73]" />
-                                <span>Turno: {process.boutLabel}</span>
-                              </div>
-
-                              <div className="flex items-center gap-2">
-                                <Users size={16} className="text-[#005f73]" />
-                                <span>{process.vacancies} vaga(s)</span>
-                              </div>
-                            </div>
-
-                            {/* ✅ Descrição com scroll estilizado – SEM o fade */}
-                            <div className="styled-scroll max-h-[132px] overflow-y-auto pr-3 rounded-xl border border-gray-100 bg-gray-50/40 p-4">
-                              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                                {process.description}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Ações */}
-                      <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
-                        <motion.button
-                          className={`flex-1 py-3 px-6 rounded-xl font-bold text-white transition-all duration-300 ${
-                            process.status === 'active'
-                              ? 'bg-gradient-to-r from-[#005f73] to-[#0a9396] hover:from-[#0a9396] hover:to-[#005f73]'
-                              : 'bg-gray-400 cursor-not-allowed'
-                          }`}
-                          disabled={process.status !== 'active' || authLoading}
-                          onClick={() => handleCandidatarClick(process)}
-                          whileHover={process.status === 'active' && !authLoading ? { scale: 1.02 } : {}}
-                          whileTap={process.status === 'active' && !authLoading ? { scale: 0.98 } : {}}
+                      <button
+                        onClick={() => toggleExpand(process.id)}
+                        aria-expanded={expandedProcess === process.id}
+                        className="flex items-center justify-center gap-2 rounded-full border px-6 py-3 font-medium transition-colors hover:bg-secondary"
+                      >
+                        {expandedProcess === process.id ? t('Menos detalhes') : t('Mais detalhes')}
+                        <motion.span
+                          animate={{ rotate: expandedProcess === process.id ? 180 : 0 }}
+                          transition={{ duration: 0.3 }}
                         >
-                          {authLoading ? (
-                            <span className="flex items-center justify-center gap-2">
-                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                              Verificando...
-                            </span>
-                          ) : process.status === 'active' ? (
-                            'Realizar Inscrição'
-                          ) : process.status === 'upcoming' ? (
-                            'Inscrições em Breve'
-                          ) : (
-                            'Processo Finalizado'
-                          )}
-                        </motion.button>
-
-                        <motion.button
-                          onClick={() => toggleExpand(process.id)}
-                          className="flex items-center justify-center gap-2 text-[#005f73] hover:text-[#0a9396] transition-colors px-6 py-3 border-2 border-[#005f73] rounded-xl font-bold hover:bg-[#005f73]"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          {expandedProcess === process.id ? 'Menos detalhes' : 'Mais detalhes'}
-                          <motion.div
-                            animate={{ rotate: expandedProcess === process.id ? 180 : 0 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <ChevronDown size={20} />
-                          </motion.div>
-                        </motion.button>
-                      </div>
+                          <ChevronDown size={18} strokeWidth={1.5} />
+                        </motion.span>
+                      </button>
                     </div>
                   </div>
                 </div>
 
-                {/* Detalhes expandidos */}
-                <AnimatePresence>
+                {/* Detalhes */}
+                <AnimatePresence initial={false}>
                   {expandedProcess === process.id && (
                     <motion.div
-                      className="bg-gray-50 border-t border-gray-100 overflow-hidden"
+                      className="overflow-hidden"
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      <div className="p-6">
-                        <div className="grid md:grid-cols-2 gap-8">
+                      <div className="m-3 mt-0 rounded-2xl bg-secondary p-6">
+                        <div className="grid gap-8 md:grid-cols-2">
                           <div>
-                            <h4 className="font-bold text-gray-900 mb-4 text-lg">Requisitos</h4>
-                            <ul className="space-y-3">
+                            <h4 className="text-lg font-medium">{t('Requisitos')}</h4>
+                            <ul className="mt-4 space-y-3">
                               {process.requirements.map((req: string, idx: number) => (
-                                <motion.li
-                                  key={idx}
-                                  className="flex items-start gap-3 text-gray-700"
-                                  initial={{ opacity: 0, x: -10 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ duration: 0.3, delay: idx * 0.05 }}
-                                >
-                                  <div className="w-2 h-2 bg-[#005f73] rounded-full mt-2 flex-shrink-0"></div>
+                                <li key={idx} className="flex items-start gap-3 text-foreground/80">
+                                  <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
                                   <span>{req}</span>
-                                </motion.li>
+                                </li>
                               ))}
                             </ul>
                           </div>
 
                           <div>
-                            <h4 className="font-bold text-gray-900 mb-4 text-lg">Benefícios</h4>
-                            <ul className="space-y-3 mb-6">
+                            <h4 className="text-lg font-medium">{t('Benefícios')}</h4>
+                            <ul className="mt-4 space-y-3">
                               {process.benefits.map((benefit: string, idx: number) => (
-                                <motion.li
-                                  key={idx}
-                                  className="flex items-start gap-3 text-gray-700"
-                                  initial={{ opacity: 0, x: -10 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ duration: 0.3, delay: idx * 0.05 + 0.1 }}
-                                >
-                                  <div className="w-2 h-2 bg-[#0a9396] rounded-full mt-2 flex-shrink-0"></div>
+                                <li key={idx} className="flex items-start gap-3 text-foreground/80">
+                                  <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
                                   <span>{benefit}</span>
-                                </motion.li>
+                                </li>
                               ))}
                             </ul>
 
-                            <motion.div
-                              className="bg-white rounded-xl p-4 border border-gray-200"
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.3, delay: 0.3 }}
-                            >
-                              <h5 className="font-semibold text-gray-900 mb-3">Período do Processo</h5>
-                              <div className="space-y-2 text-sm">
+                            <div className="tabular mt-6 rounded-2xl border bg-card p-4">
+                              <h5 className="font-medium">{t('Período do processo')}</h5>
+                              <div className="mt-3 space-y-2 text-sm">
                                 <div className="flex justify-between">
-                                  <span className="text-gray-600">Início das inscrições:</span>
+                                  <span className="text-muted-foreground">{t('Início das inscrições')}</span>
                                   <span className="font-medium">
                                     {new Date(process.startDate).toLocaleDateString('pt-BR')}
                                   </span>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span className="text-gray-600">Término das inscrições:</span>
+                                  <span className="text-muted-foreground">{t('Término das inscrições')}</span>
                                   <span className="font-medium">
                                     {new Date(process.endDate).toLocaleDateString('pt-BR')}
                                   </span>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span className="text-gray-600">Turno:</span>
+                                  <span className="text-muted-foreground">{t('Turno')}</span>
                                   <span className="font-medium">{process.boutLabel}</span>
                                 </div>
                               </div>
-                            </motion.div>
+                            </div>
                           </div>
                         </div>
 
-                        <motion.div
-                          className="flex flex-col sm:flex-row gap-3 mt-6 pt-6 border-t border-gray-200"
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.3, delay: 0.4 }}
-                        >
-                          <motion.a
-                            className="px-6 py-3 border-2 border-[#005f73] text-[#005f73] rounded-xl font-bold hover:bg-[#005f73] hover:text-white transition-all duration-300"
+                        <div className="mt-6 flex flex-col gap-3 border-t pt-6 sm:flex-row">
+                          <a
+                            className="rounded-full bg-foreground px-6 py-3 text-center font-medium text-background transition-opacity hover:opacity-90"
                             href="/editais"
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
                           >
-                            Olhar Edital
-                          </motion.a>
-
-                          <motion.a
-                            className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300"
+                            {t('Olhar edital')}
+                          </a>
+                          <a
+                            className="rounded-full border bg-card px-6 py-3 text-center font-medium transition-colors hover:bg-background"
                             href="/faq"
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
                           >
-                            Tirar Dúvidas
-                          </motion.a>
-                        </motion.div>
+                            {t('Tirar dúvidas')}
+                          </a>
+                        </div>
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
+              </motion.article>
             ))}
           </div>
         )}
 
-        {/* Nenhum processo encontrado */}
         <AnimatePresence>
           {!processesLoading && filteredProcesses.length === 0 && (
             <motion.div
-              className="text-center py-16"
+              className="rounded-3xl border bg-card px-6 py-16 text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="text-gray-400 mb-4">
-                <Users size={64} className="mx-auto" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-600 mb-2">Nenhum processo encontrado</h3>
-              <p className="text-gray-500 max-w-md mx-auto">
-                Não há processos seletivos disponíveis para o filtro selecionado no momento.
+              <Users size={48} strokeWidth={1.25} className="mx-auto text-muted-foreground/60" />
+              <h3 className="mt-4 text-2xl font-medium">{t('Nenhum processo encontrado')}</h3>
+              <p className="mx-auto mt-2 max-w-md text-muted-foreground">
+                {t('Não há processos seletivos disponíveis para o filtro selecionado no momento.')}
               </p>
             </motion.div>
           )}

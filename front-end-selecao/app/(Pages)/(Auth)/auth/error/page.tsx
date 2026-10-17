@@ -23,16 +23,16 @@ function ErrorContent() {
 
     return (
         <>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-foreground">
                 Erro de Autenticação
             </h2>
-            <p className="mt-2 text-center text-sm text-red-600">
+            <p className="mt-2 text-center text-sm text-destructive">
                 {getErrorMessage(error)}
             </p>
             <div className="mt-8 space-y-4">
                 <button
                     onClick={() => window.location.href = '/'}
-                    className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="group relative w-full flex justify-center py-2 px-4 border border-input text-sm font-medium rounded-md text-foreground/80 bg-card hover:bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
                 >
                     Voltar para a página inicial
                 </button>
@@ -44,7 +44,7 @@ function ErrorContent() {
 // Página principal com Suspense
 export default function AuthError() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="min-h-screen flex items-center justify-center bg-background">
             <div className="max-w-md w-full space-y-8">
                 <Suspense fallback={<div className="text-center">Carregando...</div>}>
                     <ErrorContent />

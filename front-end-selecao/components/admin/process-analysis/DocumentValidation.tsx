@@ -113,8 +113,8 @@ export default function DocumentValidation({
     };
 
     return (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h4 className="font-bold text-gray-900 mb-6 flex items-center gap-2">
+        <div className="bg-card rounded-xl border border-border p-6">
+            <h4 className="font-bold text-foreground mb-6 flex items-center gap-2">
                 <FileText className="w-5 h-5" />
                 Validação de Documentos
             </h4>
@@ -130,8 +130,8 @@ export default function DocumentValidation({
                             <div
                                 key={doc.key}
                                 className={`p-4 rounded-lg border ${isValid
-                                    ? 'border-green-200 bg-green-50'
-                                    : 'border-red-200 bg-red-50'
+                                    ? 'border-success/30 bg-success-soft'
+                                    : 'border-destructive/30 bg-destructive-soft'
                                     }`}
                             >
                                 <div className="flex items-start justify-between">
@@ -146,8 +146,8 @@ export default function DocumentValidation({
                                                     onValidationChange(newValidation);
                                                 }}
                                                 className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${isValid
-                                                    ? 'bg-green-100 text-green-600'
-                                                    : 'bg-red-100 text-red-600'
+                                                    ? 'bg-success-soft text-success'
+                                                    : 'bg-destructive-soft text-destructive'
                                                     }`}
                                             >
                                                 {isValid ? (
@@ -158,27 +158,27 @@ export default function DocumentValidation({
                                             </button>
                                             <div>
                                                 <div className="flex items-center gap-2">
-                                                    <h5 className="font-medium text-gray-900">{doc.label}</h5>
+                                                    <h5 className="font-medium text-foreground">{doc.label}</h5>
                                                     {doc.required && (
-                                                        <span className="text-xs px-2 py-1 bg-red-100 text-red-700 rounded-full">
+                                                        <span className="text-xs px-2 py-1 bg-destructive-soft text-destructive rounded-full">
                                                             Obrigatório
                                                         </span>
                                                     )}
                                                 </div>
-                                                <p className="text-sm text-gray-600 mt-1">{doc.description}</p>
+                                                <p className="text-sm text-muted-foreground mt-1">{doc.description}</p>
                                             </div>
                                         </div>
 
                                         {!isValid && onRejectionReasonChange && (
                                             <div className="ml-14 mt-2">
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                <label className="block text-sm font-medium text-foreground/80 mb-1">
                                                     Motivo da rejeição:
                                                 </label>
                                                 <textarea
                                                     value={rejectionReason}
                                                     onChange={(e) => onRejectionReasonChange(doc.key, e.target.value)}
                                                     placeholder="Descreva o motivo pelo qual o documento foi rejeitado..."
-                                                    className="w-full h-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm"
+                                                    className="w-full h-20 px-3 py-2 border border-input rounded-lg focus:ring-2 focus:ring-destructive focus:border-transparent text-sm"
                                                     rows={3}
                                                 />
                                             </div>
@@ -190,7 +190,7 @@ export default function DocumentValidation({
                                             href={doc.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="ml-4 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors flex items-center gap-2"
+                                            className="ml-4 px-4 py-2 bg-primary-soft text-primary rounded-lg hover:bg-primary-soft transition-colors flex items-center gap-2"
                                         >
                                             <FileText className="w-4 h-4" />
                                             Abrir
@@ -202,20 +202,20 @@ export default function DocumentValidation({
                     })}
 
                 {application.portfolio_link && (
-                    <div className="p-4 rounded-lg border border-gray-200 bg-gray-50">
+                    <div className="p-4 rounded-lg border border-border bg-background">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400">
+                                <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground/70">
                                     <ExternalLink className="w-6 h-6" />
                                 </div>
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <h5 className="font-medium text-gray-900">Portfólio (Link)</h5>
-                                        <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
+                                        <h5 className="font-medium text-foreground">Portfólio (Link)</h5>
+                                        <span className="text-xs px-2 py-1 bg-primary-soft text-primary rounded-full">
                                             Opcional
                                         </span>
                                     </div>
-                                    <p className="text-sm text-gray-600 mt-1">Link para portfólio online</p>
+                                    <p className="text-sm text-muted-foreground mt-1">Link para portfólio online</p>
                                 </div>
                             </div>
                             <a
@@ -227,7 +227,7 @@ export default function DocumentValidation({
                                 }
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors"
+                                className="flex items-center gap-2 px-3 py-2 bg-success-soft text-success rounded-lg hover:bg-success-soft transition-colors"
                                 onClick={(e) => {
                                     if (
                                         !application.portfolio_link?.startsWith('http://') &&

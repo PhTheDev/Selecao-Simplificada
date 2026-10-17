@@ -36,15 +36,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
         const getInputClasses = () => {
             // Classes base para um design mais moderno e limpo
-            const baseClasses = 'w-full px-4 py-3 border rounded-lg text-gray-800 placeholder-gray-400 transition-all duration-200 ease-in-out ';
+            const baseClasses = 'w-full px-4 py-3 border rounded-lg text-foreground placeholder:text-muted-foreground/70 transition-all duration-200 ease-in-out ';
 
             // Classes de foco e estado
-            let stateClasses = 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 bg-white hover:border-gray-400';
+            let stateClasses = 'border-input focus:border-primary focus:ring-2 focus:ring-ring/50 bg-card hover:border-input';
 
             if (error) {
-                stateClasses = 'border-red-500 focus:border-red-600 focus:ring-2 focus:ring-red-500/50 bg-red-50';
+                stateClasses = 'border-destructive focus:border-destructive focus:ring-2 focus:ring-destructive/50 bg-destructive-soft';
             } else if (success) {
-                stateClasses = 'border-green-500 focus:border-green-600 focus:ring-2 focus:ring-green-500/50 bg-green-50';
+                stateClasses = 'border-success focus:border-success focus:ring-2 focus:ring-success/50 bg-success-soft';
             }
 
             return baseClasses + stateClasses;
@@ -61,22 +61,22 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 {label && (
                     <label
                         htmlFor={props.id}
-                        className={`block text-sm font-semibold mb-1 ${error ? 'text-red-700' :
-                            success ? 'text-green-700' :
-                                'text-gray-700'
+                        className={`block text-sm font-semibold mb-1 ${error ? 'text-destructive' :
+                            success ? 'text-success' :
+                                'text-foreground/80'
                             }`}
                     >
                         {label}
-                        {required && <span className="text-red-500 ml-1">*</span>}
+                        {required && <span className="text-destructive ml-1">*</span>}
                     </label>
                 )}
 
                 <div className="relative">
                     {/* Icone Esquerdo (Input Icon) */}
                     {icon && (
-                        <div className={`absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none ${error ? 'text-red-500' :
-                            success ? 'text-green-500' :
-                                'text-gray-400'
+                        <div className={`absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none ${error ? 'text-destructive' :
+                            success ? 'text-success' :
+                                'text-muted-foreground/70'
                             }`}>
                             {/* O ícone é renderizado diretamente como ReactNode */}
                             {icon}
@@ -91,7 +91,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                             ${getInputClasses()}
                             ${paddingLeft}
                             ${paddingRight}
-                            disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed
+                            disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed
                             ${className}
                         `}
                         onChange={handleChange}
@@ -103,10 +103,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                     {(error || success) && (
                         <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                             {error && (
-                                <AlertTriangle className="w-5 h-5 text-red-500" />
+                                <AlertTriangle className="w-5 h-5 text-destructive" />
                             )}
                             {success && !error && (
-                                <CheckCircle className="w-5 h-5 text-green-500" />
+                                <CheckCircle className="w-5 h-5 text-success" />
                             )}
                         </div>
                     )}
@@ -114,14 +114,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
                 {/* Help Text */}
                 {helpText && !error && (
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p className="mt-1 text-xs text-muted-foreground">
                         {helpText}
                     </p>
                 )}
 
                 {/* Error Message */}
                 {error && (
-                    <p className="mt-1 text-xs text-red-600 font-medium flex items-center gap-1">
+                    <p className="mt-1 text-xs text-destructive font-medium flex items-center gap-1">
                         <AlertTriangle className="w-3 h-3" />
                         {error}
                     </p>

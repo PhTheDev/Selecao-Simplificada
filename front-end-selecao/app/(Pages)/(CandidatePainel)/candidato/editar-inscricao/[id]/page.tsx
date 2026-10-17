@@ -172,8 +172,8 @@ function InputField({
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <label className="block text-sm font-medium text-gray-700">
-        {label} {required && <span className="text-red-500">*</span>}
+      <label className="block text-sm font-medium text-foreground/80">
+        {label} {required && <span className="text-destructive">*</span>}
       </label>
 
       {children || (
@@ -185,8 +185,8 @@ function InputField({
           placeholder={placeholder}
           className={`w-full px-4 py-2.5 border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:border-transparent ${
             error
-              ? 'border-red-300 focus:ring-red-500 bg-red-50'
-              : 'border-gray-300 focus:ring-[#0a9396] focus:border-[#0a9396] hover:border-gray-400'
+              ? 'border-destructive/30 focus:ring-destructive bg-destructive-soft'
+              : 'border-input focus:ring-primary-hover focus:border-primary-hover hover:border-input'
           }`}
           whileFocus={{ scale: 1.01 }}
         />
@@ -194,7 +194,7 @@ function InputField({
 
       {error && (
         <motion.p
-          className="text-sm text-red-600 flex items-center gap-1"
+          className="text-sm text-destructive flex items-center gap-1"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -231,8 +231,8 @@ function SelectField({
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <label className="block text-sm font-medium text-gray-700">
-        {label} {required && <span className="text-red-500">*</span>}
+      <label className="block text-sm font-medium text-foreground/80">
+        {label} {required && <span className="text-destructive">*</span>}
       </label>
 
       <select
@@ -241,8 +241,8 @@ function SelectField({
         onChange={onChange}
         className={`w-full px-4 py-2.5 border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:border-transparent ${
           error
-            ? 'border-red-300 focus:ring-red-500 bg-red-50'
-            : 'border-gray-300 focus:ring-[#0a9396] focus:border-[#0a9396] hover:border-gray-400'
+            ? 'border-destructive/30 focus:ring-destructive bg-destructive-soft'
+            : 'border-input focus:ring-primary-hover focus:border-primary-hover hover:border-input'
         }`}
       >
         <option value="">Selecione...</option>
@@ -255,7 +255,7 @@ function SelectField({
 
       {error && (
         <motion.p
-          className="text-sm text-red-600 flex items-center gap-1"
+          className="text-sm text-destructive flex items-center gap-1"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -298,17 +298,17 @@ function FileUploadField({
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <label className="block text-sm font-medium text-gray-700">
-        {label} {required && <span className="text-red-500">*</span>}
+      <label className="block text-sm font-medium text-foreground/80">
+        {label} {required && <span className="text-destructive">*</span>}
       </label>
-      <p className="text-sm text-gray-500">{description}</p>
+      <p className="text-sm text-muted-foreground">{description}</p>
 
       {existingUrl && (
-        <div className="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+        <div className="mb-3 p-3 bg-success-soft border border-success/30 rounded-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-medium text-green-800">
+              <CheckCircle className="w-4 h-4 text-success" />
+              <span className="text-sm font-medium text-success">
                 Documento já enviado anteriormente
               </span>
             </div>
@@ -316,7 +316,7 @@ function FileUploadField({
               href={existingUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-[#0a9396] hover:underline"
+              className="text-sm text-primary-hover hover:underline"
             >
               Visualizar
             </a>
@@ -327,10 +327,10 @@ function FileUploadField({
       <motion.div
         className={`border-2 border-dashed rounded-lg p-4 transition-all duration-200 ${
           error
-            ? 'border-red-300 bg-red-50'
+            ? 'border-destructive/30 bg-destructive-soft'
             : file
-            ? 'border-[#0a9396] bg-[#e6f7f9]'
-            : 'border-gray-300 hover:border-gray-400'
+            ? 'border-primary-hover bg-primary-soft'
+            : 'border-input hover:border-input'
         }`}
         whileHover={{ scale: 1.005 }}
       >
@@ -345,7 +345,7 @@ function FileUploadField({
             />
             <motion.label
               htmlFor={`file-${String(name)}`}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-card border border-input rounded-lg hover:bg-background cursor-pointer transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -354,7 +354,7 @@ function FileUploadField({
                 {existingUrl ? 'Substituir arquivo' : 'Selecionar arquivo'}
               </span>
             </motion.label>
-            <p className="text-xs text-gray-500 mt-2">Deixe em branco para manter o arquivo atual</p>
+            <p className="text-xs text-muted-foreground mt-2">Deixe em branco para manter o arquivo atual</p>
           </div>
 
           {preview && (
@@ -376,16 +376,16 @@ function FileUploadField({
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-[#0a9396]" />
-              <span className="text-sm font-medium text-gray-700">{file.name}</span>
-              <span className="text-xs text-gray-500">
+              <CheckCircle className="w-4 h-4 text-primary-hover" />
+              <span className="text-sm font-medium text-foreground/80">{file.name}</span>
+              <span className="text-xs text-muted-foreground">
                 ({(file.size / 1024 / 1024).toFixed(2)} MB)
               </span>
             </div>
             <motion.button
               type="button"
               onClick={() => onClear(name)}
-              className="text-red-500 hover:text-red-700"
+              className="text-destructive hover:text-destructive"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
@@ -397,7 +397,7 @@ function FileUploadField({
 
       {error && (
         <motion.p
-          className="text-sm text-red-600 flex items-center gap-1"
+          className="text-sm text-destructive flex items-center gap-1"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -842,17 +842,17 @@ export default function EditarInscricaoPage() {
       transition={{ duration: 0.5 }}
     >
       <div className="flex items-center justify-between mb-4">
-        <div className="text-sm font-medium text-gray-600">Etapa {currentStep} de 3</div>
-        <div className="text-sm font-semibold text-[#005f73]">
+        <div className="text-sm font-medium text-muted-foreground">Etapa {currentStep} de 3</div>
+        <div className="text-sm font-semibold text-primary">
           {currentStep === 1 && '📝 Dados Pessoais'}
           {currentStep === 2 && '📎 Documentos'}
           {currentStep === 3 && '✨ Informações Adicionais'}
         </div>
       </div>
 
-      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+      <div className="h-2 bg-border rounded-full overflow-hidden">
         <motion.div
-          className="h-full bg-gradient-to-r from-[#005f73] to-[#0a9396]"
+          className="h-full bg-primary"
           initial={{ width: 0 }}
           animate={{ width: `${(currentStep / 3) * 100}%` }}
           transition={{ duration: 0.5, ease: 'easeInOut' }}
@@ -863,19 +863,19 @@ export default function EditarInscricaoPage() {
         {[1, 2, 3].map((step) => (
           <motion.div
             key={step}
-            className={`flex flex-col items-center ${currentStep >= step ? 'text-[#005f73]' : 'text-gray-400'}`}
+            className={`flex flex-col items-center ${currentStep >= step ? 'text-primary' : 'text-muted-foreground/70'}`}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center mb-1 ${
                 currentStep >= step
-                  ? 'bg-[#e6f7f9] border-2 border-[#005f73]'
-                  : 'bg-gray-100 border-2 border-gray-300'
+                  ? 'bg-primary-soft border-2 border-primary'
+                  : 'bg-muted border-2 border-input'
               }`}
             >
               {currentStep > step ? (
-                <CheckCircle className="w-4 h-4 text-[#0a9396]" />
+                <CheckCircle className="w-4 h-4 text-primary-hover" />
               ) : (
                 <span className="text-sm font-semibold">{step}</span>
               )}
@@ -896,17 +896,17 @@ export default function EditarInscricaoPage() {
       exit="exit"
       key="step-1"
     >
-      <motion.div className="bg-[#e6f7f9] border border-[#0a9396] rounded-xl p-5 mb-6" variants={cardVariants}>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
-          <CheckCircle className="w-5 h-5 text-[#005f73]" />
+      <motion.div className="bg-primary-soft border border-primary-hover rounded-xl p-5 mb-6" variants={cardVariants}>
+        <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+          <CheckCircle className="w-5 h-5 text-primary" />
           Dados Pessoais
         </h3>
-        <p className="text-sm text-gray-600">Atualize suas informações pessoais para esta candidatura.</p>
+        <p className="text-sm text-muted-foreground">Atualize suas informações pessoais para esta candidatura.</p>
       </motion.div>
 
       {/* Informações Básicas */}
       <motion.div className="space-y-6" variants={cardVariants}>
-        <h4 className="text-base font-semibold text-gray-800 border-b pb-2">Informações Básicas</h4>
+        <h4 className="text-base font-semibold text-foreground border-b pb-2">Informações Básicas</h4>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <InputField
@@ -921,12 +921,12 @@ export default function EditarInscricaoPage() {
 
           {/* Email readonly */}
           <motion.div className="space-y-1" variants={cardVariants}>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <div className="px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-600 flex items-center">
+            <label className="block text-sm font-medium text-foreground/80">Email</label>
+            <div className="px-4 py-2.5 bg-background border border-input rounded-lg text-muted-foreground flex items-center">
               <span className="flex-1">{candidateData?.email}</span>
-              <span className="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded ml-2">Fixo</span>
+              <span className="text-xs bg-border text-muted-foreground px-2 py-1 rounded ml-2">Fixo</span>
             </div>
-            <p className="text-xs text-gray-500">O email não pode ser alterado</p>
+            <p className="text-xs text-muted-foreground">O email não pode ser alterado</p>
           </motion.div>
 
           <InputField
@@ -954,7 +954,7 @@ export default function EditarInscricaoPage() {
 
       {/* Informações Acadêmicas */}
       <motion.div className="space-y-6" variants={cardVariants}>
-        <h4 className="text-base font-semibold text-gray-800 border-b pb-2">Informações Acadêmicas</h4>
+        <h4 className="text-base font-semibold text-foreground border-b pb-2">Informações Acadêmicas</h4>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="md:col-span-2">
@@ -993,18 +993,18 @@ export default function EditarInscricaoPage() {
 
       {/* Endereço */}
       <motion.div className="space-y-6" variants={cardVariants}>
-        <h4 className="text-base font-semibold text-gray-800 border-b pb-2">Endereço</h4>
+        <h4 className="text-base font-semibold text-foreground border-b pb-2">Endereço</h4>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* CEP */}
           <motion.div className="md:col-span-2 space-y-1" variants={cardVariants}>
             <div className="flex items-center justify-between mb-1">
-              <label className="block text-sm font-medium text-gray-700">
-                CEP <span className="text-[#005f73] text-xs">(Busca automática)</span>
+              <label className="block text-sm font-medium text-foreground/80">
+                CEP <span className="text-primary text-xs">(Busca automática)</span>
               </label>
               {addressFetched && (
                 <motion.span
-                  className="text-xs text-[#0a9396] flex items-center gap-1"
+                  className="text-xs text-primary-hover flex items-center gap-1"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 >
@@ -1022,18 +1022,18 @@ export default function EditarInscricaoPage() {
                 placeholder="00000-000"
                 className={`w-full px-4 py-2.5 pl-10 pr-32 border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:border-transparent ${
                   formErrors.cep
-                    ? 'border-red-300 focus:ring-red-500 bg-red-50'
+                    ? 'border-destructive/30 focus:ring-destructive bg-destructive-soft'
                     : addressFetched
-                    ? 'border-[#0a9396] focus:ring-[#0a9396] bg-[#e6f7f9]'
-                    : 'border-gray-300 focus:ring-[#0a9396] hover:border-gray-400'
+                    ? 'border-primary-hover focus:ring-primary-hover bg-primary-soft'
+                    : 'border-input focus:ring-primary-hover hover:border-input'
                 }`}
               />
 
-              <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2">
                 {cepLoading ? (
-                  <Loader2 className="w-4 h-4 text-[#005f73] animate-spin" />
+                  <Loader2 className="w-4 h-4 text-primary animate-spin" />
                 ) : (
-                  <MapPin className="w-4 h-4 text-gray-400" />
+                  <MapPin className="w-4 h-4 text-muted-foreground/70" />
                 )}
               </div>
 
@@ -1041,7 +1041,7 @@ export default function EditarInscricaoPage() {
                 type="button"
                 onClick={handleCepSearchClick}
                 disabled={cepLoading || formData.cep.replace(/\D/g, '').length < 8}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-[#005f73] to-[#0a9396] text-white text-sm rounded-md hover:from-[#006d84] hover:to-[#0ba5a8] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+                className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2 px-3 py-2 bg-primary text-primary-foreground text-sm rounded-md hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -1060,11 +1060,11 @@ export default function EditarInscricaoPage() {
             </div>
 
             {formErrors.cep && (
-              <motion.p className="text-sm text-red-600 flex items-center gap-1 mt-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <motion.p className="text-sm text-destructive flex items-center gap-1 mt-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <AlertCircle className="w-4 h-4" /> {formErrors.cep}
               </motion.p>
             )}
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Digite o CEP para preencher automaticamente o endereço
             </p>
           </motion.div>
@@ -1138,14 +1138,14 @@ export default function EditarInscricaoPage() {
       exit="exit"
       key="step-2"
     >
-      <motion.div className="bg-[#e6f7f9] border border-[#0a9396] rounded-lg p-4" variants={cardVariants}>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
-          <Upload className="w-5 h-5 text-[#005f73]" />
+      <motion.div className="bg-primary-soft border border-primary-hover rounded-lg p-4" variants={cardVariants}>
+        <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+          <Upload className="w-5 h-5 text-primary" />
           Documentos Necessários
         </h3>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           Atualize os documentos da sua candidatura. Deixe em branco para manter os documentos atuais.
-          <span className="text-red-500 font-medium">
+          <span className="text-destructive font-medium">
             {' '}Obrigatórios: Identidade, Histórico e Currículo. Declaração de Frequência e Certificados são opcionais.
           </span>
           <br />
@@ -1224,10 +1224,10 @@ export default function EditarInscricaoPage() {
 
   const statusLabel = useMemo(() => {
     const s = applicationData?.status;
-    if (s === 'pending') return { text: 'Pendente', cls: 'text-yellow-600' };
-    if (s === 'approved') return { text: 'Aprovado', cls: 'text-green-600' };
-    if (s === 'rejected') return { text: 'Rejeitado', cls: 'text-red-600' };
-    return { text: 'Em análise', cls: 'text-blue-600' };
+    if (s === 'pending') return { text: 'Pendente', cls: 'text-warning' };
+    if (s === 'approved') return { text: 'Aprovado', cls: 'text-success' };
+    if (s === 'rejected') return { text: 'Rejeitado', cls: 'text-destructive' };
+    return { text: 'Em análise', cls: 'text-primary' };
   }, [applicationData?.status]);
 
   const renderStep3 = () => (
@@ -1239,12 +1239,12 @@ export default function EditarInscricaoPage() {
       exit="exit"
       key="step-3"
     >
-      <motion.div className="bg-[#e6f7f9] border border-[#0a9396] rounded-lg p-4" variants={cardVariants}>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
-          <CheckCircle className="w-5 h-5 text-[#005f73]" />
+      <motion.div className="bg-primary-soft border border-primary-hover rounded-lg p-4" variants={cardVariants}>
+        <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+          <CheckCircle className="w-5 h-5 text-primary" />
           Informações Adicionais
         </h3>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           Adicione ou atualize informações que possam enriquecer sua candidatura (opcionais).
         </p>
       </motion.div>
@@ -1261,24 +1261,24 @@ export default function EditarInscricaoPage() {
         />
 
         <motion.div
-          className="bg-gradient-to-r from-[#e6f7f9] to-[#d4f2f4] border border-[#0a9396] rounded-lg p-4"
+          className="bg-primary-soft border border-primary-hover rounded-lg p-4"
           variants={cardVariants}
           whileHover={{ scale: 1.01 }}
         >
-          <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-[#005f73]" />
+          <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+            <CheckCircle className="w-4 h-4 text-primary" />
             Resumo da Candidatura
           </h4>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
             <div className="space-y-1">
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Processo: <span className="font-semibold">{processData?.title}</span>
               </p>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Curso: <span className="font-semibold">{processData?.course}</span>
               </p>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Prazo:{' '}
                 <span className="font-semibold">
                   {processData?.ending_date ? parseLocalCalendarDate(processData.ending_date).toLocaleDateString('pt-BR') : '-'}
@@ -1287,21 +1287,21 @@ export default function EditarInscricaoPage() {
             </div>
 
             <div className="space-y-1">
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Candidato: <span className="font-semibold">{candidateData?.name}</span>
               </p>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Email: <span className="font-semibold">{candidateData?.email}</span>
               </p>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Status atual:{' '}
                 <span className={`font-semibold ${statusLabel.cls}`}>{statusLabel.text}</span>
               </p>
             </div>
           </div>
 
-          <div className="mt-3 pt-3 border-t border-[#0a9396]">
-            <p className="text-sm text-gray-600">
+          <div className="mt-3 pt-3 border-t border-primary-hover">
+            <p className="text-sm text-muted-foreground">
               Documentos obrigatórios:{' '}
               <span className="font-semibold">
                 {[
@@ -1315,7 +1315,7 @@ export default function EditarInscricaoPage() {
             </p>
 
             {existingDocuments.course_certificates && (
-              <p className="text-sm text-[#0a9396] mt-1">• Certificados de cursos já enviados anteriormente</p>
+              <p className="text-sm text-primary-hover mt-1">• Certificados de cursos já enviados anteriormente</p>
             )}
           </div>
         </motion.div>
@@ -1328,15 +1328,15 @@ export default function EditarInscricaoPage() {
   // -----------------------------
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-16">
           <div className="text-center">
             <motion.div
-              className="rounded-full h-16 w-16 border-b-2 border-[#005f73] mx-auto mb-4"
+              className="rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
             />
-            <h3 className="text-lg font-semibold text-gray-700">Carregando dados da candidatura...</h3>
+            <h3 className="text-lg font-semibold text-foreground/80">Carregando dados da candidatura...</h3>
           </div>
         </div>
         <Footer />
@@ -1346,23 +1346,23 @@ export default function EditarInscricaoPage() {
 
   if (error && !showSuccessModal) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-16">
           <motion.div
-            className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 max-w-md mx-auto"
+            className="bg-card rounded-xl shadow-sm border border-border p-8 max-w-md mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="text-center">
-              <div className="mx-auto w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-6">
-                <AlertCircle className="w-10 h-10 text-red-600" />
+              <div className="mx-auto w-20 h-20 bg-destructive-soft rounded-full flex items-center justify-center mb-6">
+                <AlertCircle className="w-10 h-10 text-destructive" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">Erro ao carregar</h1>
-              <p className="text-gray-600 mb-6">{error}</p>
+              <h1 className="text-2xl font-bold text-foreground mb-2">Erro ao carregar</h1>
+              <p className="text-muted-foreground mb-6">{error}</p>
               <div className="flex flex-col gap-3">
                 <button
                   onClick={() => router.push('/candidato/meus-processos')}
-                  className="px-6 py-3 bg-gradient-to-r from-[#005f73] to-[#0a9396] text-white rounded-lg hover:from-[#006d84] hover:to-[#0ba5a8] font-medium transition-colors"
+                  className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary font-medium transition-colors"
                 >
                   Voltar para Minhas Candidaturas
                 </button>
@@ -1379,7 +1379,7 @@ export default function EditarInscricaoPage() {
   // Render
   // -----------------------------
   return (
-    <motion.div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50" variants={pageVariants} initial="hidden" animate="visible">
+    <motion.div className="min-h-screen bg-background" variants={pageVariants} initial="hidden" animate="visible">
       <div className="container mx-auto px-4 py-8">
         {/* Cabeçalho */}
         <motion.div
@@ -1390,25 +1390,25 @@ export default function EditarInscricaoPage() {
         >
           <button
             onClick={() => router.push('/candidato/meus-processos')}
-            className="flex items-center gap-2 text-[#0a9396] hover:text-[#087e8b] mb-6"
+            className="flex items-center gap-2 text-primary-hover hover:text-primary mb-6"
           >
             <ArrowLeft className="w-4 h-4" />
             Voltar para Minhas Candidaturas
           </button>
 
-          <div className="bg-gradient-to-r from-[#005f73] via-[#087e8b] to-[#0a9396] rounded-xl p-6 text-white">
+          <div className="bg-primary rounded-xl p-6 text-primary-foreground">
             <h1 className="text-2xl font-bold mb-2">Editar Candidatura</h1>
-            <p className="text-[#caf0f8]">
+            <p className="text-white">
               {processData?.title} • {processData?.course}
             </p>
             <div className="flex flex-wrap gap-4 mt-4">
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
+              <div className="bg-white/20 rounded-lg px-4 py-2">
                 <p className="text-sm font-medium">
                   Prazo:{' '}
                   {processData?.ending_date ? parseLocalCalendarDate(processData.ending_date).toLocaleDateString('pt-BR') : '-'}
                 </p>
               </div>
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
+              <div className="bg-white/20 rounded-lg px-4 py-2">
                 <p className="text-sm font-medium">
                   Status atual:{' '}
                   <span className="ml-2 text-white font-semibold">
@@ -1422,7 +1422,7 @@ export default function EditarInscricaoPage() {
 
         {/* Formulário */}
         <motion.div
-          className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 overflow-hidden"
+          className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden"
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4 }}
@@ -1430,26 +1430,26 @@ export default function EditarInscricaoPage() {
           <div className="p-8">
             {error && !success && (
               <motion.div
-                className="mb-6 bg-red-50/90 backdrop-blur-sm border border-red-200 rounded-lg p-4"
+                className="mb-6 bg-destructive-soft/90 border border-destructive/30 rounded-lg p-4"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
               >
                 <div className="flex items-center gap-3">
-                  <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
-                  <p className="text-red-800">{error}</p>
+                  <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0" />
+                  <p className="text-destructive">{error}</p>
                 </div>
               </motion.div>
             )}
 
             {success && (
               <motion.div
-                className="mb-6 bg-green-50/90 backdrop-blur-sm border border-green-200 rounded-lg p-4"
+                className="mb-6 bg-success-soft/90 border border-success/30 rounded-lg p-4"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
               >
                 <div className="flex items-center gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  <p className="text-green-800">{success}</p>
+                  <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
+                  <p className="text-success">{success}</p>
                 </div>
               </motion.div>
             )}
@@ -1466,14 +1466,14 @@ export default function EditarInscricaoPage() {
               </div>
 
               {/* Navigation Buttons */}
-              <div className="flex justify-between pt-8 border-t border-gray-200 mt-8">
+              <div className="flex justify-between pt-8 border-t border-border mt-8">
                 <div>
                   {currentStep > 1 && (
                     <motion.button
                       type="button"
                       onClick={handlePrevStep}
                       disabled={submitting}
-                      className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                      className="px-6 py-3 border border-input text-foreground/80 rounded-lg hover:bg-background font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -1487,7 +1487,7 @@ export default function EditarInscricaoPage() {
                     <motion.button
                       type="button"
                       onClick={handleNextStep}
-                      className="px-6 py-3 bg-gradient-to-r from-[#005f73] to-[#0a9396] text-white rounded-lg hover:from-[#006d84] hover:to-[#0ba5a8] font-medium transition-colors flex items-center gap-2"
+                      className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary font-medium transition-colors flex items-center gap-2"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -1499,7 +1499,7 @@ export default function EditarInscricaoPage() {
                         type="button"
                         onClick={() => router.push('/candidato/meus-processos')}
                         disabled={submitting}
-                        className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-6 py-3 border border-input text-foreground/80 rounded-lg hover:bg-background font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -1509,7 +1509,7 @@ export default function EditarInscricaoPage() {
                       <motion.button
                         type="submit"
                         disabled={submitting}
-                        className="px-6 py-3 bg-gradient-to-r from-[#0a9396] to-[#2a9d8f] text-white rounded-lg hover:from-[#0ba5a8] hover:to-[#38b2ac] font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="px-6 py-3 bg-primary-hover text-primary-foreground rounded-lg hover:bg-primary-hover font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -1529,16 +1529,16 @@ export default function EditarInscricaoPage() {
 
               {/* Important Notes */}
               <motion.div
-                className="mt-8 bg-yellow-50/90 backdrop-blur-sm border border-yellow-200 rounded-lg p-6"
+                className="mt-8 bg-warning-soft/90 border border-warning/30 rounded-lg p-6"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
               >
                 <div className="flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                  <AlertCircle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-yellow-900 mb-2">Informações importantes</h4>
-                    <ul className="text-sm text-yellow-800 space-y-1">
+                    <h4 className="font-semibold text-warning mb-2">Informações importantes</h4>
+                    <ul className="text-sm text-warning space-y-1">
                       <li>• Campos marcados com * são obrigatórios</li>
                       <li>• Para documentos, deixe em branco para manter o arquivo atual</li>
                       <li>• Após a atualização, seu status voltará a "Em análise"</li>
@@ -1556,13 +1556,13 @@ export default function EditarInscricaoPage() {
       <AnimatePresence>
         {showSuccessModal && (
           <motion.div
-            className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-white rounded-2xl shadow-2xl max-w-md w-full"
+              className="bg-card rounded-2xl shadow-sm max-w-md w-full"
               variants={modalVariants}
               initial="hidden"
               animate="visible"
@@ -1570,7 +1570,7 @@ export default function EditarInscricaoPage() {
             >
               <div className="p-8 text-center">
                 <motion.div
-                  className="mx-auto w-24 h-24 bg-gradient-to-r from-[#0a9396] to-[#2a9d8f] rounded-full flex items-center justify-center mb-6"
+                  className="mx-auto w-24 h-24 bg-primary-hover rounded-full flex items-center justify-center mb-6"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.2, type: 'spring' }}
@@ -1579,7 +1579,7 @@ export default function EditarInscricaoPage() {
                 </motion.div>
 
                 <motion.h3
-                  className="text-2xl font-bold text-gray-900 mb-3"
+                  className="text-2xl font-bold text-foreground mb-3"
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.3 }}
@@ -1588,16 +1588,16 @@ export default function EditarInscricaoPage() {
                 </motion.h3>
 
                 <motion.p
-                  className="text-gray-600 mb-4"
+                  className="text-muted-foreground mb-4"
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.4 }}
                 >
-                  Sua candidatura para <span className="font-semibold text-gray-900">{processData?.title}</span> foi atualizada com sucesso.
+                  Sua candidatura para <span className="font-semibold text-foreground">{processData?.title}</span> foi atualizada com sucesso.
                 </motion.p>
 
                 <motion.p
-                  className="text-sm text-gray-500 mb-6"
+                  className="text-sm text-muted-foreground mb-6"
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.5 }}
@@ -1613,13 +1613,13 @@ export default function EditarInscricaoPage() {
                 >
                   <button
                     onClick={() => router.push('/candidato/meus-processos')}
-                    className="px-6 py-3 bg-gradient-to-r from-[#005f73] to-[#0a9396] text-white rounded-lg hover:from-[#006d84] hover:to-[#0ba5a8] font-medium transition-colors"
+                    className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary font-medium transition-colors"
                   >
                     Voltar para Minhas Candidaturas
                   </button>
                   <button
                     onClick={() => router.push('/processos-seletivos')}
-                    className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors"
+                    className="px-6 py-3 border border-input text-foreground/80 rounded-lg hover:bg-background font-medium transition-colors"
                   >
                     Ver Outros Processos
                   </button>

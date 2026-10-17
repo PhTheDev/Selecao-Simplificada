@@ -89,14 +89,14 @@ export default function AdminPanelLayout({
 
   if (isCheckingAuth) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600" />
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* HeaderAdmin inclui sidebar fixed. Ele precisa usar as mesmas larguras 280/80 */}
       <HeaderAdmin sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
@@ -104,8 +104,7 @@ export default function AdminPanelLayout({
       <main
         className="
             min-h-screen transition-[padding] duration-300 ease-in-out
-            bg-[radial-gradient(ellipse_at_top,rgba(6,101,120,0.22),transparent_55%),radial-gradient(ellipse_at_bottom,rgba(10,147,150,0.18),transparent_60%)]
-            bg-[#f3fbfb]
+            bg-background
         "
         style={{ paddingLeft: leftOffset }}
         >

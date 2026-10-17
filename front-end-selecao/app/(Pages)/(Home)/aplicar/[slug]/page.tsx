@@ -77,15 +77,15 @@ export default function AplicarPage() {
     // Loading State
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+            <div className="min-h-screen bg-background flex items-center justify-center">
                 <div className="text-center">
                     <motion.div
-                        className="rounded-full h-16 w-16 border-b-2 border-[#005f73] mx-auto mb-4"
+                        className="rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"
                         animate={{ rotate: 360 }}
                         transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                     />
-                    <h3 className="text-lg font-semibold text-gray-700">Carregando...</h3>
-                    <p className="text-gray-500 mt-2">Preparando seu formulário de candidatura</p>
+                    <h3 className="text-lg font-semibold text-foreground/80">Carregando...</h3>
+                    <p className="text-muted-foreground mt-2">Preparando seu formulário de candidatura</p>
                 </div>
             </div>
         );
@@ -94,23 +94,23 @@ export default function AplicarPage() {
     // Error State
     if (error || !processData) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center px-4">
+            <div className="min-h-screen bg-background flex items-center justify-center px-4">
                 <motion.div
-                    className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 max-w-md w-full"
+                    className="bg-card rounded-xl shadow-sm border border-border p-8 max-w-md w-full"
                     variants={modalVariants}
                     initial="hidden"
                     animate="visible"
                 >
                     <div className="text-center">
-                        <div className="mx-auto w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-6">
-                            <XCircle className="w-10 h-10 text-red-600" />
+                        <div className="mx-auto w-20 h-20 bg-destructive-soft rounded-full flex items-center justify-center mb-6">
+                            <XCircle className="w-10 h-10 text-destructive" />
                         </div>
-                        <h1 className="text-2xl font-bold text-gray-900 mb-2">Ocorreu um erro</h1>
-                        <p className="text-gray-600 mb-6">{error || 'Processo não encontrado'}</p>
+                        <h1 className="text-2xl font-bold text-foreground mb-2">Ocorreu um erro</h1>
+                        <p className="text-muted-foreground mb-6">{error || 'Processo não encontrado'}</p>
                         <div className="flex flex-col sm:flex-row gap-3 justify-center">
                             <motion.button
                                 onClick={() => router.back()}
-                                className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium transition-colors"
+                                className="px-6 py-3 bg-muted text-foreground/80 rounded-lg hover:bg-border font-medium transition-colors"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
@@ -118,7 +118,7 @@ export default function AplicarPage() {
                             </motion.button>
                             <motion.button
                                 onClick={() => router.push('/processos-seletivos')}
-                                className="px-6 py-3 bg-gradient-to-r from-[#005f73] to-[#0a9396] text-white rounded-lg hover:from-[#006d84] hover:to-[#0ba5a8] font-medium transition-colors"
+                                className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary font-medium transition-colors"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
@@ -134,39 +134,39 @@ export default function AplicarPage() {
     // Already Applied State
     if (alreadyApplied) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center px-4">
+            <div className="min-h-screen bg-background flex items-center justify-center px-4">
                 <motion.div
-                    className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 max-w-md w-full"
+                    className="bg-card rounded-xl shadow-sm border border-border p-8 max-w-md w-full"
                     variants={modalVariants}
                     initial="hidden"
                     animate="visible"
                 >
                     <div className="text-center">
-                        <div className="mx-auto w-20 h-20 bg-[#e6f7f9] rounded-full flex items-center justify-center mb-6">
-                            <CheckCircle className="w-10 h-10 text-[#0a9396]" />
+                        <div className="mx-auto w-20 h-20 bg-primary-soft rounded-full flex items-center justify-center mb-6">
+                            <CheckCircle className="w-10 h-10 text-primary-hover" />
                         </div>
-                        <h1 className="text-2xl font-bold text-gray-900 mb-2">Inscrição Confirmada</h1>
-                        <p className="text-gray-600 mb-4">Você já está inscrito no processo:</p>
-                        <p className="font-medium text-gray-900 mb-4 bg-gray-50 p-3 rounded-lg">
+                        <h1 className="text-2xl font-bold text-foreground mb-2">Inscrição Confirmada</h1>
+                        <p className="text-muted-foreground mb-4">Você já está inscrito no processo:</p>
+                        <p className="font-medium text-foreground mb-4 bg-background p-3 rounded-lg">
                             {processData?.title}
                         </p>
 
-                        <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-                            <p className="text-sm text-blue-800">
+                        <div className="mb-6 p-4 bg-primary-soft rounded-lg">
+                            <p className="text-sm text-primary">
                                 <strong>Status:</strong> Inscrição confirmada
                             </p>
-                            <p className="text-sm text-blue-800 mt-1">
+                            <p className="text-sm text-primary mt-1">
                                 <strong>Data da inscrição:</strong> Aguardando confirmação
                             </p>
                         </div>
 
-                        <p className="text-sm text-gray-500 mb-6">
+                        <p className="text-sm text-muted-foreground mb-6">
                             Acompanhe o status da sua candidatura na seção "Meus Processos"
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3 justify-center">
                             <motion.button
                                 onClick={() => router.push('/candidato/meus-processos')}
-                                className="px-6 py-3 bg-gradient-to-r from-[#005f73] to-[#0a9396] text-white rounded-lg hover:from-[#006d84] hover:to-[#0ba5a8] font-medium transition-colors"
+                                className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary font-medium transition-colors"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
@@ -174,7 +174,7 @@ export default function AplicarPage() {
                             </motion.button>
                             <motion.button
                                 onClick={() => router.push('/processos-seletivos')}
-                                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors"
+                                className="px-6 py-3 border border-input text-foreground/80 rounded-lg hover:bg-background font-medium transition-colors"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
@@ -189,24 +189,24 @@ export default function AplicarPage() {
 
     return (
         <motion.div
-            className="min-h-screen bg-gradient-to-br from-gray-50 to-white relative"
+            className="min-h-screen bg-background relative"
             variants={pageVariants}
             initial="hidden"
             animate="visible"
         >
-            <div className="fixed inset-0 z-0 bg-gradient-to-br from-[#f0fdff] via-[#e6f7f9] to-[#d4f2f4]" />
+            <div className="fixed inset-0 z-0 bg-primary-soft" />
 
             <div className="max-w-6xl mx-auto px-4 py-8 relative z-10">
                 {/* Header */}
                 <motion.div
-                    className="bg-gradient-to-r from-[#005f73] via-[#087e8b] to-[#0a9396] rounded-2xl shadow-xl overflow-hidden mb-8 relative"
+                    className="bg-primary rounded-2xl overflow-hidden mb-8 relative"
                     initial={{ y: -50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.6, type: 'spring' }}
                 >
                     <motion.button
                         onClick={() => router.push('/')}
-                        className="absolute top-4 left-4 z-10 w-10 h-10 flex items-center justify-center bg-white/20 backdrop-blur-sm text-white rounded-full hover:bg-white/30 transition-all duration-200"
+                        className="absolute top-4 left-4 z-10 w-10 h-10 flex items-center justify-center bg-white/20 text-white rounded-full hover:bg-white/30 transition-all duration-200"
                         title="Voltar para página inicial"
                         aria-label="Voltar"
                         whileHover={{ scale: 1.1 }}
@@ -231,22 +231,22 @@ export default function AplicarPage() {
                                 transition={{ delay: 0.2 }}
                             >
                                 <h1 className="text-3xl font-bold mb-3">Candidatura: {processData.title}</h1>
-                                <p className="text-[#caf0f8] text-lg">{processData.subtitle}</p>
+                                <p className="text-white text-lg">{processData.subtitle}</p>
                                 <div className="flex flex-wrap gap-4 mt-4">
                                     <motion.div
-                                        className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2"
+                                        className="bg-white/20 rounded-lg px-4 py-2"
                                         whileHover={{ scale: 1.05 }}
                                     >
                                         <p className="text-sm font-medium">Curso: {processData.course}</p>
                                     </motion.div>
                                     <motion.div
-                                        className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2"
+                                        className="bg-white/20 rounded-lg px-4 py-2"
                                         whileHover={{ scale: 1.05 }}
                                     >
                                         <p className="text-sm font-medium">Vagas: {processData.number_vacancies}</p>
                                     </motion.div>
                                     <motion.div
-                                        className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2"
+                                        className="bg-white/20 rounded-lg px-4 py-2"
                                         whileHover={{ scale: 1.05 }}
                                     >
                                         <p className="text-sm font-medium">
@@ -259,7 +259,7 @@ export default function AplicarPage() {
                                 </div>
                             </motion.div>
                             <motion.div
-                                className="bg-white/10 backdrop-blur-sm rounded-xl p-6 min-w-[200px]"
+                                className="bg-white/10 rounded-xl p-6 min-w-[200px]"
                                 initial={{ x: 20, opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
                                 transition={{ delay: 0.3 }}
@@ -280,7 +280,7 @@ export default function AplicarPage() {
 
                 {/* Main Content */}
                 <motion.div
-                    className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 overflow-hidden"
+                    className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden"
                     initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.4 }}
@@ -292,13 +292,13 @@ export default function AplicarPage() {
 
                                 {submitError && (
                                     <motion.div
-                                        className="mb-6 bg-red-50/90 backdrop-blur-sm border border-red-200 rounded-lg p-4"
+                                        className="mb-6 bg-destructive-soft/90 border border-destructive/30 rounded-lg p-4"
                                         initial={{ opacity: 0, scale: 0.9 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                     >
                                         <div className="flex items-center gap-3">
-                                            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
-                                            <p className="text-red-800">{submitError}</p>
+                                            <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0" />
+                                            <p className="text-destructive">{submitError}</p>
                                         </div>
                                     </motion.div>
                                 )}
@@ -339,14 +339,14 @@ export default function AplicarPage() {
                                     </div>
 
                                     {/* Navigation Buttons */}
-                                    <div className="flex justify-between pt-8 border-t border-gray-200 mt-8">
+                                    <div className="flex justify-between pt-8 border-t border-border mt-8">
                                         <div>
                                             {currentStep > 1 && (
                                                 <motion.button
                                                     type="button"
                                                     onClick={handlePrevStep}
                                                     disabled={submitting}
-                                                    className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                                    className="px-6 py-3 border border-input text-foreground/80 rounded-lg hover:bg-background font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                                                     whileHover={{ scale: 1.05 }}
                                                     whileTap={{ scale: 0.95 }}
                                                 >
@@ -363,8 +363,8 @@ export default function AplicarPage() {
                                                     disabled={!canGoNext} 
                                                     className={`px-6 py-3 rounded-lg font-medium transition-colors flex items-center gap-2 ${
                                                     canGoNext
-                                                        ? 'bg-gradient-to-r from-[#005f73] to-[#0a9396] text-white hover:from-[#006d84] hover:to-[#0ba5a8]'
-                                                        : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                                        ? 'bg-primary text-primary-foreground hover:bg-primary'
+                                                        : 'bg-muted text-muted-foreground/70 cursor-not-allowed'
                                                     }`}
                                                     whileHover={canGoNext ? { scale: 1.05 } : undefined}
                                                     whileTap={canGoNext ? { scale: 0.95 } : undefined}
@@ -377,7 +377,7 @@ export default function AplicarPage() {
                                                         type="button"
                                                         onClick={() => router.back()}
                                                         disabled={submitting}
-                                                        className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                                        className="px-6 py-3 border border-input text-foreground/80 rounded-lg hover:bg-background font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                                         whileHover={{ scale: 1.05 }}
                                                         whileTap={{ scale: 0.95 }}
                                                     >
@@ -386,7 +386,7 @@ export default function AplicarPage() {
                                                     <motion.button
                                                         type="submit"
                                                         disabled={submitting}
-                                                        className="px-6 py-3 bg-gradient-to-r from-[#0a9396] to-[#2a9d8f] text-white rounded-lg hover:from-[#0ba5a8] hover:to-[#38b2ac] font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                                        className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary-hover font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                                                         whileHover={{ scale: 1.05 }}
                                                         whileTap={{ scale: 0.95 }}
                                                     >
@@ -406,18 +406,18 @@ export default function AplicarPage() {
 
                                     {/* Important Notes */}
                                     <motion.div
-                                        className="mt-8 bg-yellow-50/90 backdrop-blur-sm border border-yellow-200 rounded-lg p-6"
+                                        className="mt-8 bg-warning-soft/90 border border-warning/30 rounded-lg p-6"
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.5 }}
                                     >
                                         <div className="flex items-start gap-3">
-                                            <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                                            <AlertCircle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
                                             <div>
-                                                <h4 className="font-semibold text-yellow-900 mb-2">
+                                                <h4 className="font-semibold text-warning mb-2">
                                                     Informações importantes
                                                 </h4>
-                                                <ul className="text-sm text-yellow-800 space-y-1">
+                                                <ul className="text-sm text-warning space-y-1">
                                                     <li>• Campos marcados com * são obrigatórios</li>
                                                     <li>• Verifique se todos os documentos estão legíveis</li>
                                                     <li>
@@ -438,14 +438,14 @@ export default function AplicarPage() {
                         {applicationStatus === 'checking' && (
                             <div className="text-center py-16">
                                 <motion.div
-                                    className="rounded-full h-16 w-16 border-b-2 border-[#005f73] mx-auto mb-6"
+                                    className="rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-6"
                                     animate={{ rotate: 360 }}
                                     transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                                 />
-                                <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                                <h3 className="text-xl font-semibold text-foreground/80 mb-2">
                                     Verificando sua situação...
                                 </h3>
-                                <p className="text-gray-500">
+                                <p className="text-muted-foreground">
                                     Estamos verificando se você já possui uma candidatura para este processo.
                                 </p>
                             </div>
@@ -458,13 +458,13 @@ export default function AplicarPage() {
             <AnimatePresence>
                 {showSuccessModal && (
                     <motion.div
-                        className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 backdrop-blur-sm"
+                        className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                     >
                         <motion.div
-                            className="bg-white rounded-2xl shadow-2xl max-w-md w-full"
+                            className="bg-card rounded-2xl max-w-md w-full"
                             variants={modalVariants}
                             initial="hidden"
                             animate="visible"
@@ -472,7 +472,7 @@ export default function AplicarPage() {
                         >
                             <div className="p-8 text-center">
                                 <motion.div
-                                    className="mx-auto w-24 h-24 bg-gradient-to-r from-[#0a9396] to-[#2a9d8f] rounded-full flex items-center justify-center mb-6"
+                                    className="mx-auto w-24 h-24 bg-primary rounded-full flex items-center justify-center mb-6"
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     transition={{ delay: 0.2, type: 'spring' }}
@@ -480,7 +480,7 @@ export default function AplicarPage() {
                                     <CheckCircle className="w-12 h-12 text-white" />
                                 </motion.div>
                                 <motion.h3
-                                    className="text-2xl font-bold text-gray-900 mb-3"
+                                    className="text-2xl font-bold text-foreground mb-3"
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.3 }}
@@ -488,17 +488,17 @@ export default function AplicarPage() {
                                     🎉 Candidatura Enviada!
                                 </motion.h3>
                                 <motion.p
-                                    className="text-gray-600 mb-4"
+                                    className="text-muted-foreground mb-4"
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.4 }}
                                 >
                                     Sua candidatura para{' '}
-                                    <span className="font-semibold text-gray-900">{processData.title}</span> foi
+                                    <span className="font-semibold text-foreground">{processData.title}</span> foi
                                     enviada com sucesso.
                                 </motion.p>
                                 <motion.p
-                                    className="text-sm text-gray-500 mb-6"
+                                    className="text-sm text-muted-foreground mb-6"
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.5 }}
@@ -514,7 +514,7 @@ export default function AplicarPage() {
                                 >
                                     <motion.button
                                         onClick={() => router.push('/candidato/meus-processos')}
-                                        className="px-6 py-3 bg-gradient-to-r from-[#005f73] to-[#0a9396] text-white rounded-lg hover:from-[#006d84] hover:to-[#0ba5a8] font-medium transition-colors"
+                                        className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary font-medium transition-colors"
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
@@ -522,7 +522,7 @@ export default function AplicarPage() {
                                     </motion.button>
                                     <motion.button
                                         onClick={() => router.push('/processos-seletivos')}
-                                        className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors"
+                                        className="px-6 py-3 border border-input text-foreground/80 rounded-lg hover:bg-background font-medium transition-colors"
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                     >

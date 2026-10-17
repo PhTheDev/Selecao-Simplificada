@@ -39,14 +39,14 @@ export const Step3Additional = ({
             key="step-3"
         >
             <motion.div
-                className="bg-[#e6f7f9] border border-[#0a9396] rounded-lg p-4"
+                className="bg-primary-soft border border-primary-hover rounded-lg p-4"
                 variants={cardVariants}
             >
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-[#005f73]" />
+                <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-primary" />
                     Informações Adicionais
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                     Adicione informações que possam enriquecer sua candidatura (opcionais).
                 </p>
             </motion.div>
@@ -63,36 +63,36 @@ export const Step3Additional = ({
                 />
 
                 <motion.div
-                    className="bg-gradient-to-r from-[#e6f7f9] to-[#d4f2f4] border border-[#0a9396] rounded-lg p-4"
+                    className="bg-primary-soft border border-primary-hover rounded-lg p-4"
                     variants={cardVariants}
                     whileHover={{ scale: 1.01 }}
                 >
-                    <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-[#005f73]" />
+                    <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-primary" />
                         Resumo da Candidatura
                     </h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                         <div className="space-y-1">
-                            <p className="text-gray-600">
+                            <p className="text-muted-foreground">
                                 Processo:{' '}
                                 <span className="font-semibold">{processData?.title}</span>
                             </p>
-                            <p className="text-gray-600">
+                            <p className="text-muted-foreground">
                                 Curso: <span className="font-semibold">{processData?.course}</span>
                             </p>
                         </div>
                         <div className="space-y-1">
-                            <p className="text-gray-600">
+                            <p className="text-muted-foreground">
                                 Candidato:{' '}
                                 <span className="font-semibold">{candidateData?.name}</span>
                             </p>
-                            <p className="text-gray-600">
+                            <p className="text-muted-foreground">
                                 Email: <span className="font-semibold">{candidateData?.email}</span>
                             </p>
                         </div>
                     </div>
-                    <div className="mt-3 pt-3 border-t border-[#0a9396]">
-                        <p className="text-sm text-gray-600">
+                    <div className="mt-3 pt-3 border-t border-primary-hover">
+                        <p className="text-sm text-muted-foreground">
                             Documentos enviados:{' '}
                             <span className="font-semibold">
                                 {requiredDocumentsCount} de 3 obrigatórios

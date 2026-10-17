@@ -1,4 +1,5 @@
 'use client';
+import ThemeToggle from '@/components/theme/ThemeToggle';
 import BrandMark from "@/components/BrandMark";
 
 import {
@@ -165,11 +166,11 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
             <Link
                 href={href}
                 className={`group flex items-center gap-3 font-medium transition-all duration-300 relative py-3 px-4 rounded-2xl mx-2 ${isActive
-                    ? 'text-white bg-white/10 shadow-lg border border-white/10'
-                    : 'text-white/80 hover:text-white hover:bg-white/5'
+                    ? 'text-accent-foreground bg-primary-soft'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
                     }`}
             >
-                <div className={`flex-shrink-0 ${isActive ? 'text-white' : 'text-white/80'}`}>{icon}</div>
+                <div className={`flex-shrink-0 ${isActive ? 'text-accent-foreground' : 'text-muted-foreground'}`}>{icon}</div>
 
                 <motion.span
                     animate={{ opacity: sidebarOpen ? 1 : 0, x: sidebarOpen ? 0 : -10 }}
@@ -183,10 +184,10 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                     <motion.div
                         initial={{ opacity: 0, scale: 0.96 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="absolute left-full ml-2 px-3 py-2 bg-gray-900/95 text-white text-sm rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap z-50 shadow-xl border border-white/10"
+                        className="absolute left-full ml-2 px-3 py-2 bg-foreground/95 text-white text-sm rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap z-50 shadow-sm"
                     >
                         {text}
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900/95 rotate-45" />
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-foreground/95 rotate-45" />
                     </motion.div>
                 )}
             </Link>
@@ -218,17 +219,17 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                 initial={false}
                 animate={sidebarOpen ? 'open' : 'closed'}
                 variants={sidebarVariants}
-                className="hidden lg:flex fixed left-0 top-0 h-screen bg-gradient-to-br from-[#044c59] via-[#066578] to-[#044c59] border-r border-white/10 shadow-2xl z-40 overflow-hidden flex-col"
+                className="hidden lg:flex fixed left-0 top-0 h-screen bg-card border-r z-40 overflow-hidden flex-col"
             >
-                <div className="flex items-center justify-between h-20 px-4 border-b border-white/10">
+                <div className="flex items-center justify-between h-20 px-4 border-b border-border">
                     <motion.div
                         animate={{ opacity: sidebarOpen ? 1 : 0, scale: sidebarOpen ? 1 : 0.98 }}
                         className="flex items-center gap-3"
                     >
                         {sidebarOpen && (
                             <div className="flex flex-col">
-                                <span className="text-white font-semibold text-base">Área do Candidato</span>
-                                <span className="text-white/70 text-xs">Acompanhe suas inscrições</span>
+                                <span className="text-foreground font-semibold text-base">Área do Candidato</span>
+                                <span className="text-muted-foreground text-xs">Acompanhe suas inscrições</span>
                             </div>
                         )}
                     </motion.div>
@@ -237,13 +238,13 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setSidebarOpen(!sidebarOpen)}
-                        className="p-2 hover:bg-white/10 rounded-xl transition-all border border-white/10"
+                        className="p-2 hover:bg-secondary rounded-xl transition-all border"
                         aria-label="Alternar sidebar"
                     >
                         {sidebarOpen ? (
-                            <ChevronLeft className="w-4 h-4 text-white/80" />
+                            <ChevronLeft className="w-4 h-4 text-muted-foreground" />
                         ) : (
-                            <ChevronRight className="w-4 h-4 text-white/80" />
+                            <ChevronRight className="w-4 h-4 text-muted-foreground" />
                         )}
                     </motion.button>
                 </div>
@@ -253,18 +254,18 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                     <SidebarLink text="Meus Processos" href="/candidato/meus-processos" icon={<FileText className="w-5 h-5" />} submenu />
                 </nav>
 
-                <div className="p-4 border-t border-white/10 space-y-4">
+                <div className="p-4 border-t border-border space-y-4">
                     <motion.div
                         animate={{ opacity: sidebarOpen ? 1 : 0, scale: sidebarOpen ? 1 : 0.96 }}
                         transition={{ duration: 0.2 }}
                         className="flex flex-col items-center gap-3"
                     >
                         <Link href="/candidato">
-                            <BrandMark className="text-white font-semibold tracking-tight" />
+                            <BrandMark />
                         </Link>
 
                         {sidebarOpen && (
-                            <p className="text-[11px] text-white/80 text-center">
+                            <p className="text-[11px] text-muted-foreground text-center">
                                 Plataforma oficial para acompanhar seus processos seletivos.
                             </p>
                         )}
@@ -273,7 +274,7 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                     <motion.button
                         whileHover={{ scale: 1.02 }}
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 p-3 text-white/80 hover:text-white hover:bg-red-500/10 rounded-2xl transition-all border border-white/10"
+                        className="w-full flex items-center gap-3 p-3 text-muted-foreground hover:text-destructive hover:bg-destructive-soft rounded-2xl transition-all border"
                     >
                         <LogOut className="w-4 h-4" />
                         <motion.span
@@ -289,47 +290,49 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
 
             {/* Header topo */}
             <header
-                className={`sticky top-0 z-30 backdrop-blur-xl transition-all duration-300 ${sidebarOpen ? 'lg:pl-[280px]' : 'lg:pl-[80px]'
+                className={`sticky top-0 z-30 transition-all duration-300 ${sidebarOpen ? 'lg:pl-[280px]' : 'lg:pl-[80px]'
                     }`}
             >
-                <div className="absolute inset-0 bg-white/70 backdrop-blur-xl border-b border-gray-200/40" />
+                <div className="absolute inset-0 bg-background/80 border-b" />
 
                 <div className="relative flex items-center justify-between h-16 lg:h-20 px-4 lg:px-8">
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => setMobileMenuOpen(true)}
-                            className="lg:hidden p-2 hover:bg-gray-100 rounded-xl transition-colors mobile-menu-button"
+                            className="lg:hidden p-2 hover:bg-muted rounded-xl transition-colors mobile-menu-button"
                             aria-label="Abrir menu"
                         >
-                            <Menu className="w-5 h-5 text-gray-700" />
+                            <Menu className="w-5 h-5 text-foreground/80" />
                         </button>
 
                         <div className="hidden sm:block">
-                            <p className="text-sm font-bold text-gray-900 leading-none">Área do Candidato</p>
-                            <p className="text-xs text-gray-600 mt-1">Acompanhe suas inscrições e atualize seu perfil</p>
+                            <p className="text-sm font-bold text-foreground leading-none">Área do Candidato</p>
+                            <p className="text-xs text-muted-foreground mt-1">Acompanhe suas inscrições e atualize seu perfil</p>
                         </div>
                     </div>
 
+                    <div className="flex items-center gap-3">
+                    <ThemeToggle />
                     <div className="relative">
                         <motion.div
                             whileHover={{ scale: 1.01 }}
                             whileTap={{ scale: 0.99 }}
                             ref={triggerRef}
                             onClick={() => setDropdownOpen((v) => !v)}
-                            className="flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-gray-100 cursor-pointer border border-gray-200/60 bg-white/70"
+                            className="flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-muted cursor-pointer border bg-card"
                         >
                             <div className="text-right">
-                                <div className="text-sm font-semibold text-gray-900 leading-none">
+                                <div className="text-sm font-semibold text-foreground leading-none">
                                     {String(displayName).split(' ')[0] || 'Candidato'}
                                 </div>
                                 {displayEmail && (
-                                    <div className="text-xs text-gray-500 mt-1 truncate max-w-[140px] sm:max-w-none">
+                                    <div className="text-xs text-muted-foreground mt-1 truncate max-w-[140px] sm:max-w-none">
                                         {displayEmail}
                                     </div>
                                 )}
                             </div>
 
-                            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#066578] to-[#0a9396] shadow-sm ring-2 ring-white overflow-hidden flex items-center justify-center">
+                            <div className="w-9 h-9 rounded-xl bg-primary ring-2 ring-card overflow-hidden flex items-center justify-center">
                                 {profileUrlWithBust ? (
                                     <Image
                                         src={profileUrlWithBust}
@@ -353,10 +356,10 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                                     animate="visible"
                                     exit="exit"
                                     variants={dropdownVariants}
-                                    className="absolute right-0 mt-2 w-72 bg-white/95 backdrop-blur-xl border border-gray-200/60 rounded-2xl shadow-2xl p-4 z-50"
+                                    className="absolute right-0 mt-2 w-72 bg-card border rounded-2xl shadow-sm p-4 z-50"
                                 >
                                     <div className="flex flex-col items-center gap-4">
-                                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#066578] to-[#0a9396] shadow-sm ring-2 ring-gray-100 overflow-hidden flex items-center justify-center">
+                                        <div className="w-16 h-16 rounded-2xl bg-primary ring-2 ring-card overflow-hidden flex items-center justify-center">
                                             {profileUrlWithBust ? (
                                                 <Image
                                                     src={profileUrlWithBust}
@@ -372,18 +375,18 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                                         </div>
 
                                         <div className="text-center">
-                                            <h3 className="font-bold text-gray-900 text-lg">{displayName}</h3>
+                                            <h3 className="font-bold text-foreground text-lg">{displayName}</h3>
                                             {displayEmail ? (
-                                                <p className="text-sm text-gray-600 mt-1 break-all">{displayEmail}</p>
+                                                <p className="text-sm text-muted-foreground mt-1 break-all">{displayEmail}</p>
                                             ) : null}
                                         </div>
 
-                                        <div className="w-full border-t border-gray-200/60 my-1" />
+                                        <div className="w-full border-t border-border my-1" />
 
                                         <Link
                                             href="/candidato/perfil"
                                             onClick={() => setDropdownOpen(false)}
-                                            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 rounded-xl transition-all"
+                                            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground/80 hover:bg-muted rounded-xl transition-all"
                                         >
                                             <User className="w-4 h-4" />
                                             Meu Perfil
@@ -391,7 +394,7 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
 
                                         <button
                                             onClick={handleLogout}
-                                            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                                            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-destructive hover:bg-destructive-soft rounded-xl transition-all"
                                         >
                                             <LogOut className="w-4 h-4" />
                                             Sair do Sistema
@@ -400,6 +403,7 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                                 </motion.div>
                             )}
                         </AnimatePresence>
+                    </div>
                     </div>
                 </div>
             </header>
@@ -413,7 +417,7 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                             animate="visible"
                             exit="exit"
                             variants={overlayVariants}
-                            className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+                            className="lg:hidden fixed inset-0 z-40 bg-foreground/30"
                             onClick={() => setMobileMenuOpen(false)}
                         />
 
@@ -423,15 +427,15 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                             animate="visible"
                             exit="exit"
                             variants={mobileMenuVariants}
-                            className="lg:hidden fixed left-0 top-0 h-full w-80 max-w-[85vw] bg-gradient-to-br from-[#044c59] via-[#066578] to-[#044c59] shadow-2xl border-r border-white/10 z-50 overflow-y-auto"
+                            className="lg:hidden fixed left-0 top-0 h-full w-80 max-w-[85vw] bg-card border-r shadow-sm z-50 overflow-y-auto"
                         >
-                            <div className="flex items-center justify-between p-6 border-b border-white/10 bg-black/10">
-                                <BrandMark className="text-white font-semibold tracking-tight" />
+                            <div className="flex items-center justify-between p-6 border-b">
+                                <BrandMark />
                                 <button
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+                                    className="p-2 hover:bg-secondary rounded-xl transition-colors"
                                 >
-                                    <X className="w-5 h-5 text-white" />
+                                    <X className="w-5 h-5 text-foreground" />
                                 </button>
                             </div>
 
@@ -447,22 +451,22 @@ export default function HeaderCandidate({ sidebarOpen, setSidebarOpen }: HeaderC
                                             href={item.href}
                                             onClick={() => setMobileMenuOpen(false)}
                                             className={`flex items-center gap-3 px-4 py-4 rounded-2xl transition-all ${isActive
-                                                ? 'text-white bg-white/15 border border-white/10'
-                                                : 'text-white/80 hover:text-white hover:bg-white/10'
+                                                ? 'text-accent-foreground bg-primary-soft'
+                                                : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
                                                 }`}
                                         >
                                             <item.icon className="w-5 h-5" />
                                             <span className="font-medium">{item.text}</span>
-                                            {isActive && <div className="ml-auto w-2 h-2 bg-white rounded-full" />}
+                                            {isActive && <div className="ml-auto w-2 h-2 bg-card rounded-full" />}
                                         </Link>
                                     );
                                 })}
                             </nav>
 
-                            <div className="p-6 border-t border-white/10">
+                            <div className="p-6 border-t border-border">
                                 <button
                                     onClick={handleLogout}
-                                    className="w-full flex items-center justify-center gap-3 px-4 py-3 text-white/85 hover:text-white hover:bg-red-500/10 rounded-2xl transition-all border border-white/10"
+                                    className="w-full flex items-center justify-center gap-3 px-4 py-3 text-muted-foreground hover:text-destructive hover:bg-destructive-soft rounded-2xl transition-all border"
                                 >
                                     <LogOut className="w-4 h-4" />
                                     <span className="font-medium">Sair</span>

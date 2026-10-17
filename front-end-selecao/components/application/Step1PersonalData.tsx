@@ -74,20 +74,20 @@ const UniversityInput = ({
             "w-full",
             "px-4 py-2.5", // padding base
             "pr-10",       // espaço para o ícone à direita
-            "border rounded-lg bg-white",
-            error ? "border-red-300" : "border-gray-300",
-            "focus:ring-2 focus:ring-[#005f73] focus:border-transparent",
+            "border rounded-lg bg-card",
+            error ? "border-destructive/30" : "border-input",
+            "focus:ring-2 focus:ring-primary focus:border-transparent",
             "transition-colors",
           ].join(" ")}
         />
 
         <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-          <Search className="w-4 h-4 text-gray-400" />
+          <Search className="w-4 h-4 text-muted-foreground/70" />
         </div>
       </div>
 
       {error && (
-        <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+        <p className="text-destructive text-sm mt-1 flex items-center gap-1">
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
             <path
               fillRule="evenodd"
@@ -102,11 +102,11 @@ const UniversityInput = ({
       {showUniversitySuggestions && (
         <div
           ref={suggestionsRef}
-          className="absolute z-50 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+          className="absolute z-50 w-full mt-2 bg-card border border-input rounded-lg shadow-sm max-h-60 overflow-y-auto"
         >
           {isLoadingUniversities ? (
-            <div className="p-3 text-center text-gray-500">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#005f73] mx-auto" />
+            <div className="p-3 text-center text-muted-foreground">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mx-auto" />
               <p className="text-xs mt-1">Buscando universidades...</p>
             </div>
           ) : filteredUniversities.length > 0 ? (
@@ -120,40 +120,40 @@ const UniversityInput = ({
                   e.stopPropagation();
                   onSelect(university);
                 }}
-                className="w-full text-left p-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 transition-colors cursor-pointer"
+                className="w-full text-left p-3 hover:bg-background border-b border-border last:border-b-0 transition-colors cursor-pointer"
               >
-                <div className="font-medium text-sm text-gray-800">{university.name}</div>
+                <div className="font-medium text-sm text-foreground">{university.name}</div>
                 <div className="flex justify-between items-center mt-1">
-                  <span className="text-xs text-gray-600">
+                  <span className="text-xs text-muted-foreground">
                     {university.city} - {university.state}
                   </span>
                   <span
                     className={[
                       "text-xs px-2 py-1 rounded-full",
                       university.type === "public"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-blue-100 text-blue-800",
+                        ? "bg-success-soft text-success"
+                        : "bg-primary-soft text-primary",
                     ].join(" ")}
                   >
                     {university.type === "public" ? "Pública" : "Privada"}
                   </span>
                 </div>
                 {university.acronym && (
-                  <div className="text-xs text-gray-500 mt-1">{university.acronym}</div>
+                  <div className="text-xs text-muted-foreground mt-1">{university.acronym}</div>
                 )}
               </button>
             ))
           ) : value.length >= 2 ? (
-            <div className="p-3 text-center text-gray-500">
+            <div className="p-3 text-center text-muted-foreground">
               <p className="text-sm">Nenhuma universidade encontrada</p>
               <p className="text-xs mt-1">Digite o nome completo da instituição</p>
-              <p className="text-xs mt-2 text-[#005f73]">Sugestão: Busque por "UFG", "PUC Goiás", "UNIP", etc.</p>
+              <p className="text-xs mt-2 text-primary">Sugestão: Busque por "UFG", "PUC Goiás", "UNIP", etc.</p>
             </div>
           ) : null}
         </div>
       )}
 
-      <p className="text-xs text-gray-500 mt-1">Comece a digitar para ver sugestões de universidades</p>
+      <p className="text-xs text-muted-foreground mt-1">Comece a digitar para ver sugestões de universidades</p>
     </div>
   );
 };
@@ -303,19 +303,19 @@ export const Step1PersonalData = ({
             key="step-1"
         >
             <motion.div
-                className="bg-[#e6f7f9] border border-[#0a9396] rounded-xl p-5 mb-6"
+                className="bg-primary-soft border border-primary-hover rounded-xl p-5 mb-6"
                 variants={cardVariants}
             >
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-[#005f73]" />
+                <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-primary" />
                     Dados Pessoais
                 </h3>
-                <p className="text-sm text-gray-600">Complete suas informações pessoais para prosseguir com a candidatura.</p>
+                <p className="text-sm text-muted-foreground">Complete suas informações pessoais para prosseguir com a candidatura.</p>
             </motion.div>
 
             {/* Informações Básicas */}
             <motion.div className="space-y-6" variants={cardVariants}>
-                <h4 className="text-base font-semibold text-gray-800 border-b pb-2">Informações Básicas</h4>
+                <h4 className="text-base font-semibold text-foreground border-b pb-2">Informações Básicas</h4>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <InputField
@@ -329,12 +329,12 @@ export const Step1PersonalData = ({
                     />
 
                     <motion.div className="space-y-1" variants={cardVariants}>
-                        <label className="block text-sm font-medium text-gray-700">Email</label>
-                        <div className="px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-600 flex items-center">
+                        <label className="block text-sm font-medium text-foreground/80">Email</label>
+                        <div className="px-4 py-2.5 bg-background border border-input rounded-lg text-muted-foreground flex items-center">
                             <span className="flex-1">{candidateEmail}</span>
-                            <span className="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded ml-2">Fixo</span>
+                            <span className="text-xs bg-border text-muted-foreground px-2 py-1 rounded ml-2">Fixo</span>
                         </div>
-                        <p className="text-xs text-gray-500">O email não pode ser alterado</p>
+                        <p className="text-xs text-muted-foreground">O email não pode ser alterado</p>
                     </motion.div>
 
                     <InputField
@@ -362,11 +362,11 @@ export const Step1PersonalData = ({
 
             {/* Informações Acadêmicas */}
             <motion.div className="space-y-6" variants={cardVariants}>
-                <h4 className="text-base font-semibold text-gray-800 border-b pb-2">Informações Acadêmicas</h4>
+                <h4 className="text-base font-semibold text-foreground border-b pb-2">Informações Acadêmicas</h4>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="md:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Instituição de Ensino *</label>
+                        <label className="block text-sm font-medium text-foreground/80 mb-2">Instituição de Ensino *</label>
 
                         <UniversityInput
                             value={formData.college}
@@ -407,7 +407,7 @@ export const Step1PersonalData = ({
 
             {/* Endereço */}
             <motion.div className="space-y-6" variants={cardVariants}>
-                <h4 className="text-base font-semibold text-gray-800 border-b pb-2">Endereço</h4>
+                <h4 className="text-base font-semibold text-foreground border-b pb-2">Endereço</h4>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <CepInput

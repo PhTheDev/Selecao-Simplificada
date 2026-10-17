@@ -50,14 +50,14 @@ export function CreateAdminModal({
                     <button
                         onClick={onClose}
                         disabled={isCreating}
-                        className="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-6 py-3 bg-muted text-foreground/80 font-medium rounded-xl hover:bg-border transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Cancelar
                     </button>
                     <button
                         onClick={onSubmit}
                         disabled={isCreating}
-                        className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-medium rounded-xl hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isCreating ? (
                             <>
@@ -73,13 +73,13 @@ export function CreateAdminModal({
                     </button>
                 </>
             }
-            backdropClass="bg-black/20 backdrop-blur-sm"
+            backdropClass="bg-black/20"
         >
             <form onSubmit={onSubmit} className="p-6 space-y-6">
                 {error && <Alert type="error" message={error} />}
 
-                <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-4">
-                    <p className="text-sm text-blue-900 flex items-center gap-2 font-medium">
+                <div className="rounded-2xl border border-primary/30 bg-primary-soft/60 p-4">
+                    <p className="text-sm text-primary flex items-center gap-2 font-medium">
                         <ShieldPlus className="w-4 h-4" />
                         Novo usuário administrativo (Super Admin)
                     </p>
@@ -87,8 +87,8 @@ export function CreateAdminModal({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                            <User className="w-4 h-4 text-gray-500" />
+                        <label className="flex items-center gap-2 text-sm font-medium text-foreground/80 mb-2">
+                            <User className="w-4 h-4 text-muted-foreground" />
                             Nome *
                         </label>
                         <input
@@ -96,13 +96,13 @@ export function CreateAdminModal({
                             name="first_name"
                             value={formData.first_name}
                             onChange={onInputChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            className="w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                             required
                         />
                     </div>
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                            <User className="w-4 h-4 text-gray-500" />
+                        <label className="flex items-center gap-2 text-sm font-medium text-foreground/80 mb-2">
+                            <User className="w-4 h-4 text-muted-foreground" />
                             Sobrenome *
                         </label>
                         <input
@@ -110,7 +110,7 @@ export function CreateAdminModal({
                             name="last_name"
                             value={formData.last_name}
                             onChange={onInputChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            className="w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                             required
                         />
                     </div>
@@ -118,8 +118,8 @@ export function CreateAdminModal({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                            <UserPlus className="w-4 h-4 text-gray-500" />
+                        <label className="flex items-center gap-2 text-sm font-medium text-foreground/80 mb-2">
+                            <UserPlus className="w-4 h-4 text-muted-foreground" />
                             Nome de Usuário *
                         </label>
                         <input
@@ -127,13 +127,13 @@ export function CreateAdminModal({
                             name="username"
                             value={formData.username}
                             onChange={onInputChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            className="w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                             required
                         />
                     </div>
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                            <Mail className="w-4 h-4 text-gray-500" />
+                        <label className="flex items-center gap-2 text-sm font-medium text-foreground/80 mb-2">
+                            <Mail className="w-4 h-4 text-muted-foreground" />
                             Email *
                         </label>
                         <input
@@ -141,7 +141,7 @@ export function CreateAdminModal({
                             name="email"
                             value={formData.email}
                             onChange={onInputChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            className="w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                             required
                         />
                     </div>
@@ -149,8 +149,8 @@ export function CreateAdminModal({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                            <KeyRound className="w-4 h-4 text-gray-500" />
+                        <label className="flex items-center gap-2 text-sm font-medium text-foreground/80 mb-2">
+                            <KeyRound className="w-4 h-4 text-muted-foreground" />
                             Senha *
                         </label>
                         <div className="relative">
@@ -159,14 +159,14 @@ export function CreateAdminModal({
                                 name="password"
                                 value={formData.password}
                                 onChange={onInputChange}
-                                className="w-full px-4 py-3 pr-11 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                className="w-full px-4 py-3 pr-11 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                                 minLength={8}
                                 required
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword((prev) => !prev)}
-                                className="absolute inset-y-0 right-3 text-gray-500 hover:text-gray-700"
+                                className="absolute inset-y-0 right-3 text-muted-foreground hover:text-foreground/80"
                                 aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
                             >
                                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -174,8 +174,8 @@ export function CreateAdminModal({
                         </div>
                     </div>
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                            <KeyRound className="w-4 h-4 text-gray-500" />
+                        <label className="flex items-center gap-2 text-sm font-medium text-foreground/80 mb-2">
+                            <KeyRound className="w-4 h-4 text-muted-foreground" />
                             Confirmar Senha *
                         </label>
                         <div className="relative">
@@ -184,14 +184,14 @@ export function CreateAdminModal({
                                 name="password_confirm"
                                 value={formData.password_confirm}
                                 onChange={onInputChange}
-                                className="w-full px-4 py-3 pr-11 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                className="w-full px-4 py-3 pr-11 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                                 minLength={8}
                                 required
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPasswordConfirm((prev) => !prev)}
-                                className="absolute inset-y-0 right-3 text-gray-500 hover:text-gray-700"
+                                className="absolute inset-y-0 right-3 text-muted-foreground hover:text-foreground/80"
                                 aria-label={showPasswordConfirm ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'}
                             >
                                 {showPasswordConfirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -202,8 +202,8 @@ export function CreateAdminModal({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                            <Hash className="w-4 h-4 text-gray-500" />
+                        <label className="flex items-center gap-2 text-sm font-medium text-foreground/80 mb-2">
+                            <Hash className="w-4 h-4 text-muted-foreground" />
                             Matrícula *
                         </label>
                         <input
@@ -213,13 +213,13 @@ export function CreateAdminModal({
                             onChange={onInputChange}
                             inputMode="numeric"
                             pattern="\d{4,10}"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            className="w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                             required
                         />
                     </div>
                     <div>
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                            <Building2 className="w-4 h-4 text-gray-500" />
+                        <label className="flex items-center gap-2 text-sm font-medium text-foreground/80 mb-2">
+                            <Building2 className="w-4 h-4 text-muted-foreground" />
                             Departamento
                         </label>
                         <input
@@ -227,7 +227,7 @@ export function CreateAdminModal({
                             name="department"
                             value={formData.department}
                             onChange={onInputChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            className="w-full px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                         />
                     </div>
                 </div>

@@ -196,7 +196,7 @@ export default function ProcessAnalysisPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
+    <div className="min-h-screen bg-background p-6">
       <Header process={selectionProcess} onBack={() => router.push('/painel-admin/processos')} />
 
       <StageControl
@@ -215,7 +215,7 @@ export default function ProcessAnalysisPage() {
               <button
                 onClick={handleReopenProcess}
                 disabled={reopenProcessMutation.isPending}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-medium hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-6 py-3 bg-warning text-white rounded-xl font-medium hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {reopenProcessMutation.isPending
                   ? 'Reabrindo...'
@@ -240,7 +240,7 @@ export default function ProcessAnalysisPage() {
               <button
                 onClick={handleSelectWinners}
                 disabled={selectWinnersMutation.isPending}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-xl font-medium hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-6 py-3 bg-warning text-white rounded-xl font-medium hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {selectWinnersMutation.isPending ? 'Selecionando...' : '🏆 Selecionar Ganhadores (Manual)'}
               </button>
@@ -283,21 +283,21 @@ export default function ProcessAnalysisPage() {
           <>
             <button
               onClick={() => setConfirmAction(null)}
-              className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="px-4 py-2 rounded-lg border border-input text-foreground/80 hover:bg-background"
             >
               Cancelar
             </button>
             <button
               onClick={executeConfirmedAction}
               disabled={isMutating}
-              className="px-4 py-2 rounded-lg bg-[#005f73] text-white hover:bg-[#0a9396] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isMutating ? 'Confirmando...' : 'Confirmar'}
             </button>
           </>
         }
       >
-        <div className="p-6 text-sm text-gray-700">
+        <div className="p-6 text-sm text-foreground/80">
           {confirmAction === 'advance' && (
             <p>
               Deseja realmente alterar para a proxima etapa (Etapa 2)? Esta acao nao podera ser desfeita.
@@ -312,12 +312,12 @@ export default function ProcessAnalysisPage() {
             <div className="space-y-3">
               <p>Deseja realmente finalizar o processo? Apos isso, o processo nao podera ser alterado.</p>
               {winnerDecisionSummary.pending > 0 && (
-                <p className="rounded-lg border border-amber-200 bg-amber-50 p-2 text-amber-800">
+                <p className="rounded-lg border border-warning/30 bg-warning-soft p-2 text-warning">
                   Atenção: há vencedor(es) com decisão pendente. Ao finalizar, essas decisões também serão congeladas.
                 </p>
               )}
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 text-xs">
-                <p className="font-semibold text-gray-700">Resumo das decisoes:</p>
+              <div className="rounded-lg border border-border bg-background p-3 text-xs">
+                <p className="font-semibold text-foreground/80">Resumo das decisoes:</p>
                 <p>Aceitou: {winnerDecisionSummary.accepted}</p>
                 <p>Desistiu: {winnerDecisionSummary.declined}</p>
                 <p>Pendente: {winnerDecisionSummary.pending}</p>

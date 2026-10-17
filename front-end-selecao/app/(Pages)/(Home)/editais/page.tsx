@@ -3,7 +3,9 @@
 import { useSelectionProcesses } from '@/api/hooks/useSelectionProcess';
 import { SelectionProcess } from '@/api/types/selection';
 import Footer from '@/components/Footer';
-import ProcessosHeader from '@/components/processos-seletivos/ProcessosHeader';
+import { useI18n } from '@/components/i18n/LanguageProvider';
+import Header from '@/components/main-page/Header';
+import SplitWords from '@/components/motion/SplitWords';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Calendar,
@@ -28,25 +30,25 @@ type ProcessStatus = 'active' | 'upcoming' | 'finished';
 const LoadingSkeleton = () => (
   <div className="space-y-8">
     {[1, 2, 3].map((item) => (
-      <div key={item} className="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse">
+      <div key={item} className="bg-card rounded-2xl shadow-sm overflow-hidden animate-pulse">
         <div className="flex flex-col lg:flex-row">
           <div className="lg:w-2/5">
-            <div className="aspect-video bg-gray-300"></div>
+            <div className="aspect-video bg-input"></div>
             <div className="p-4 space-y-3">
-              <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-              <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+              <div className="h-4 bg-input rounded w-3/4"></div>
+              <div className="h-4 bg-input rounded w-1/2"></div>
             </div>
           </div>
           <div className="lg:w-3/5 p-6">
-            <div className="h-6 bg-gray-300 rounded w-3/4 mb-4"></div>
-            <div className="h-4 bg-gray-300 rounded w-1/2 mb-4"></div>
+            <div className="h-6 bg-input rounded w-3/4 mb-4"></div>
+            <div className="h-4 bg-input rounded w-1/2 mb-4"></div>
             <div className="space-y-2 mb-4">
-              <div className="h-4 bg-gray-300 rounded w-full"></div>
-              <div className="h-4 bg-gray-300 rounded w-5/6"></div>
+              <div className="h-4 bg-input rounded w-full"></div>
+              <div className="h-4 bg-input rounded w-5/6"></div>
             </div>
             <div className="flex gap-4 mt-6">
-              <div className="h-10 bg-gray-300 rounded-xl flex-1"></div>
-              <div className="h-10 bg-gray-300 rounded-xl w-32"></div>
+              <div className="h-10 bg-input rounded-xl flex-1"></div>
+              <div className="h-10 bg-input rounded-xl w-32"></div>
             </div>
           </div>
         </div>
@@ -56,9 +58,9 @@ const LoadingSkeleton = () => (
 );
 
 const FileIcon = ({ type }: { type: string }) => {
-  if (type === 'pdf') return <FileText className="text-red-500" size={20} />;
-  if (type === 'doc' || type === 'docx') return <FileText className="text-blue-500" size={20} />;
-  return <FileText className="text-gray-500" size={20} />;
+  if (type === 'pdf') return <FileText className="text-destructive" size={20} />;
+  if (type === 'doc' || type === 'docx') return <FileText className="text-primary" size={20} />;
+  return <FileText className="text-muted-foreground" size={20} />;
 };
 
 const getProcessStatus = (process: SelectionProcess): ProcessStatus => {
@@ -151,6 +153,7 @@ const generateDocuments = (process: SelectionProcess) => {
 };
 
 export default function EditaisProcessosSeletivos() {
+  const { t } = useI18n();
   const [selectedStatus, setSelectedStatus] = useState<ProcessStatus | 'all'>('all');
   const [expandedProcess, setExpandedProcess] = useState<number | null>(null);
   const [downloading, setDownloading] = useState<number | null>(null);
@@ -236,13 +239,13 @@ export default function EditaisProcessosSeletivos() {
   const getStatusPillClass = (status: ProcessStatus) => {
     switch (status) {
       case 'active':
-        return 'bg-green-50 text-green-700 border border-green-200';
+        return 'bg-success-soft text-success border border-success/30';
       case 'upcoming':
-        return 'bg-blue-50 text-blue-700 border border-blue-200';
+        return 'bg-primary-soft text-primary border border-primary/30';
       case 'finished':
-        return 'bg-gray-100 text-gray-700 border border-gray-200';
+        return 'bg-muted text-foreground/80 border border-border';
       default:
-        return 'bg-gray-100 text-gray-700 border border-gray-200';
+        return 'bg-muted text-foreground/80 border border-border';
     }
   };
 
@@ -274,17 +277,17 @@ export default function EditaisProcessosSeletivos() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <ProcessosHeader />
+      <div className="min-h-screen bg-background">
+        <Header />
         <div className="container mx-auto px-4 py-20 pt-32 text-center">
-          <div className="bg-white rounded-2xl p-8 shadow-lg max-w-lg mx-auto">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Erro ao carregar editais</h2>
-            <p className="text-gray-600 mb-6">
+          <div className="bg-card rounded-2xl p-8 shadow-sm max-w-lg mx-auto">
+            <h2 className="text-2xl font-bold text-foreground mb-4">Erro ao carregar editais</h2>
+            <p className="text-muted-foreground mb-6">
               Tente recarregar a página ou entre em contato com o suporte.
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-[#005f73] text-white px-6 py-3 rounded-xl font-bold hover:bg-[#0a9396] transition-colors w-full sm:w-auto"
+              className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:bg-primary-hover transition-colors w-full sm:w-auto"
             >
               Recarregar Página
             </button>
@@ -295,61 +298,50 @@ export default function EditaisProcessosSeletivos() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <ProcessosHeader />
+    <div className="min-h-screen bg-background">
+      <Header />
 
-      {/* Hero - responsivo */}
-      <motion.div
-        className="bg-gradient-to-br from-[#005f73] to-[#0a9396] text-white py-12 md:py-16 lg:py-20 pt-24 md:pt-28 lg:pt-32"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-4xl mx-auto">
-            <motion.h1
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl font-black text-[#e9d8a6] mb-4 md:mb-6 leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              Editais dos Processos Seletivos
-            </motion.h1>
-            <motion.p
-              className="text-base sm:text-lg md:text-xl text-white/80 leading-relaxed px-2"
-              initial={{ y: -10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              Acesse todos os editais completos dos processos seletivos para estágio na Seleção Simplificada.
-              Download de documentos, anexos e informações detalhadas.
-            </motion.p>
-          </div>
-        </div>
-      </motion.div>
+      {/* Hero */}
+      <section className="px-5 pb-10 pt-16 text-center md:px-8 md:pb-14 md:pt-24">
+        <p className="mx-auto inline-flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-sm text-muted-foreground">
+          <span className="h-2 w-2 rounded-full bg-highlight ring-2 ring-primary/30" />
+          {t('Documentos oficiais')}
+        </p>
+        <h1 className="mx-auto mt-6 max-w-3xl text-[clamp(2.25rem,5.5vw,4.25rem)] font-medium leading-[1]">
+          <SplitWords text={t('Editais dos')} /><SplitWords text={t('processos')} className="font-serif font-normal italic" delay={0.15} />
+        </h1>
+        <motion.p
+          className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground"
+          initial={{ y: 12, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          {t('Baixe os editais completos, anexos e documentos de cada processo seletivo para estágio.')}
+        </motion.p>
+      </section>
 
       {/* Filtros - responsivo com dropdown em mobile */}
       <motion.div
-        className="bg-white border-b border-gray-200 sticky top-20 z-40"
+        className="sticky top-[4.5rem] z-40 border-b bg-background/85 backdrop-blur"
         initial={{ y: -10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.6 }}
       >
-        <div className="container mx-auto px-4 py-4 md:py-6">
+        <div className="container mx-auto px-4 py-3 md:py-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="hidden md:flex md:items-center gap-3">
-              <Filter size={20} className="text-gray-600" />
-              <span className="font-semibold text-gray-700">Filtrar por:</span>
+              <Filter size={20} className="text-muted-foreground" />
+              <span className="font-semibold text-foreground/80">Filtrar por:</span>
             </div>
 
             <div className="flex md:hidden items-center justify-between w-full">
               <div className="flex items-center gap-3">
-                <Filter size={20} className="text-gray-600" />
-                <span className="font-semibold text-gray-700">Filtrar por:</span>
+                <Filter size={20} className="text-muted-foreground" />
+                <span className="font-semibold text-foreground/80">Filtrar por:</span>
               </div>
               <button
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-xl text-gray-700 font-medium"
+                className="flex items-center gap-2 px-4 py-2 bg-muted rounded-xl text-foreground/80 font-medium"
               >
                 {statusFilters.find((f) => f.value === selectedStatus)?.label || 'Todos os Editais'}
                 <ChevronDown size={18} className={`transition-transform duration-300 ${isFilterOpen ? 'rotate-180' : ''}`} />
@@ -363,8 +355,8 @@ export default function EditaisProcessosSeletivos() {
                   onClick={() => setSelectedStatus(filter.value as any)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                     selectedStatus === filter.value
-                      ? 'bg-[#005f73] text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-primary text-primary-foreground shadow-md'
+                      : 'bg-muted text-foreground/80 hover:bg-border'
                   }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -378,7 +370,7 @@ export default function EditaisProcessosSeletivos() {
             </div>
 
             <motion.div
-              className="hidden md:block text-sm text-gray-600"
+              className="hidden md:block text-sm text-muted-foreground"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.95 }}
@@ -402,8 +394,8 @@ export default function EditaisProcessosSeletivos() {
                     onClick={() => setSelectedStatus(filter.value as any)}
                     className={`w-full px-4 py-3 rounded-xl text-left font-medium transition-all duration-200 ${
                       selectedStatus === filter.value
-                        ? 'bg-[#005f73] text-white shadow-md'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? 'bg-primary text-primary-foreground shadow-md'
+                        : 'bg-muted text-foreground/80 hover:bg-border'
                     }`}
                   >
                     {filter.label}
@@ -413,7 +405,7 @@ export default function EditaisProcessosSeletivos() {
             )}
           </AnimatePresence>
 
-          <div className="md:hidden mt-4 text-sm text-gray-600 text-center">
+          <div className="md:hidden mt-4 text-sm text-muted-foreground text-center">
             {isLoading ? 'Carregando...' : `${filteredProcesses.length} edital(is) encontrado(s)`}
           </div>
         </div>
@@ -423,22 +415,22 @@ export default function EditaisProcessosSeletivos() {
       <style jsx global>{`
         .styled-scroll {
           scrollbar-width: thin;
-          scrollbar-color: rgba(10, 147, 150, 0.55) rgba(226, 232, 240, 0.8);
+          scrollbar-color: rgba(85, 118, 28, 0.55) rgba(232, 231, 224, 0.9);
         }
         .styled-scroll::-webkit-scrollbar {
           width: 8px;
         }
         .styled-scroll::-webkit-scrollbar-track {
-          background: rgba(226, 232, 240, 0.8);
+          background: rgba(232, 231, 224, 0.9);
           border-radius: 999px;
         }
         .styled-scroll::-webkit-scrollbar-thumb {
-          background: rgba(10, 147, 150, 0.55);
+          background: rgba(85, 118, 28, 0.55);
           border-radius: 999px;
-          border: 2px solid rgba(226, 232, 240, 0.8);
+          border: 2px solid rgba(232, 231, 224, 0.9);
         }
         .styled-scroll::-webkit-scrollbar-thumb:hover {
-          background: rgba(0, 95, 115, 0.75);
+          background: rgba(85, 118, 28, 0.75);
         }
         @media (max-width: 640px) {
           .styled-scroll {
@@ -463,7 +455,7 @@ export default function EditaisProcessosSeletivos() {
               return (
                 <motion.div
                   key={process.id}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+                  className="bg-card rounded-2xl shadow-sm transition-all duration-300 overflow-hidden"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.08 }}
@@ -504,17 +496,17 @@ export default function EditaisProcessosSeletivos() {
                             <Clock size={12} />
                             {getStatusText(process.status)}
                           </span>
-                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-primary-soft text-primary border border-primary/30">
                             <Users size={12} />
                             {process.vacancies} vaga{process.vacancies > 1 ? 's' : ''}
                           </span>
-                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200">
+                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-primary-soft text-primary border border-primary/30">
                             <FileText size={12} />
                             {docsCount} documento{docsCount > 1 ? 's' : ''}
                           </span>
                           {process.status === 'active' && (
-                            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200">
-                              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-success-soft text-success border border-success/30">
+                              <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
                               Edital vigente
                             </span>
                           )}
@@ -529,50 +521,50 @@ export default function EditaisProcessosSeletivos() {
                           <div className="flex flex-col gap-3 mb-4">
                             <div className="flex-1">
                               <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-                                <h3 className="text-xl md:text-2xl font-black text-gray-900">
+                                <h3 className="text-xl md:text-2xl font-semibold text-foreground">
                                   {process.title}
                                 </h3>
                               </div>
-                              <p className="text-gray-600 font-medium text-sm md:text-base mb-3">
+                              <p className="text-muted-foreground font-medium text-sm md:text-base mb-3">
                                 {process.subtitle}
                               </p>
-                              <div className="flex flex-wrap gap-3 md:gap-4 text-xs md:text-sm text-gray-600 mb-4">
+                              <div className="flex flex-wrap gap-3 md:gap-4 text-xs md:text-sm text-muted-foreground mb-4">
                                 <div className="flex items-center gap-2">
-                                  <MapPin size={14} className="text-[#005f73]" />
+                                  <MapPin size={14} className="text-primary" />
                                   <span className="truncate max-w-[150px] sm:max-w-none">
                                     {process.location}
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                  <Calendar size={14} className="text-[#005f73]" />
+                                  <Calendar size={14} className="text-primary" />
                                   <span>
                                     {process.date} - {process.time}
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                  <Users size={14} className="text-[#005f73]" />
+                                  <Users size={14} className="text-primary" />
                                   <span>{process.vacancies} vaga(s)</span>
                                 </div>
                               </div>
                               <div className="relative">
-                                <div className="styled-scroll max-h-[100px] md:max-h-[132px] overflow-y-auto pr-2 rounded-xl border border-gray-100 bg-gray-50/40 p-3 md:p-4">
-                                  <p className="text-gray-700 leading-relaxed whitespace-pre-line text-sm md:text-base">
+                                <div className="styled-scroll max-h-[100px] md:max-h-[132px] overflow-y-auto pr-2 rounded-xl border border-border bg-background/40 p-3 md:p-4">
+                                  <p className="text-foreground/80 leading-relaxed whitespace-pre-line text-sm md:text-base">
                                     {process.description}
                                   </p>
                                 </div>
-                                <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-6 md:h-8 bg-gradient-to-t from-white via-white/70 to-transparent"></div>
+                                <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-6 md:h-8 bg-gradient-to-t from-card via-white/70 to-transparent"></div>
                               </div>
                             </div>
                           </div>
                         </div>
 
                         {/* Botões de ação */}
-                        <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 mt-4">
+                        <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-border mt-4">
                           <motion.button
                             className={`flex items-center justify-center gap-2 flex-1 py-3 px-4 md:px-6 rounded-xl font-bold text-sm md:text-base text-white transition-all duration-300 ${
                               !hasDocs || isDownloading
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-gradient-to-r from-[#005f73] to-[#0a9396] hover:from-[#0a9396] hover:to-[#005f73]'
+                                ? 'bg-muted-foreground cursor-not-allowed'
+                                : 'bg-primary'
                             }`}
                             whileHover={hasDocs && !isDownloading ? { scale: 1.02 } : {}}
                             whileTap={hasDocs && !isDownloading ? { scale: 0.98 } : {}}
@@ -600,8 +592,8 @@ export default function EditaisProcessosSeletivos() {
                             onClick={() => toggleExpand(process.id)}
                             className={`flex items-center justify-center gap-2 px-4 md:px-6 py-3 border-2 rounded-xl font-bold text-sm md:text-base transition-colors ${
                               hasDocs
-                                ? 'text-[#005f73] border-[#005f73] hover:bg-[#005f73] hover:text-white'
-                                : 'text-gray-400 border-gray-300 cursor-not-allowed'
+                                ? 'text-primary border-primary hover:bg-primary hover:text-primary-foreground'
+                                : 'text-muted-foreground/70 border-input cursor-not-allowed'
                             }`}
                             whileHover={hasDocs ? { scale: 1.02 } : {}}
                             whileTap={hasDocs ? { scale: 0.98 } : {}}
@@ -624,7 +616,7 @@ export default function EditaisProcessosSeletivos() {
                   <AnimatePresence>
                     {isExpanded && (
                       <motion.div
-                        className="bg-gray-50 border-t border-gray-100 overflow-hidden"
+                        className="bg-background border-t border-border overflow-hidden"
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
@@ -634,8 +626,8 @@ export default function EditaisProcessosSeletivos() {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                             {/* Documentos do Edital */}
                             <div>
-                              <h4 className="font-bold text-gray-900 mb-4 text-lg flex items-center gap-2">
-                                <FileText size={20} className="text-[#005f73]" />
+                              <h4 className="font-bold text-foreground mb-4 text-lg flex items-center gap-2">
+                                <FileText size={20} className="text-primary" />
                                 Documentos do Edital
                               </h4>
                               {process.documents.length > 0 ? (
@@ -643,7 +635,7 @@ export default function EditaisProcessosSeletivos() {
                                   {process.documents.map((doc: any, idx: number) => (
                                     <motion.div
                                       key={idx}
-                                      className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-white rounded-lg border border-gray-200 hover:border-[#005f73] transition-colors gap-3"
+                                      className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-card rounded-lg border border-border hover:border-primary transition-colors gap-3"
                                       initial={{ opacity: 0, x: -10 }}
                                       animate={{ opacity: 1, x: 0 }}
                                       transition={{ duration: 0.3, delay: idx * 0.05 }}
@@ -651,10 +643,10 @@ export default function EditaisProcessosSeletivos() {
                                       <div className="flex items-center gap-3 min-w-0 flex-1">
                                         <FileIcon type={doc.type} />
                                         <div className="min-w-0 flex-1">
-                                          <div className="font-medium text-gray-900 break-words">
+                                          <div className="font-medium text-foreground break-words">
                                             {doc.name}
                                           </div>
-                                          <div className="text-sm text-gray-500">
+                                          <div className="text-sm text-muted-foreground">
                                             {doc.size || '—'}
                                           </div>
                                         </div>
@@ -664,8 +656,8 @@ export default function EditaisProcessosSeletivos() {
                                         onClick={() => handleDownload(doc.url, doc.name, process.id)}
                                         className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-colors font-bold text-sm w-full sm:w-auto ${
                                           downloading === process.id
-                                            ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                                            : 'bg-[#005f73] text-white hover:bg-[#0a9396]'
+                                            ? 'bg-input text-muted-foreground cursor-not-allowed'
+                                            : 'bg-primary text-primary-foreground hover:bg-primary-hover'
                                         }`}
                                         whileHover={downloading !== process.id ? { scale: 1.05 } : {}}
                                         whileTap={downloading !== process.id ? { scale: 0.95 } : {}}
@@ -678,71 +670,71 @@ export default function EditaisProcessosSeletivos() {
                                   ))}
                                 </div>
                               ) : (
-                                <p className="text-gray-500 italic">Nenhum documento disponível.</p>
+                                <p className="text-muted-foreground italic">Nenhum documento disponível.</p>
                               )}
                             </div>
 
                             {/* Informações do Processo */}
                             <div>
-                              <h4 className="font-bold text-gray-900 mb-4 text-lg">
+                              <h4 className="font-bold text-foreground mb-4 text-lg">
                                 Informações do Processo
                               </h4>
                               <div className="space-y-4">
                                 <div>
-                                  <h5 className="font-semibold text-gray-900 mb-2">
+                                  <h5 className="font-semibold text-foreground mb-2">
                                     Requisitos Principais
                                   </h5>
                                   <ul className="space-y-2">
                                     {process.requirements.slice(0, 5).map((req: string, idx: number) => (
                                       <motion.li
                                         key={idx}
-                                        className="flex items-start gap-2 text-gray-700 text-sm"
+                                        className="flex items-start gap-2 text-foreground/80 text-sm"
                                         initial={{ opacity: 0, x: -10 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ duration: 0.3, delay: idx * 0.05 }}
                                       >
-                                        <div className="w-1.5 h-1.5 bg-[#005f73] rounded-full mt-2 flex-shrink-0"></div>
+                                        <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                                         <span>{req}</span>
                                       </motion.li>
                                     ))}
                                   </ul>
                                 </div>
                                 <motion.div
-                                  className="bg-white rounded-xl p-4 border border-gray-200"
+                                  className="bg-card rounded-xl p-4 border border-border"
                                   initial={{ opacity: 0, y: 10 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ duration: 0.3, delay: 0.2 }}
                                 >
-                                  <h5 className="font-semibold text-gray-900 mb-3">
+                                  <h5 className="font-semibold text-foreground mb-3">
                                     Período do Processo
                                   </h5>
                                   <div className="space-y-2 text-sm">
                                     <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
-                                      <span className="text-gray-600">Publicação do edital:</span>
-                                      <span className="font-medium text-gray-900">
+                                      <span className="text-muted-foreground">Publicação do edital:</span>
+                                      <span className="font-medium text-foreground">
                                         {new Date(process.startDate).toLocaleDateString('pt-BR')}
                                       </span>
                                     </div>
                                     <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
-                                      <span className="text-gray-600">Data limite:</span>
-                                      <span className="font-medium text-gray-900">
+                                      <span className="text-muted-foreground">Data limite:</span>
+                                      <span className="font-medium text-foreground">
                                         {new Date(process.endDate).toLocaleDateString('pt-BR')}
                                       </span>
                                     </div>
                                   </div>
                                 </motion.div>
                                 <div>
-                                  <h5 className="font-semibold text-gray-900 mb-2">Benefícios</h5>
+                                  <h5 className="font-semibold text-foreground mb-2">Benefícios</h5>
                                   <ul className="space-y-2">
                                     {process.benefits.slice(0, 5).map((b: string, idx: number) => (
                                       <motion.li
                                         key={idx}
-                                        className="flex items-start gap-2 text-gray-700 text-sm"
+                                        className="flex items-start gap-2 text-foreground/80 text-sm"
                                         initial={{ opacity: 0, x: -10 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ duration: 0.3, delay: idx * 0.05 + 0.1 }}
                                       >
-                                        <div className="w-1.5 h-1.5 bg-[#0a9396] rounded-full mt-2 flex-shrink-0"></div>
+                                        <div className="w-1.5 h-1.5 bg-primary-hover rounded-full mt-2 flex-shrink-0"></div>
                                         <span>{b}</span>
                                       </motion.li>
                                     ))}
@@ -754,13 +746,13 @@ export default function EditaisProcessosSeletivos() {
 
                           {/* CTA final */}
                           <motion.div
-                            className="flex flex-col sm:flex-row gap-3 mt-6 pt-6 border-t border-gray-200"
+                            className="flex flex-col sm:flex-row gap-3 mt-6 pt-6 border-t border-border"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3, delay: 0.35 }}
                           >
                             <motion.a
-                              className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 text-center sm:text-left"
+                              className="px-6 py-3 border-2 border-input text-foreground/80 rounded-xl font-bold hover:bg-muted transition-all duration-300 text-center sm:text-left"
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
                               href="/faq"
@@ -788,13 +780,13 @@ export default function EditaisProcessosSeletivos() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="text-gray-400 mb-4">
+              <div className="text-muted-foreground/70 mb-4">
                 <FileText size={48} className="mx-auto md:w-16 md:h-16" />
               </div>
-              <h3 className="text-xl md:text-2xl font-bold text-gray-600 mb-2">
+              <h3 className="text-xl md:text-2xl font-bold text-muted-foreground mb-2">
                 Nenhum edital encontrado
               </h3>
-              <p className="text-gray-500 max-w-md mx-auto px-4">
+              <p className="text-muted-foreground max-w-md mx-auto px-4">
                 Não há editais disponíveis para o filtro selecionado no momento.
               </p>
             </motion.div>

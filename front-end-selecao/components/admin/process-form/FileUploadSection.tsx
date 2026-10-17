@@ -74,18 +74,18 @@ export function FileUploadSection({
     // Render
     // ------------------------------------------------------------
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-            <h2 className="font-semibold text-xl text-gray-800 mb-6 flex items-center gap-2">
-                <FileText className="w-6 h-6 text-gray-600" />
+        <div className="bg-card rounded-2xl shadow-sm border border-border p-6">
+            <h2 className="font-semibold text-xl text-foreground mb-6 flex items-center gap-2">
+                <FileText className="w-6 h-6 text-muted-foreground" />
                 Documentos e Imagens
             </h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Coluna: Banner */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <label className="block text-sm font-medium text-foreground/80 mb-3">
                         Banner do Processo *
-                        <span className="text-xs text-gray-500 ml-2">
+                        <span className="text-xs text-muted-foreground ml-2">
                             (Recomendado: 1920x1080px, máx. 5MB)
                         </span>
                     </label>
@@ -96,12 +96,12 @@ export function FileUploadSection({
                                 <img
                                     src={bannerPreview}
                                     alt="Preview do banner"
-                                    className="w-full h-48 object-cover rounded-xl border border-gray-300"
+                                    className="w-full h-48 object-cover rounded-xl border border-input"
                                 />
                                 <button
                                     type="button"
                                     onClick={() => onBannerChange(null, null)}
-                                    className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                                    className="absolute top-2 right-2 p-1 bg-destructive text-white rounded-full hover:bg-destructive transition-colors"
                                 >
                                     <X className="w-4 h-4" />
                                 </button>
@@ -111,16 +111,16 @@ export function FileUploadSection({
                         <label
                             className={`flex flex-col items-center justify-center w-full border-2 border-dashed rounded-xl cursor-pointer transition-colors ${
                                 bannerPreview
-                                    ? 'border-gray-300 hover:border-gray-400'
-                                    : 'border-gray-300 hover:border-blue-500 hover:bg-blue-50'
+                                    ? 'border-input hover:border-input'
+                                    : 'border-input hover:border-primary hover:bg-primary-soft'
                             }`}
                         >
                             <div className="flex flex-col items-center justify-center pt-8 pb-6 px-4">
-                                <ImageIcon className="w-12 h-12 text-gray-400 mb-3" />
-                                <p className="text-sm text-gray-600 text-center">
+                                <ImageIcon className="w-12 h-12 text-muted-foreground/70 mb-3" />
+                                <p className="text-sm text-muted-foreground text-center">
                                     <span className="font-medium">Clique para upload</span> ou arraste e solte
                                 </p>
-                                <p className="text-xs text-gray-500 mt-1 text-center">
+                                <p className="text-xs text-muted-foreground mt-1 text-center">
                                     PNG, JPG, JPEG (Máx. 5MB)
                                 </p>
                             </div>
@@ -137,9 +137,9 @@ export function FileUploadSection({
 
                 {/* Coluna: Documentos do Edital (múltiplos) */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <label className="block text-sm font-medium text-foreground/80 mb-3">
                         Documentos do Edital *
-                        <span className="text-xs text-gray-500 ml-2">
+                        <span className="text-xs text-muted-foreground ml-2">
                             (PDF ou Word, máx. 10MB cada)
                         </span>
                     </label>
@@ -151,21 +151,21 @@ export function FileUploadSection({
                                 {noticeDocFiles.map((file, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-center gap-3 p-3 bg-green-50 rounded-xl border border-green-200"
+                                        className="flex items-center gap-3 p-3 bg-success-soft rounded-xl border border-success/30"
                                     >
-                                        <FileText className="w-6 h-6 text-green-600 flex-shrink-0" />
+                                        <FileText className="w-6 h-6 text-success flex-shrink-0" />
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium text-green-900 truncate">
+                                            <p className="text-sm font-medium text-success truncate">
                                                 {file.name}
                                             </p>
-                                            <p className="text-xs text-green-700">
+                                            <p className="text-xs text-success">
                                                 {(file.size / 1024).toFixed(1)} KB
                                             </p>
                                         </div>
                                         <button
                                             type="button"
                                             onClick={() => handleRemoveDocument(index)}
-                                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                            className="p-2 text-destructive hover:bg-destructive-soft rounded-lg transition-colors"
                                             title="Remover arquivo"
                                         >
                                             <X className="w-4 h-4" />
@@ -176,13 +176,13 @@ export function FileUploadSection({
                         )}
 
                         {/* Input de upload com suporte a múltiplos arquivos */}
-                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer transition-colors hover:border-blue-500 hover:bg-blue-50">
+                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer transition-colors hover:border-primary hover:bg-primary-soft">
                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                                <p className="text-sm text-gray-600">
+                                <Upload className="w-8 h-8 text-muted-foreground/70 mb-2" />
+                                <p className="text-sm text-muted-foreground">
                                     <span className="font-medium">Clique para adicionar</span> ou arraste
                                 </p>
-                                <p className="text-xs text-gray-500 mt-1">
+                                <p className="text-xs text-muted-foreground mt-1">
                                     PDF, DOC, DOCX (até 10MB cada)
                                 </p>
                             </div>

@@ -19,14 +19,14 @@ export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
             transition={{ duration: 0.5 }}
         >
             <div className="flex items-center justify-between mb-4">
-                <div className="text-sm font-medium text-gray-600">Etapa {currentStep} de 3</div>
-                <div className="text-sm font-semibold text-[#005f73]">
+                <div className="text-sm font-medium text-muted-foreground">Etapa {currentStep} de 3</div>
+                <div className="text-sm font-semibold text-primary">
                     {stepTitles[currentStep - 1]}
                 </div>
             </div>
-            <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-2 bg-border rounded-full overflow-hidden">
                 <motion.div
-                    className="h-full bg-gradient-to-r from-[#005f73] to-[#0a9396]"
+                    className="h-full bg-primary"
                     initial={{ width: 0 }}
                     animate={{ width: `${(currentStep / 3) * 100}%` }}
                     transition={{ duration: 0.5, ease: 'easeInOut' }}
@@ -37,7 +37,7 @@ export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
                     <motion.div
                         key={step}
                         className={`flex flex-col items-center ${
-                            currentStep >= step ? 'text-[#005f73]' : 'text-gray-400'
+                            currentStep >= step ? 'text-primary' : 'text-muted-foreground/70'
                         }`}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
@@ -45,12 +45,12 @@ export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
                         <div
                             className={`w-8 h-8 rounded-full flex items-center justify-center mb-1 ${
                                 currentStep >= step
-                                    ? 'bg-[#e6f7f9] border-2 border-[#005f73]'
-                                    : 'bg-gray-100 border-2 border-gray-300'
+                                    ? 'bg-primary-soft border-2 border-primary'
+                                    : 'bg-muted border-2 border-input'
                             }`}
                         >
                             {currentStep > step ? (
-                                <CheckCircle className="w-4 h-4 text-[#0a9396]" />
+                                <CheckCircle className="w-4 h-4 text-primary-hover" />
                             ) : (
                                 <span className="text-sm font-semibold">{step}</span>
                             )}

@@ -172,23 +172,23 @@ export function FormEventLogin() {
   }
 
   return (
-    <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-white/20 shadow-2xl">
+    <div className="auth-card bg-card rounded-3xl p-6 sm:p-8 border">
       {/* Cabeçalho */}
       <div className="text-center mb-8 animate-fade-in">
-        <div className="w-16 h-16 bg-gradient-to-r from-[#005f73] to-[#0a9396] rounded-full flex items-center justify-center mx-auto mb-4">
-          <Shield className="h-8 w-8 text-white" />
+        <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary-hover rounded-full flex items-center justify-center mx-auto mb-4">
+          <Shield className="h-8 w-8 text-current" />
         </div>
-        <h1 className="text-3xl sm:text-4xl font-black text-[#e9d8a6] mb-2">
+        <h1 className="text-3xl sm:text-4xl font-semibold text-primary mb-2">
           Painel Administrativo
         </h1>
-        <p className="text-white/80 text-sm sm:text-base font-medium">
+        <p className="text-muted-foreground text-sm sm:text-base font-medium">
           Sistema de Administração <br /> {nomeConselho}
         </p>
       </div>
 
       {/* ✅ Alert de erro geral */}
       {error && (
-        <div className="mb-6 p-4 rounded-xl text-sm bg-red-500/20 border border-red-500/50 text-red-200">
+        <div className="mb-6 p-4 rounded-2xl text-sm bg-destructive/20 border border-destructive/50 text-destructive">
           <div className="flex items-start">
             <svg className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -202,13 +202,13 @@ export function FormEventLogin() {
       <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
         {/* Username */}
         <div className="space-y-2">
-          <label htmlFor="username" className="block text-sm font-semibold text-white/90">
+          <label htmlFor="username" className="block text-sm font-semibold text-muted-foreground">
             Usuário:
           </label>
 
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none transition-transform group-focus-within:-translate-y-1">
-              <User className="h-5 w-5 text-[#94d2bd] group-focus-within:text-[#e9d8a6] transition-colors" />
+              <User className="h-5 w-5 text-primary group-focus-within:text-primary transition-colors" />
             </div>
 
             <input
@@ -220,26 +220,26 @@ export function FormEventLogin() {
               placeholder="seu.usuario"
               required
               disabled={loading}
-              className={`w-full pl-10 pr-3 py-3 bg-white/10 border rounded-xl text-white placeholder-white/40 outline-none transition-all hover:bg-white/15 focus:bg-white/15 backdrop-blur-sm
-                ${fieldErrors.username ? "border-red-400/70 focus:ring-2 focus:ring-red-400 focus:border-transparent" : "border-white/20 focus:ring-2 focus:ring-[#e9d8a6] focus:border-transparent"}
+              className={`w-full pl-10 pr-3 py-3 bg-background border rounded-2xl text-foreground placeholder-muted-foreground outline-none transition-all hover:bg-white/15 focus:bg-white/15 backdrop-blur-sm
+                ${fieldErrors.username ? "border-destructive/70 focus:ring-2 focus:ring-destructive focus:border-transparent" : "border-input focus:ring-2 focus:ring-white focus:border-transparent"}
               `}
             />
           </div>
 
           {fieldErrors.username && (
-            <p className="text-xs text-red-200">{fieldErrors.username}</p>
+            <p className="text-xs text-destructive">{fieldErrors.username}</p>
           )}
         </div>
 
         {/* Password */}
         <div className="space-y-2">
-          <label htmlFor="password" className="block text-sm font-semibold text-white/90">
+          <label htmlFor="password" className="block text-sm font-semibold text-muted-foreground">
             Senha:
           </label>
 
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none transition-transform group-focus-within:-translate-y-1">
-              <Lock className="h-5 w-5 text-[#94d2bd] group-focus-within:text-[#e9d8a6] transition-colors" />
+              <Lock className="h-5 w-5 text-primary group-focus-within:text-primary transition-colors" />
             </div>
 
             <input
@@ -251,14 +251,14 @@ export function FormEventLogin() {
               placeholder="••••••••"
               required
               disabled={loading}
-              className={`w-full pl-10 pr-10 py-3 bg-white/10 border rounded-xl text-white placeholder-white/40 outline-none transition-all hover:bg-white/15 focus:bg-white/15 backdrop-blur-sm
-                ${fieldErrors.password ? "border-red-400/70 focus:ring-2 focus:ring-red-400 focus:border-transparent" : "border-white/20 focus:ring-2 focus:ring-[#e9d8a6] focus:border-transparent"}
+              className={`w-full pl-10 pr-10 py-3 bg-background border rounded-2xl text-foreground placeholder-muted-foreground outline-none transition-all hover:bg-white/15 focus:bg-white/15 backdrop-blur-sm
+                ${fieldErrors.password ? "border-destructive/70 focus:ring-2 focus:ring-destructive focus:border-transparent" : "border-input focus:ring-2 focus:ring-white focus:border-transparent"}
               `}
             />
 
             <button
               type="button"
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#94d2bd] hover:text-[#e9d8a6] transition-colors disabled:opacity-60"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-primary hover:text-primary transition-colors disabled:opacity-60"
               onClick={() => setShowPassword(!showPassword)}
               aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
               disabled={loading}
@@ -268,7 +268,7 @@ export function FormEventLogin() {
           </div>
 
           {fieldErrors.password && (
-            <p className="text-xs text-red-200">{fieldErrors.password}</p>
+            <p className="text-xs text-destructive">{fieldErrors.password}</p>
           )}
         </div>
 
@@ -276,13 +276,13 @@ export function FormEventLogin() {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full mt-6 py-4 px-4 bg-gradient-to-r from-[#005f73] to-[#0a9396] hover:from-[#0a9396] hover:to-[#005f73] text-white font-bold rounded-xl transition-all duration-300 flex items-center justify-center group shadow-lg shadow-[#005f73]/30 hover:shadow-[#0a9396]/40
+          className={`w-full mt-6 py-4 px-4 bg-primary hover:bg-primary-hover text-primary-foreground font-bold rounded-2xl transition-all duration-300 flex items-center justify-center group shadow-lg shadow-primary/30 hover:shadow-primary/40
             ${loading ? "opacity-90 cursor-wait" : "hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"}
           `}
         >
           {loading ? (
             <>
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
@@ -300,15 +300,15 @@ export function FormEventLogin() {
 
         {/* dica: só aparece se teve erro */}
         {hasAnyError && !loading && (
-          <p className="text-xs text-white/60 text-center">
+          <p className="text-xs text-muted-foreground text-center">
             Se você esqueceu a senha, peça ao suporte para redefinir o acesso do administrador.
           </p>
         )}
       </form>
 
       {/* Informação de acesso restrito */}
-      <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
-        <p className="text-white/70 text-xs text-center">
+      <div className="mt-6 p-4 bg-white/5 rounded-lg border border-input">
+        <p className="text-muted-foreground text-xs text-center">
           <Shield className="w-3 h-3 inline mr-1" />
           Acesso restrito para administradores do sistema
         </p>

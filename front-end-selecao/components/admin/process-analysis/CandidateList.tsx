@@ -48,18 +48,18 @@ export default function CandidateList({
     });
 
     return (
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-            <div className="p-6 border-b border-gray-200">
+        <div className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden">
+            <div className="p-6 border-b border-border">
                 <div className="flex flex-col md:flex-row gap-4 mb-4">
                     <div className="flex-1">
                         <div className="relative">
-                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/70" />
                             <input
                                 type="text"
                                 placeholder="Buscar por nome, email, CPF ou telefone..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full pl-12 pr-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent"
                             />
                         </div>
                     </div>
@@ -67,7 +67,7 @@ export default function CandidateList({
                         <select
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value)}
-                            className="px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent"
                         >
                             <option value="all">Todos os status</option>
                             <option value="pending">Pendente</option>
@@ -77,7 +77,7 @@ export default function CandidateList({
                         <select
                             value={stageFilter}
                             onChange={(e) => setStageFilter(e.target.value)}
-                            className="px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="px-4 py-3 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent"
                         >
                             <option value="all">Todas as etapas</option>
                             <option value="stage1_pending">Etapa 1 Pendente</option>
@@ -89,13 +89,13 @@ export default function CandidateList({
                 </div>
 
                 <div className="flex justify-between items-center">
-                    <h2 className="text-lg font-bold text-gray-900">
+                    <h2 className="text-lg font-bold text-foreground">
                         Candidatos Inscritos
-                        <span className="ml-2 text-sm font-normal text-gray-500">
+                        <span className="ml-2 text-sm font-normal text-muted-foreground">
                             ({filteredApplications.length} de {applications.length})
                         </span>
                     </h2>
-                    <div className="flex items-center gap-3 text-sm text-gray-600">
+                    <div className="flex items-center gap-3 text-sm text-muted-foreground">
                         <span>
                             <Filter className="w-4 h-4 inline mr-1" />
                             Filtros aplicados
@@ -105,7 +105,7 @@ export default function CandidateList({
                                 type="button"
                                 onClick={onRefreshList}
                                 disabled={isRefreshingList}
-                                className="px-3 py-1.5 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                                className="px-3 py-1.5 rounded-lg border border-input text-foreground/80 hover:bg-background disabled:opacity-50"
                             >
                                 {isRefreshingList ? 'Atualizando...' : 'Atualizar lista'}
                             </button>
@@ -114,7 +114,7 @@ export default function CandidateList({
                 </div>
             </div>
 
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-border">
                 {filteredApplications.map((application) => (
                     <CandidateAccordion
                         key={application.id}
@@ -128,13 +128,13 @@ export default function CandidateList({
 
                 {filteredApplications.length === 0 && (
                     <div className="py-16 text-center">
-                        <div className="text-gray-400 mb-4">
+                        <div className="text-muted-foreground/70 mb-4">
                             <Search className="w-16 h-16 mx-auto" />
                         </div>
-                        <h3 className="text-gray-900 font-semibold text-xl mb-2">
+                        <h3 className="text-foreground font-semibold text-xl mb-2">
                             Nenhum candidato encontrado
                         </h3>
-                        <p className="text-gray-600">
+                        <p className="text-muted-foreground">
                             Tente ajustar os termos de busca ou filtros.
                         </p>
                     </div>

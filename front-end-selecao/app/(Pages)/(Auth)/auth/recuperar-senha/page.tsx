@@ -1,9 +1,9 @@
 'use client'
 import BrandMark from "@/components/BrandMark";
 
-import backgroundImage from "@/app/assets/images/imagem-fundo.jpg"
 import { cleanPhone, formatPhone } from "@/utils/inputFormatters"
 import { cn } from "@/lib/utils"
+import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -203,36 +203,25 @@ export default function RecoverPasswordPage() {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
-      <div
-        className="relative flex-1 flex items-center justify-center p-8 min-h-[40vh] lg:min-h-screen"
-        style={{
-          backgroundImage: `url(${backgroundImage.src})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/40 to-black/20"></div>
-        <div className="absolute inset-0 bg-noise-pattern opacity-10"></div>
-        <div className="relative z-10 text-center">
-          <div className="animate-float">
-            <BrandMark className="text-white font-semibold tracking-tight" />
-          </div>
-        </div>
+      <div className="relative hidden flex-1 flex-col justify-between bg-primary-soft p-12 lg:flex lg:min-h-screen">
+        <BrandMark />
+        <p className="max-w-sm font-serif text-5xl leading-[1.05] text-foreground">
+          Um edital, <span className="italic">uma chance.</span>
+        </p>
+        <p className="text-sm text-muted-foreground">Inscrição, acompanhamento e resultado em um só lugar.</p>
       </div>
 
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 bg-gradient-to-br from-[#005f73] via-[#0a776e] to-[#0a9396] relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-radial from-[#94d2bd]/10 via-transparent to-transparent"></div>
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 bg-background">
 
         <div className="relative z-10 w-full max-w-md">
-          <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20">
+          <div className="auth-card bg-card rounded-3xl p-8 border">
             <div className="text-center mb-6">
-              <h2 className="text-3xl font-bold text-[#e9d8a6] mb-2">Recuperar senha</h2>
-              <p className="text-white/80 text-sm">{description}</p>
+              <h2 className="text-3xl font-bold text-foreground mb-2">Recuperar senha</h2>
+              <p className="text-muted-foreground text-sm">{description}</p>
             </div>
 
             <div
-              className="mb-6 grid grid-cols-2 gap-2 rounded-xl bg-white/5 p-1 border border-white/10"
+              className="mb-6 grid grid-cols-2 gap-1 rounded-2xl bg-secondary p-1 border"
               role="tablist"
               aria-label="Método de recuperação"
             >
@@ -244,13 +233,18 @@ export default function RecoverPasswordPage() {
                 tabIndex={0}
                 onClick={() => handleMethodChange("email")}
                 className={cn(
-                  "rounded-lg py-2.5 text-sm font-semibold transition-all duration-300",
-                  method === "email"
-                    ? "bg-[#94d2bd] text-[#005f73] shadow"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
+                  "relative rounded-xl py-2.5 text-sm font-semibold transition-colors duration-300",
+                  method === "email" ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                E-mail
+                {method === "email" && (
+                  <motion.span
+                    layoutId="recover-tab"
+                    className="absolute inset-0 rounded-xl border bg-card shadow-sm"
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
+                <span className="relative">E-mail</span>
               </button>
               <button
                 type="button"
@@ -260,20 +254,25 @@ export default function RecoverPasswordPage() {
                 tabIndex={0}
                 onClick={() => handleMethodChange("sms")}
                 className={cn(
-                  "rounded-lg py-2.5 text-sm font-semibold transition-all duration-300",
-                  method === "sms"
-                    ? "bg-[#94d2bd] text-[#005f73] shadow"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
+                  "relative rounded-xl py-2.5 text-sm font-semibold transition-colors duration-300",
+                  method === "sms" ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                SMS
+                {method === "sms" && (
+                  <motion.span
+                    layoutId="recover-tab"
+                    className="absolute inset-0 rounded-xl border bg-card shadow-sm"
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
+                <span className="relative">SMS</span>
               </button>
             </div>
 
             {method === "email" ? (
               <form onSubmit={handleEmailSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="email" className="block text-white text-sm font-medium mb-2">
+                  <label htmlFor="email" className="block text-foreground text-sm font-medium mb-2">
                     E-mail
                   </label>
                   <input
@@ -281,7 +280,7 @@ export default function RecoverPasswordPage() {
                     id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#94d2bd] focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="seu@email.com"
                     required
                     disabled={loading}
@@ -292,7 +291,7 @@ export default function RecoverPasswordPage() {
                   type="submit"
                   disabled={loading}
                   aria-label="Enviar link de recuperação por e-mail"
-                  className="w-full bg-gradient-to-r from-[#005f73] to-[#0a9396] hover:from-[#0a9396] hover:to-[#005f73] text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-4 px-6 rounded-2xl transition-all duration-300 shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? "Enviando..." : "Enviar link"}
                 </button>
@@ -300,7 +299,7 @@ export default function RecoverPasswordPage() {
             ) : smsStep === "phone" ? (
               <form onSubmit={handleSmsRequest} className="space-y-6">
                 <div>
-                  <label htmlFor="phone" className="block text-white text-sm font-medium mb-2">
+                  <label htmlFor="phone" className="block text-foreground text-sm font-medium mb-2">
                     Telefone
                   </label>
                   <input
@@ -309,7 +308,7 @@ export default function RecoverPasswordPage() {
                     inputMode="numeric"
                     value={phone}
                     onChange={(e) => setPhone(formatPhone(e.target.value))}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#94d2bd] focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="(62) 99999-9999"
                     required
                     disabled={loading}
@@ -321,7 +320,7 @@ export default function RecoverPasswordPage() {
                   type="submit"
                   disabled={loading}
                   aria-label="Enviar código de recuperação por SMS"
-                  className="w-full bg-gradient-to-r from-[#005f73] to-[#0a9396] hover:from-[#0a9396] hover:to-[#005f73] text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-4 px-6 rounded-2xl transition-all duration-300 shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? "Enviando..." : "Enviar código"}
                 </button>
@@ -329,7 +328,7 @@ export default function RecoverPasswordPage() {
             ) : (
               <form onSubmit={handleSmsVerify} className="space-y-6">
                 <div>
-                  <label htmlFor="otp" className="block text-white text-sm font-medium mb-2">
+                  <label htmlFor="otp" className="block text-foreground text-sm font-medium mb-2">
                     Código SMS
                   </label>
                   <input
@@ -340,16 +339,16 @@ export default function RecoverPasswordPage() {
                     maxLength={6}
                     value={code}
                     onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 tracking-[0.35em] text-center text-lg focus:outline-none focus:ring-2 focus:ring-[#94d2bd] focus:border-transparent transition-all duration-300 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-background border border-input rounded-2xl text-foreground placeholder-muted-foreground tracking-[0.35em] text-center text-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-300 disabled:opacity-50"
                     placeholder="000000"
                     required
                     disabled={loading || expiry <= 0}
                     aria-label="Código de verificação de 6 dígitos"
                   />
-                  <p className="mt-2 text-xs text-white/60">
+                  <p className="mt-2 text-xs text-muted-foreground">
                     Enviado para {phone || "seu telefone"}
                   </p>
-                  <p className="mt-1 text-xs text-white/70">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     {expiry > 0
                       ? `Código válido por ${formatExpiry(expiry)}`
                       : "Código expirado. Solicite um novo código."}
@@ -360,7 +359,7 @@ export default function RecoverPasswordPage() {
                   type="submit"
                   disabled={loading || code.length !== 6 || expiry <= 0}
                   aria-label="Validar código SMS"
-                  className="w-full bg-gradient-to-r from-[#005f73] to-[#0a9396] hover:from-[#0a9396] hover:to-[#005f73] text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-bold py-4 px-6 rounded-2xl transition-all duration-300 shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? "Validando..." : "Validar código"}
                 </button>
@@ -374,7 +373,7 @@ export default function RecoverPasswordPage() {
                       setVerificationId(null)
                       setExpiry(0)
                     }}
-                    className="text-[#94d2bd] hover:text-[#a8e6cf] text-sm font-medium transition-colors duration-300 hover:underline"
+                    className="text-primary hover:text-primary text-sm font-medium transition-colors duration-300 hover:underline"
                     aria-label="Alterar número de telefone"
                     tabIndex={0}
                   >
@@ -384,7 +383,7 @@ export default function RecoverPasswordPage() {
                     type="button"
                     onClick={() => handleSmsRequest()}
                     disabled={loading || cooldown > 0}
-                    className="text-[#94d2bd] hover:text-[#a8e6cf] text-sm font-medium transition-colors duration-300 hover:underline disabled:opacity-50 disabled:cursor-not-allowed disabled:no-underline"
+                    className="text-primary hover:text-primary text-sm font-medium transition-colors duration-300 hover:underline disabled:opacity-50 disabled:cursor-not-allowed disabled:no-underline"
                     aria-label="Reenviar código SMS"
                     tabIndex={0}
                   >
@@ -397,13 +396,13 @@ export default function RecoverPasswordPage() {
             <div className="mt-6 text-center">
               <Link
                 href="/auth/login-candidato"
-                className="text-[#94d2bd] hover:text-[#a8e6cf] font-medium transition-colors duration-300 hover:underline"
+                className="text-primary hover:text-primary font-medium transition-colors duration-300 hover:underline"
               >
                 Voltar para o login
               </Link>
             </div>
 
-            <p className="mt-6 text-xs text-white/60 text-center">
+            <p className="mt-6 text-xs text-muted-foreground text-center">
               &copy; {new Date().getFullYear()} Seleção Simplificada. Todos os direitos reservados.
             </p>
           </div>

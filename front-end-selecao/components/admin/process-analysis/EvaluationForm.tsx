@@ -208,7 +208,7 @@ export default function EvaluationForm({
   return (
     <div className="mt-4">
       <TabGroup selectedIndex={activeTab} onChange={setActiveTab}>
-        <TabList className="flex space-x-1 rounded-xl bg-blue-900/20 p-1 mb-6">
+        <TabList className="flex space-x-1 rounded-xl bg-primary-hover/20 p-1 mb-6">
           {tabs.map((tab, idx) => {
             const Icon = tab.icon;
             return (
@@ -217,23 +217,23 @@ export default function EvaluationForm({
                 disabled={tab.disabled}
                 className={({ selected }) => `
                   w-full py-3 px-4 text-sm font-medium rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring
                   ${tab.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-                  ${selected ? 'bg-white text-blue-700 shadow' : 'text-blue-600 hover:bg-white/[0.12] hover:text-blue-800'}
+                  ${selected ? 'bg-card text-primary shadow' : 'text-primary hover:bg-white/[0.12] hover:text-primary'}
                 `}
               >
                 <div className="flex items-center justify-center gap-2">
                   <Icon className="w-5 h-5" />
                   {tab.name}
                   {idx === 0 && application.stage1_evaluation && (
-                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <CheckCircle className="w-4 h-4 text-success" />
                   )}
                   {idx === 1 && application.stage2_evaluation && (
-                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <CheckCircle className="w-4 h-4 text-success" />
                   )}
-                  {tab.locked && <Lock className="w-4 h-4 text-gray-400" />}
+                  {tab.locked && <Lock className="w-4 h-4 text-muted-foreground/70" />}
                 </div>
-                {tab.locked && <p className="text-xs text-gray-500 mt-1 text-center">Bloqueada</p>}
+                {tab.locked && <p className="text-xs text-muted-foreground mt-1 text-center">Bloqueada</p>}
               </Tab>
             );
           })}
@@ -262,21 +262,21 @@ export default function EvaluationForm({
                 readOnly={currentStage === 'analysis_completed'}
               />
             ) : processConfig?.has_interview === false ? (
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-8 text-center">
-                <Lock className="w-12 h-12 text-blue-500 mx-auto mb-4" />
-                <h4 className="text-lg font-bold text-blue-800 mb-2">Etapa 2 Não Configurada</h4>
-                <p className="text-blue-700 mb-4">
+              <div className="bg-primary-soft border border-primary/30 rounded-xl p-8 text-center">
+                <Lock className="w-12 h-12 text-primary mx-auto mb-4" />
+                <h4 className="text-lg font-bold text-primary mb-2">Etapa 2 Não Configurada</h4>
+                <p className="text-primary mb-4">
                   Este processo seletivo não possui etapa de entrevista configurada.
                 </p>
               </div>
             ) : (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-8 text-center">
-                <Lock className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
-                <h4 className="text-lg font-bold text-yellow-800 mb-2">Etapa 2 Bloqueada</h4>
-                <p className="text-yellow-700 mb-4">
+              <div className="bg-warning-soft border border-warning/30 rounded-xl p-8 text-center">
+                <Lock className="w-12 h-12 text-warning mx-auto mb-4" />
+                <h4 className="text-lg font-bold text-warning mb-2">Etapa 2 Bloqueada</h4>
+                <p className="text-warning mb-4">
                   A etapa 2 será liberada após a conclusão da Etapa 1 para todos os candidatos.
                 </p>
-                <div className="text-sm text-yellow-600">
+                <div className="text-sm text-warning">
                   Status:{' '}
                   {application.stage1_evaluation ? '✅ Etapa 1 concluída' : '⏳ Etapa 1 pendente'}
                 </div>

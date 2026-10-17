@@ -25,8 +25,8 @@ export function Pagination({
     const endItem = Math.min(currentPage * pageSize, totalCount);
 
     return (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 p-6 bg-white rounded-2xl shadow-sm border border-gray-200">
-            <div className="text-sm text-gray-600">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 p-6 bg-card rounded-2xl shadow-sm border border-border">
+            <div className="text-sm text-muted-foreground">
                 Mostrando {startItem} a {endItem} de {totalCount} usuários
             </div>
 
@@ -35,7 +35,7 @@ export function Pagination({
                 <button
                     onClick={onPrevPage}
                     disabled={currentPage === 1}
-                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-foreground/80 bg-card border border-input rounded-xl hover:bg-background disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -63,8 +63,8 @@ export function Pagination({
                                 onClick={() => onPageChange(pageNum)}
                                 className={`px-3 py-2 text-sm font-medium rounded-xl transition-colors ${
                                     currentPage === pageNum
-                                        ? 'bg-blue-600 text-white'
-                                        : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50'
+                                        ? 'bg-primary text-primary-foreground'
+                                        : 'text-foreground/80 bg-card border border-input hover:bg-background'
                                 }`}
                             >
                                 {pageNum}
@@ -77,7 +77,7 @@ export function Pagination({
                 <button
                     onClick={onNextPage}
                     disabled={currentPage === totalPages}
-                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-foreground/80 bg-card border border-input rounded-xl hover:bg-background disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                     Próximo
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

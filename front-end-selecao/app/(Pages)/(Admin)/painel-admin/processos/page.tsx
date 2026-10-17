@@ -135,7 +135,7 @@ function getStatusBadgeInfo(processo: SelectionProcess) {
         return {
             status: 'inactive',
             label: 'Inativo',
-            color: 'bg-gradient-to-r from-red-500 to-rose-600',
+            color: 'bg-destructive',
             icon: XCircle,
             textColor: 'text-white',
         };
@@ -145,7 +145,7 @@ function getStatusBadgeInfo(processo: SelectionProcess) {
         return {
             status: 'finished',
             label: 'Finalizado',
-            color: 'bg-gradient-to-r from-gray-600 to-slate-700',
+            color: 'bg-muted-foreground',
             icon: Flag,
             textColor: 'text-white',
         };
@@ -157,7 +157,7 @@ function getStatusBadgeInfo(processo: SelectionProcess) {
         return {
             status: 'created',
             label: 'Criado',
-            color: 'bg-gradient-to-r from-blue-500 to-indigo-600',
+            color: 'bg-primary',
             icon: Calendar,
             textColor: 'text-white',
         };
@@ -169,7 +169,7 @@ function getStatusBadgeInfo(processo: SelectionProcess) {
             return {
                 status: 'expiring',
                 label: 'Expirando',
-                color: 'bg-gradient-to-r from-amber-500 to-orange-600',
+                color: 'bg-warning',
                 icon: AlertTriangle,
                 textColor: 'text-white',
             };
@@ -178,7 +178,7 @@ function getStatusBadgeInfo(processo: SelectionProcess) {
         return {
             status: 'in_application',
             label: 'Em Inscrição',
-            color: 'bg-gradient-to-r from-emerald-500 to-green-600',
+            color: 'bg-success',
             icon: CheckCircle,
             textColor: 'text-white',
         };
@@ -187,7 +187,7 @@ function getStatusBadgeInfo(processo: SelectionProcess) {
     return {
         status: 'in_analysis',
         label: 'Em Análise',
-        color: 'bg-gradient-to-r from-orange-500 to-amber-600',
+        color: 'bg-warning',
         icon: ListChecks,
         textColor: 'text-white',
     };
@@ -545,19 +545,19 @@ export default function Processos() {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+            <div className="min-h-screen flex flex-col items-center justify-center bg-background">
                 <div className="relative">
-                    <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent" />
-                    <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-4 border-blue-600/30" />
+                    <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent" />
+                    <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-4 border-primary/30" />
                 </div>
-                <p className="mt-6 text-gray-600 font-medium text-lg">Carregando processos seletivos...</p>
-                <p className="text-gray-400 text-sm mt-2">Isso pode levar alguns instantes</p>
+                <p className="mt-6 text-muted-foreground font-medium text-lg">Carregando processos seletivos...</p>
+                <p className="text-muted-foreground/70 text-sm mt-2">Isso pode levar alguns instantes</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
+        <div className="min-h-screen bg-background p-6">
             <Title
                 title="Processos Seletivos"
                 icon={ListChecks}
@@ -567,18 +567,18 @@ export default function Processos() {
             />
 
             {/* Filtros e Search */}
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 mb-6">
+            <div className="bg-card rounded-2xl shadow-sm border border-border p-6 mb-6">
                 <div className="flex flex-col md:flex-row gap-4">
                     {/* Search */}
                     <div className="flex-1">
                         <div className="relative group">
-                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/70 group-focus-within:text-primary transition-colors" />
                             <input
                                 type="text"
                                 placeholder="Buscar por título, curso, slug ou descrição..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                                className="w-full pl-12 pr-4 py-3.5 border border-input rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200 hover:border-input"
                             />
                         </div>
                     </div>
@@ -588,8 +588,8 @@ export default function Processos() {
                         <button
                             onClick={() => setStatusFilter('all')}
                             className={`px-5 py-3 rounded-xl font-medium transition-all duration-200 ${statusFilter === 'all'
-                                ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow'
+                                ? 'bg-primary text-primary-foreground shadow-md'
+                                : 'bg-muted text-foreground/80 hover:bg-border hover:shadow'
                                 }`}
                         >
                             Todos
@@ -597,8 +597,8 @@ export default function Processos() {
                         <button
                             onClick={() => setStatusFilter('active')}
                             className={`px-5 py-3 rounded-xl font-medium transition-all duration-200 ${statusFilter === 'active'
-                                ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-md'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow'
+                                ? 'bg-success text-white shadow-md'
+                                : 'bg-muted text-foreground/80 hover:bg-border hover:shadow'
                                 }`}
                         >
                             Ativos
@@ -606,8 +606,8 @@ export default function Processos() {
                         <button
                             onClick={() => setStatusFilter('inactive')}
                             className={`px-5 py-3 rounded-xl font-medium transition-all duration-200 ${statusFilter === 'inactive'
-                                ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-md'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow'
+                                ? 'bg-destructive text-white shadow-md'
+                                : 'bg-muted text-foreground/80 hover:bg-border hover:shadow'
                                 }`}
                         >
                             Inativos
@@ -618,34 +618,34 @@ export default function Processos() {
 
             {/* Grid de Processos */}
             {error ? (
-                <div className="bg-gradient-to-r from-red-50 to-rose-50 border border-red-200 rounded-2xl p-8 text-center shadow-sm">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-4">
-                        <AlertTriangle className="w-8 h-8 text-red-600" />
+                <div className="bg-destructive-soft border border-destructive/30 rounded-2xl p-8 text-center shadow-sm">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-destructive-soft rounded-full mb-4">
+                        <AlertTriangle className="w-8 h-8 text-destructive" />
                     </div>
-                    <h3 className="text-red-800 font-semibold text-lg mb-2">Erro ao carregar</h3>
-                    <p className="text-red-700 mb-4">{error}</p>
+                    <h3 className="text-destructive font-semibold text-lg mb-2">Erro ao carregar</h3>
+                    <p className="text-destructive mb-4">{error}</p>
                     <button
                         onClick={() => fetchProcessos(1)}
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition-colors"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-destructive text-white font-medium rounded-xl hover:bg-destructive transition-colors"
                     >
                         <Loader2 className="w-4 h-4 animate-spin" />
                         Tentar Novamente
                     </button>
                 </div>
             ) : filteredProcessos.length === 0 ? (
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-12 text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-100 to-blue-200 rounded-full mb-6">
-                        <Users className="w-10 h-10 text-blue-600" />
+                <div className="bg-card rounded-2xl shadow-sm border border-border p-12 text-center">
+                    <div className="inline-flex items-center justify-center w-20 h-20 bg-primary-soft rounded-full mb-6">
+                        <Users className="w-10 h-10 text-primary" />
                     </div>
-                    <h3 className="text-gray-900 font-semibold text-xl mb-2">Nenhum processo seletivo encontrado</h3>
-                    <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                    <h3 className="text-foreground font-semibold text-xl mb-2">Nenhum processo seletivo encontrado</h3>
+                    <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                         {searchTerm || statusFilter !== 'all'
                             ? 'Não encontramos processos com os filtros selecionados. Tente ajustar os termos de busca.'
                             : 'Comece criando o primeiro processo seletivo para gerenciar inscrições e candidaturas.'}
                     </p>
                     <button
                         onClick={handleNewProcess}
-                        className="inline-flex items-center gap-3 px-6 py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
+                        className="inline-flex items-center gap-3 px-6 py-3.5 bg-primary text-primary-foreground font-medium rounded-xl hover:shadow-md hover:scale-[1.02] transition-all duration-200"
                     >
                         <Plus className="w-5 h-5" />
                         Criar Primeiro Processo
@@ -667,7 +667,7 @@ export default function Processos() {
                                     return (
                                 <div
                                     key={processo.id}
-                                    className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                                    className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden hover:shadow-md transition-all duration-300 group cursor-pointer"
                                     onClick={() => handleViewProcess(processo)}
                                 >
                                     {/* Header com Status */}
@@ -691,7 +691,7 @@ export default function Processos() {
                                                             e.stopPropagation();
                                                             handleViewProcess(processo);
                                                         }}
-                                                        className="p-3 bg-white/95 text-gray-700 rounded-xl hover:bg-white hover:scale-110 transition-all duration-200 shadow-lg"
+                                                        className="p-3 bg-card text-foreground/80 rounded-xl hover:bg-card hover:scale-110 transition-all duration-200 shadow-sm"
                                                         title="Visualizar"
                                                     >
                                                         <Eye className="w-5 h-5" />
@@ -701,7 +701,7 @@ export default function Processos() {
                                                             e.stopPropagation();
                                                             handleEditProcess(processo);
                                                         }}
-                                                        className="p-3 bg-white/95 text-gray-700 rounded-xl hover:bg-white hover:scale-110 transition-all duration-200 shadow-lg delay-75"
+                                                        className="p-3 bg-card text-foreground/80 rounded-xl hover:bg-card hover:scale-110 transition-all duration-200 shadow-sm delay-75"
                                                         title="Editar"
                                                     >
                                                         <Edit className="w-5 h-5" />
@@ -715,40 +715,40 @@ export default function Processos() {
                                     <div className="p-5">
                                         {/* Título e Subtítulo */}
                                         <div className="mb-4">
-                                            <h3 className="font-bold text-gray-900 text-base line-clamp-2 leading-tight mb-1.5 group-hover:text-blue-600 transition-colors">
+                                            <h3 className="font-bold text-foreground text-base line-clamp-2 leading-tight mb-1.5 group-hover:text-primary transition-colors">
                                                 {processo.title}
                                             </h3>
-                                            <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">{processo.subtitle}</p>
+                                            <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">{processo.subtitle}</p>
                                         </div>
 
                                         {/* Informações Rápidas */}
                                         <div className="space-y-3 mb-4">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                                                    <Users className="w-4 h-4 text-blue-600" />
+                                                <div className="w-8 h-8 rounded-lg bg-primary-soft flex items-center justify-center">
+                                                    <Users className="w-4 h-4 text-primary" />
                                                 </div>
-                                                <span className="text-sm text-gray-700 font-medium truncate">{processo.course}</span>
+                                                <span className="text-sm text-foreground/80 font-medium truncate">{processo.course}</span>
                                             </div>
 
                                             <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
-                                                    <MapPin className="w-4 h-4 text-emerald-600" />
+                                                <div className="w-8 h-8 rounded-lg bg-success-soft flex items-center justify-center">
+                                                    <MapPin className="w-4 h-4 text-success" />
                                                 </div>
-                                                <span className="text-sm text-gray-700 font-medium truncate">{processo.local}</span>
+                                                <span className="text-sm text-foreground/80 font-medium truncate">{processo.local}</span>
                                             </div>
 
                                             <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
-                                                    <DollarSign className="w-4 h-4 text-amber-600" />
+                                                <div className="w-8 h-8 rounded-lg bg-warning-soft flex items-center justify-center">
+                                                    <DollarSign className="w-4 h-4 text-warning" />
                                                 </div>
-                                                <span className="text-sm text-gray-700 font-medium">R$ {processo.salary}</span>
+                                                <span className="text-sm text-foreground/80 font-medium">R$ {processo.salary}</span>
                                             </div>
 
                                             <div className="flex items-center gap-3 min-w-0">
-                                                <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center shrink-0">
-                                                    <Clock className="w-4 h-4 text-purple-600" />
+                                                <div className="w-8 h-8 rounded-lg bg-primary-soft flex items-center justify-center shrink-0">
+                                                    <Clock className="w-4 h-4 text-primary" />
                                                 </div>
-                                                <span className="text-sm text-gray-700 font-medium truncate">
+                                                <span className="text-sm text-foreground/80 font-medium truncate">
                                                     Até {formatDate(processo.ending_date)}
                                                 </span>
                                             </div>
@@ -757,20 +757,20 @@ export default function Processos() {
                                                 className="flex items-center gap-3 min-w-0"
                                                 title="Candidatos com inscrição neste processo"
                                             >
-                                                <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
-                                                    <UserCheck className="w-4 h-4 text-indigo-600" />
+                                                <div className="w-8 h-8 rounded-lg bg-primary-soft flex items-center justify-center shrink-0">
+                                                    <UserCheck className="w-4 h-4 text-primary" />
                                                 </div>
-                                                <span className="text-sm text-gray-700 font-medium truncate">
+                                                <span className="text-sm text-foreground/80 font-medium truncate">
                                                     {(processo.enrollments_count ?? 0).toLocaleString('pt-BR')}{' '}
                                                     {(processo.enrollments_count ?? 0) === 1 ? 'inscrito' : 'inscritos'}
                                                 </span>
                                             </div>
 
                                             <div className="flex items-center gap-3 min-w-0">
-                                                <div className="w-8 h-8 rounded-lg bg-sky-50 flex items-center justify-center shrink-0">
-                                                    <Briefcase className="w-4 h-4 text-sky-600" />
+                                                <div className="w-8 h-8 rounded-lg bg-primary-soft flex items-center justify-center shrink-0">
+                                                    <Briefcase className="w-4 h-4 text-primary" />
                                                 </div>
-                                                <span className="text-sm text-gray-700 font-medium truncate">
+                                                <span className="text-sm text-foreground/80 font-medium truncate">
                                                     {processo.number_vacancies}{' '}
                                                     {processo.number_vacancies === 1 ? 'vaga' : 'vagas'}
                                                 </span>
@@ -784,15 +784,15 @@ export default function Processos() {
                                             return (
                                                 inWindow && (
                                                     <div className="mb-4">
-                                                        <div className="flex justify-between text-xs text-gray-500 mb-1">
+                                                        <div className="flex justify-between text-xs text-muted-foreground mb-1">
                                                             <span className="font-medium">Progresso:</span>
                                                             <span>{Math.round(progress)}%</span>
                                                         </div>
-                                                        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                                                        <div className="w-full bg-border rounded-full h-2 overflow-hidden">
                                                             <div
                                                                 className={`h-full rounded-full ${statusInfo.status === 'expiring'
-                                                                    ? 'bg-gradient-to-r from-amber-500 to-orange-500'
-                                                                    : 'bg-gradient-to-r from-emerald-500 to-green-500'
+                                                                    ? 'bg-warning'
+                                                                    : 'bg-success'
                                                                     }`}
                                                                 style={{ width: `${progress}%` }}
                                                             />
@@ -811,8 +811,8 @@ export default function Processos() {
                                                     handleAnalyzeProcess(processo);
                                                 }}
                                                 className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${analyzeState.primary.enabled
-                                                    ? 'bg-gradient-to-r from-purple-600 to-violet-700 text-white hover:shadow-lg hover:scale-[1.02]'
-                                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-not-allowed opacity-80'
+                                                    ? 'bg-primary text-primary-foreground hover:shadow-md hover:scale-[1.02]'
+                                                    : 'bg-muted text-foreground/80 hover:bg-border cursor-not-allowed opacity-80'
                                                     }`}
                                                 disabled={!analyzeState.primary.enabled}
                                             >
@@ -827,7 +827,7 @@ export default function Processos() {
                                                         e.stopPropagation();
                                                         handleOpenAnalysisPage(processo);
                                                     }}
-                                                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all duration-200 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:shadow"
+                                                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium transition-all duration-200 bg-card border border-border text-foreground/80 hover:bg-background hover:shadow"
                                                 >
                                                     <Eye className="w-4 h-4" />
                                                     <span className="text-sm">{analyzeState.secondary.label}</span>
@@ -842,18 +842,18 @@ export default function Processos() {
 
                     {/* Paginação */}
                     {totalPages > 1 && (
-                        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                        <div className="bg-card rounded-2xl shadow-sm border border-border p-6">
                             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                                <div className="text-sm text-gray-600">
-                                    Mostrando <span className="font-bold text-gray-900">{processos.length}</span> de{' '}
-                                    <span className="font-bold text-gray-900">{totalCount}</span> processos
+                                <div className="text-sm text-muted-foreground">
+                                    Mostrando <span className="font-bold text-foreground">{processos.length}</span> de{' '}
+                                    <span className="font-bold text-foreground">{totalCount}</span> processos
                                 </div>
 
                                 <div className="flex items-center gap-2">
                                     <button
                                         onClick={handleFirstPage}
                                         disabled={currentPage === 1}
-                                        className="p-2.5 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
+                                        className="p-2.5 rounded-xl border border-input text-muted-foreground hover:bg-background hover:border-input disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
                                         title="Primeira página"
                                     >
                                         <ChevronsLeft className="w-5 h-5" />
@@ -862,7 +862,7 @@ export default function Processos() {
                                     <button
                                         onClick={handlePreviousPage}
                                         disabled={!previousPage}
-                                        className="p-2.5 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
+                                        className="p-2.5 rounded-xl border border-input text-muted-foreground hover:bg-background hover:border-input disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
                                         title="Página anterior"
                                     >
                                         <ChevronLeft className="w-5 h-5" />
@@ -874,8 +874,8 @@ export default function Processos() {
                                                 key={page}
                                                 onClick={() => handlePageChange(page)}
                                                 className={`w-11 h-11 rounded-xl border transition-all duration-200 ${currentPage === page
-                                                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white border-blue-600 shadow-md'
-                                                    : 'border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400 hover:shadow'
+                                                    ? 'bg-primary text-primary-foreground border-primary shadow-md'
+                                                    : 'border-input text-muted-foreground hover:bg-background hover:border-input hover:shadow'
                                                     }`}
                                             >
                                                 {page}
@@ -886,7 +886,7 @@ export default function Processos() {
                                     <button
                                         onClick={handleNextPage}
                                         disabled={!nextPage}
-                                        className="p-2.5 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
+                                        className="p-2.5 rounded-xl border border-input text-muted-foreground hover:bg-background hover:border-input disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
                                         title="Próxima página"
                                     >
                                         <ChevronRight className="w-5 h-5" />
@@ -895,16 +895,16 @@ export default function Processos() {
                                     <button
                                         onClick={handleLastPage}
                                         disabled={currentPage === totalPages}
-                                        className="p-2.5 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
+                                        className="p-2.5 rounded-xl border border-input text-muted-foreground hover:bg-background hover:border-input disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
                                         title="Última página"
                                     >
                                         <ChevronsRight className="w-5 h-5" />
                                     </button>
                                 </div>
 
-                                <div className="text-sm text-gray-600">
-                                    Página <span className="font-bold text-gray-900">{currentPage}</span> de{' '}
-                                    <span className="font-bold text-gray-900">{totalPages}</span>
+                                <div className="text-sm text-muted-foreground">
+                                    Página <span className="font-bold text-foreground">{currentPage}</span> de{' '}
+                                    <span className="font-bold text-foreground">{totalPages}</span>
                                 </div>
                             </div>
                         </div>

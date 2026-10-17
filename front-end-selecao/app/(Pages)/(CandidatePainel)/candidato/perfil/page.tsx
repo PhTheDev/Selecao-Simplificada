@@ -222,7 +222,7 @@ const cleanPayload = (data: ProfileForm) => ({
  * =========================================================
  */
 function FieldLabel({ children }: { children: React.ReactNode }) {
-  return <label className="block text-sm font-medium text-gray-700 mb-2">{children}</label>;
+  return <label className="block text-sm font-medium text-foreground/80 mb-2">{children}</label>;
 }
 
 function InputWithIcon(props: {
@@ -234,7 +234,7 @@ function InputWithIcon(props: {
 
   return (
     <div className="relative">
-      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{icon}</div>
+      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/70">{icon}</div>
 
       <input
         {...inputProps}
@@ -242,13 +242,13 @@ function InputWithIcon(props: {
           "w-full",
           "pl-10 pr-10",                 // espaço para ícone esquerdo e nó direito
           "py-2.5 sm:py-3",
-          "border border-gray-300 rounded-lg",
-          "bg-white",
-          "focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+          "border border-input rounded-lg",
+          "bg-card",
+          "focus:ring-2 focus:ring-ring focus:border-transparent",
           "transition-all",
           "text-sm sm:text-base",
           "shadow-sm",
-          "placeholder:text-gray-400",
+          "placeholder:text-muted-foreground/70",
           inputProps.className || "",
         ].join(" ")}
       />
@@ -270,7 +270,7 @@ function SelectWithIcon(props: {
 
   return (
     <div className="relative">
-      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{icon}</div>
+      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/70">{icon}</div>
 
       <select
         {...selectProps}
@@ -278,9 +278,9 @@ function SelectWithIcon(props: {
           "w-full",
           "pl-10 pr-4",
           "py-2.5 sm:py-3",
-          "border border-gray-300 rounded-lg",
-          "bg-white",
-          "focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+          "border border-input rounded-lg",
+          "bg-card",
+          "focus:ring-2 focus:ring-ring focus:border-transparent",
           "transition-all",
           "text-sm sm:text-base",
           "shadow-sm",
@@ -670,17 +670,17 @@ export default function PerfilPage() {
    */
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-zinc-100">
+      <div className="min-h-screen bg-muted">
         <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
+            <div className="h-8 bg-border rounded w-1/4 mb-6"></div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-4">
                 {[...Array(3)].map((_, i) => (
-                  <div key={i} className="h-32 bg-gray-200 rounded"></div>
+                  <div key={i} className="h-32 bg-border rounded"></div>
                 ))}
               </div>
-              <div className="h-64 bg-gray-200 rounded"></div>
+              <div className="h-64 bg-border rounded"></div>
             </div>
           </div>
         </div>
@@ -695,7 +695,7 @@ export default function PerfilPage() {
    * =========================================================
    */
   return (
-    <div className="min-h-screen bg-zinc-100">
+    <div className="min-h-screen bg-muted">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
@@ -711,13 +711,13 @@ export default function PerfilPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6"
+                className="bg-card rounded-xl shadow-sm border border-border p-4 sm:p-6"
               >
                 <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                  <div className="p-2 bg-blue-50 rounded-lg">
-                    <User className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                  <div className="p-2 bg-primary-soft rounded-lg">
+                    <User className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                   </div>
-                  <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Dados Pessoais</h2>
+                  <h2 className="text-lg sm:text-xl font-semibold text-foreground">Dados Pessoais</h2>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -785,11 +785,11 @@ export default function PerfilPage() {
 
                   <div className="sm:col-span-2">
                     <FieldLabel>E-mail</FieldLabel>
-                    <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-600 shadow-sm">
+                    <div className="flex items-center gap-3 px-4 py-3 bg-background border border-input rounded-lg text-muted-foreground shadow-sm">
                       <Mail className="w-4 h-4" />
                       <span className="break-all text-sm sm:text-base">{candidate?.email}</span>
                     </div>
-                    <p className="text-xs sm:text-sm text-gray-500 mt-1">O e-mail não pode ser alterado.</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-1">O e-mail não pode ser alterado.</p>
                   </div>
                 </div>
               </motion.div>
@@ -799,13 +799,13 @@ export default function PerfilPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6"
+                className="bg-card rounded-xl shadow-sm border border-border p-4 sm:p-6"
               >
                 <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                  <div className="p-2 bg-green-50 rounded-lg">
-                    <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                  <div className="p-2 bg-success-soft rounded-lg">
+                    <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-success" />
                   </div>
-                  <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Dados Acadêmicos</h2>
+                  <h2 className="text-lg sm:text-xl font-semibold text-foreground">Dados Acadêmicos</h2>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -813,7 +813,7 @@ export default function PerfilPage() {
                     <FieldLabel>Instituição de Ensino</FieldLabel>
 
                     <div className="relative">
-                      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/70">
                         <Building2 className="w-4 h-4" />
                       </div>
 
@@ -829,29 +829,29 @@ export default function PerfilPage() {
                             "w-full",
                             "pl-11 pr-10",              // espaço pros ícones
                             "py-2.5 sm:py-3",
-                            "border border-gray-300 rounded-lg",
-                            "bg-white",
-                            "focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+                            "border border-input rounded-lg",
+                            "bg-card",
+                            "focus:ring-2 focus:ring-ring focus:border-transparent",
                             "transition-all text-sm sm:text-base shadow-sm",
                         ].join(" ")}
                         />
                       <div className="absolute right-3 top-1/2 -translate-y-1/2">
                         {universityLoading ? (
-                          <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                          <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                         ) : (
-                          <Search className="w-4 h-4 text-gray-400" />
+                          <Search className="w-4 h-4 text-muted-foreground/70" />
                         )}
                       </div>
                     </div>
 
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       Caso não encontre a sua instituição na listagem, preencha manualmente.
                     </p>
 
                     {showUniversitySuggestions && (
                       <div
                         ref={suggestionBoxRef}
-                        className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl max-h-64 overflow-y-auto"
+                        className="absolute z-10 w-full mt-1 bg-card border border-border rounded-xl shadow-sm max-h-64 overflow-y-auto"
                       >
                         {suggestions.length > 0 ? (
                           suggestions.map((university, index) => (
@@ -859,30 +859,30 @@ export default function PerfilPage() {
                               key={`${university.name}-${index}`}
                               type="button"
                               onClick={() => handleUniversitySelect(university)}
-                              className="w-full text-left p-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 transition-colors"
+                              className="w-full text-left p-3 hover:bg-background border-b border-border last:border-b-0 transition-colors"
                             >
-                              <div className="font-medium text-sm text-gray-900">{university.name}</div>
+                              <div className="font-medium text-sm text-foreground">{university.name}</div>
                               <div className="flex justify-between items-center mt-1">
-                                <span className="text-xs text-gray-600">
+                                <span className="text-xs text-muted-foreground">
                                   {university.city} - {university.state}
                                 </span>
                                 <span
                                   className={`text-xs px-2 py-1 rounded-full ${
                                     university.type === "public"
-                                      ? "bg-green-100 text-green-800"
-                                      : "bg-blue-100 text-blue-800"
+                                      ? "bg-success-soft text-success"
+                                      : "bg-primary-soft text-primary"
                                   }`}
                                 >
                                   {university.type === "public" ? "Pública" : "Privada"}
                                 </span>
                               </div>
                               {university.acronym && (
-                                <div className="text-xs text-gray-500 mt-1">{university.acronym}</div>
+                                <div className="text-xs text-muted-foreground mt-1">{university.acronym}</div>
                               )}
                             </button>
                           ))
                         ) : searchTerm.trim().length > 0 ? (
-                          <div className="p-3 text-center text-gray-500">
+                          <div className="p-3 text-center text-muted-foreground">
                             <p className="text-sm">Nenhuma universidade encontrada</p>
                             <p className="text-xs mt-1">Digite o nome completo da instituição</p>
                           </div>
@@ -937,13 +937,13 @@ export default function PerfilPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6"
+                className="bg-card rounded-xl shadow-sm border border-border p-4 sm:p-6"
               >
                 <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                  <div className="p-2 bg-purple-50 rounded-lg">
-                    <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+                  <div className="p-2 bg-primary-soft rounded-lg">
+                    <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                   </div>
-                  <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Endereço</h2>
+                  <h2 className="text-lg sm:text-xl font-semibold text-foreground">Endereço</h2>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -961,13 +961,13 @@ export default function PerfilPage() {
                       }}
                       rightNode={
                         cepLoading ? (
-                          <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                          <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                         ) : (
-                          <span className="text-xs text-gray-400">ViaCEP</span>
+                          <span className="text-xs text-muted-foreground/70">ViaCEP</span>
                         )
                       }
                     />
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       Ao completar 8 dígitos, o sistema busca automaticamente no ViaCEP.
                     </p>
                   </div>
@@ -998,7 +998,7 @@ export default function PerfilPage() {
                         placeholder: "Número, apto, bloco, etc.",
                       }}
                     />
-                    <p className="text-xs text-gray-500 mt-1">Preencha com número/apto/bloco.</p>
+                    <p className="text-xs text-muted-foreground mt-1">Preencha com número/apto/bloco.</p>
                   </div>
 
                   <div className="sm:col-span-2">
@@ -1013,7 +1013,7 @@ export default function PerfilPage() {
                         placeholder: "Bairro",
                       }}
                     />
-                    <p className="text-xs text-gray-500 mt-1">Preenchido automaticamente pelo ViaCEP (quando disponível).</p>
+                    <p className="text-xs text-muted-foreground mt-1">Preenchido automaticamente pelo ViaCEP (quando disponível).</p>
                   </div>
 
                   <div>
@@ -1059,11 +1059,11 @@ export default function PerfilPage() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6"
+                className="bg-card rounded-xl shadow-sm border border-border p-4 sm:p-6"
               >
                 <div className="text-center">
                   <div className="relative inline-block mb-4">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl sm:text-2xl font-bold shadow-md">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden bg-primary flex items-center justify-center text-primary-foreground text-xl sm:text-2xl font-bold shadow-md">
                       {profileImage ? (
                         <img src={profileImage} alt="Preview" className="w-full h-full object-cover" />
                       ) : candidate?.profile_image ? (
@@ -1077,7 +1077,7 @@ export default function PerfilPage() {
                       type="button"
                       onClick={triggerFileInput}
                       disabled={isUploading}
-                      className="absolute bottom-0 right-0 w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
+                      className="absolute bottom-0 right-0 w-7 h-7 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground shadow-sm hover:bg-primary-hover transition-colors disabled:bg-muted-foreground"
                     >
                       <Camera className="w-3 h-3 sm:w-4 sm:h-4" />
                     </button>
@@ -1085,24 +1085,24 @@ export default function PerfilPage() {
                     <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
                   </div>
 
-                  <h3 className="font-semibold text-gray-800 text-base sm:text-lg mb-1 break-words">
+                  <h3 className="font-semibold text-foreground text-base sm:text-lg mb-1 break-words">
                     {candidate?.name || "Usuário"}
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-600 mb-4 break-all">{candidate?.email}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-4 break-all">{candidate?.email}</p>
 
                   <div className="space-y-2 sm:space-y-3 text-left">
                     <div
                       className={`flex items-center gap-2 text-xs sm:text-sm ${
-                        candidate?.is_active ? "text-green-600" : "text-red-600"
+                        candidate?.is_active ? "text-success" : "text-destructive"
                       }`}
                     >
-                      <div className={`w-2 h-2 rounded-full ${candidate?.is_active ? "bg-green-500" : "bg-red-500"}`} />
+                      <div className={`w-2 h-2 rounded-full ${candidate?.is_active ? "bg-success" : "bg-destructive"}`} />
                       <span>{candidate?.is_active ? "Conta ativa" : "Conta inativa"}</span>
                     </div>
                   </div>
 
-                  <div className="mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                    <p className="text-xs text-gray-600 text-center">
+                  <div className="mt-4 p-3 bg-background rounded-lg border border-border">
+                    <p className="text-xs text-muted-foreground text-center">
                       Formatos: JPG, PNG, GIF
                       <br />
                       Máx.: 5MB
@@ -1116,12 +1116,12 @@ export default function PerfilPage() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6"
+                className="bg-card rounded-xl shadow-sm border border-border p-4 sm:p-6"
               >
                 <button
                   type="submit"
                   disabled={isFormLoading}
-                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm sm:text-base shadow-sm"
+                  className="w-full bg-primary hover:bg-primary-hover disabled:bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm sm:text-base shadow-sm"
                 >
                   {isFormLoading ? (
                     <>
@@ -1136,7 +1136,7 @@ export default function PerfilPage() {
                   )}
                 </button>
 
-                <p className="text-xs text-gray-500 mt-3 text-center">* Campos obrigatórios</p>
+                <p className="text-xs text-muted-foreground mt-3 text-center">* Campos obrigatórios</p>
               </motion.div>
 
               {/* Informações */}
@@ -1144,13 +1144,13 @@ export default function PerfilPage() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6 }}
-                className="bg-blue-50 rounded-xl border border-blue-200 p-4 sm:p-6"
+                className="bg-primary-soft rounded-xl border border-primary/30 p-4 sm:p-6"
               >
-                <h4 className="font-semibold text-blue-800 mb-2 flex items-center gap-2 text-sm sm:text-base">
+                <h4 className="font-semibold text-primary mb-2 flex items-center gap-2 text-sm sm:text-base">
                   <User className="w-4 h-4" />
                   Informações da Conta
                 </h4>
-                <p className="text-xs sm:text-sm text-blue-700">
+                <p className="text-xs sm:text-sm text-primary">
                   Sua conta está vinculada ao sistema de autenticação. Para alterar informações básicas como e-mail, entre
                   em contato com o suporte.
                 </p>

@@ -31,10 +31,10 @@ export function ActionDock() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.12, type: 'spring', stiffness: 120, damping: 14 }}
-            className="rounded-3xl border border-white/30 bg-white/60 backdrop-blur-xl shadow-sm p-5"
+            className="rounded-3xl border border-border bg-card shadow-sm p-5"
         >
-            <h3 className="font-extrabold text-gray-900">Atalhos</h3>
-            <p className="text-sm text-gray-600 mt-1">Acesso rápido às principais áreas.</p>
+            <h3 className="font-extrabold text-foreground">Atalhos</h3>
+            <p className="text-sm text-muted-foreground mt-1">Acesso rápido às principais áreas.</p>
 
             <div className="mt-4 space-y-3">
                 {actions.map((a, idx) => {
@@ -45,16 +45,16 @@ export function ActionDock() {
                             href={a.href}
                             whileHover={{ scale: 1.01, y: -1 }}
                             whileTap={{ scale: 0.99 }}
-                            className="flex items-center gap-3 p-3 rounded-2xl bg-white/70 border border-white/70"
+                            className="flex items-center gap-3 p-3 rounded-2xl bg-card border border-border"
                         >
-                            <div className="w-11 h-11 rounded-2xl bg-white border border-gray-200 flex items-center justify-center shadow-sm">
-                                <Icon className="w-5 h-5 text-gray-700" />
+                            <div className="w-11 h-11 rounded-2xl bg-card border border-border flex items-center justify-center shadow-sm">
+                                <Icon className="w-5 h-5 text-foreground/80" />
                             </div>
                             <div className="min-w-0 flex-1">
-                                <p className="font-bold text-gray-900">{a.title}</p>
-                                <p className="text-xs text-gray-600">{a.desc}</p>
+                                <p className="font-bold text-foreground">{a.title}</p>
+                                <p className="text-xs text-muted-foreground">{a.desc}</p>
                             </div>
-                            <ArrowRight className="w-4 h-4 text-gray-500" />
+                            <ArrowRight className="w-4 h-4 text-muted-foreground" />
                         </motion.a>
                     );
                 })}
