@@ -19,7 +19,7 @@ Com o servidor rodando:
 
 ```bash
 cp .env.exemple .env
-docker compose -f docker-compose-dev.yml up --build
+docker compose -f docker-compose.dev.yml up --build   # na raiz do repositório
 ```
 
 Detalhes: [docs/SETUP.md](docs/SETUP.md).

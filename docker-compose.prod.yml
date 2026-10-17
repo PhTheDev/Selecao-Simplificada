@@ -1,0 +1,163 @@
+# Produção: API + worker + beat + banco + filas + front, tudo num só compose.
+#   docker compose --env-file back-end-selecao/.env -f docker-compose.prod.yml up -d --build
+# --env-file é necessário porque as variáveis ${...} deste arquivo vêm do .env do back-end
+# (APP_CONTAINER_NAME, APP_INTERNAL_PORT, POSTGRES_*, RABBITMQ_*). O front lê front-end-selecao/.env.local.
+# Redes externas (criar uma vez): docker network create selecao_backend_global_proxy
+#                                 docker network create selecao_frontend_global_proxy
+
+x-backend: &backend
+  image: ${BACKEND_IMAGE:-back-end-selecao:latest}
+  build:
+    context: ./back-end-selecao
+  restart: always
+  env_file: ./back-end-selecao/.env
+  volumes:
+    - ./back-end-selecao:/home/app/django
+    - ./back-end-selecao/staticfiles:/home/app/django/staticfiles
+    - ./back-end-selecao/media:/home/app/django/media
+  environment: &backend-env
+    DB_HOST: db_postgres
+    DB_PORT: "5432"
+    CELERY_BROKER_URL: ${CELERY_BROKER_URL:-amqp://selecao:selecao@rabbitmq:5672//}
+    CELERY_RESULT_BACKEND: redis://redis:6379/0
+    CACHE_URL: redis://redis:6379/1
+
+services:
+  db_postgres:
+    image: postgres:16-alpine
+    container_name: db_${APP_CONTAINER_NAME}
+    restart: always
+    env_file: ./back-end-selecao/.env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      backend_network:
+        aliases:
+          - db_postgres
+          - db_${APP_CONTAINER_NAME}
+      selecao_backend:
+        aliases:
+          - db_postgres
+          - db_${APP_CONTAINER_NAME}
+
+  # Redis: cache, OTP e result backend do Celery. Broker = RabbitMQ.
+  redis:
+    image: redis:alpine
+    container_name: redis_${APP_CONTAINER_NAME}
+    restart: always
+    networks:
+      backend_network:
+        aliases:
+          - redis
+      selecao_backend:
+        aliases:
+          - redis_${APP_CONTAINER_NAME}
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq_${APP_CONTAINER_NAME}
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-selecao}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-selecao}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      backend_network:
+        aliases:
+          - rabbitmq
+
+  app:
+    <<: *backend
+    container_name: app_${APP_CONTAINER_NAME}
+    restart: "no"
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn core.wsgi:application --bind 0.0.0.0:${APP_INTERNAL_PORT}"
+    ports:
+      - "8012:${APP_INTERNAL_PORT}"
+    networks:
+      - backend_network
+      - selecao_backend
+    depends_on:
+      db_postgres:
+        condition: service_started
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+
+  celery_worker:
+    <<: *backend
+    container_name: celery_worker_${APP_CONTAINER_NAME}
+    command: celery -A core worker -Q celery,sms --loglevel=info
+    networks:
+      - backend_network
+    depends_on:
+      db_postgres:
+        condition: service_started
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+
+  celery_beat:
+    <<: *backend
+    container_name: celery_beat_${APP_CONTAINER_NAME}
+    command: celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    networks:
+      - backend_network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      celery_worker:
+        condition: service_started
+
+  frontend:
+    container_name: app_selecao_frontend
+    image: ${FRONTEND_IMAGE:-frontend-selecao:latest}
+    build:
+      context: ./front-end-selecao
+      args:
+        NEXT_PUBLIC_DJANGO_API_URL: ${NEXT_PUBLIC_DJANGO_API_URL:-http://localhost:8012}
+        DJANGO_INTERNAL_ORIGIN: ${DJANGO_INTERNAL_ORIGIN:-http://app:${APP_INTERNAL_PORT:-8000}}
+    restart: always
+    ports:
+      - "3002:3002"
+    env_file: ./front-end-selecao/.env.local
+    environment:
+      NODE_ENV: production
+      PORT: "3002"
+      HOSTNAME: 0.0.0.0
+      DJANGO_INTERNAL_ORIGIN: ${DJANGO_INTERNAL_ORIGIN:-http://app:${APP_INTERNAL_PORT:-8000}}
+    networks:
+      - selecao_frontend
+      - selecao_backend
+    depends_on:
+      - app
+
+networks:
+  backend_network:
+    driver: bridge
+  selecao_backend:
+    external: true
+    name: selecao_backend_global_proxy
+  selecao_frontend:
+    external: true
+    name: selecao_frontend_global_proxy
+
+volumes:
+  postgres_data:
+  rabbitmq_data:

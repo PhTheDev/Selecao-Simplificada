@@ -5,7 +5,7 @@
 ```bash
 cd back-end-selecao
 cp .env.exemple .env
-docker compose -f docker-compose-dev.yml up --build
+docker compose -f docker-compose.dev.yml up --build   # na raiz do repositório
 ```
 
 Serviços típicos: Postgres, Redis, RabbitMQ, app Django, Celery worker/beat (conforme o arquivo compose).

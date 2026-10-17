@@ -2,20 +2,19 @@
 
 ## Visão geral
 
-Há composes de produção separados:
+Há um compose de produção central, na raiz:
 
-- [`back-end-selecao/docker-compose-prod.yml`](../back-end-selecao/docker-compose-prod.yml) — Django (Gunicorn), Postgres, Redis, Celery, Nginx
-- [`front-end-selecao/docker-compose-prod.yml`](../front-end-selecao/docker-compose-prod.yml) — Next.js (porta típica **3002**)
+- [`docker-compose.prod.yml`](../docker-compose.prod.yml) (raiz) — Django (Gunicorn), Postgres, Redis, RabbitMQ, Celery e Next.js (porta típica **3002**)
 
 Não versionar `.env` real. Use `.env.exemple` como referência de chaves.
 
 ## Backend (produção)
 
 1. Configure variáveis (DB, `SECRET_KEY`, `ALLOWED_HOSTS`, `EXTRA_ORIGINS`, SMTP, Redis, SMS).
-2. `docker compose -f docker-compose-prod.yml up --build -d`
+2. `docker compose --env-file back-end-selecao/.env -f docker-compose.prod.yml up --build -d` (na raiz)
 3. Migrations rodam no start do app (conforme `command` do compose).
 4. Cadastre token de integração no Django Admin se a integração estiver ativa.
-5. `SMS_PROVIDER=isend` apenas com credenciais válidas; em staging prefira `console`.
+5. `SMS_PROVIDER=isend` apenas com credenciais válidas; use `email` (código por e-mail) ou `console` em staging.
 
 ### Mídia
 

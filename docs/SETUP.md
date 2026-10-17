@@ -20,7 +20,7 @@ Ajuste pelo menos e-mail/SMTP e, se for testar SMS real, credenciais iSend. Em d
 2. Suba os serviços:
 
 ```bash
-docker compose -f docker-compose-dev.yml up --build
+docker compose -f docker-compose.dev.yml up --build   # na raiz do repositório
 ```
 
 Serviços típicos do compose de desenvolvimento:

@@ -24,6 +24,6 @@ npm run dev
 ## Docker
 
 - `Dockerfile` — build standalone, porta **3002**
-- `docker-compose-prod.yml` — serviço de produção do frontend
+- `docker-compose.prod.yml` (raiz do repositório) — produção do frontend junto com o back-end
 
 Garanta que `NEXT_PUBLIC_DJANGO_API_URL` no build seja a URL **pública** que o browser usará.
